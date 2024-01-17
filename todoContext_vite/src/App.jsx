@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import { TodoProvider } from './contexts/Index'
 import TodoForm from './components/TodoForm'
 import TodoItem from './components/TodoItem'
@@ -7,6 +7,9 @@ export default function App() {
 
  const [todos, settodos] = useState([])
 
+ const uid = () => {
+  return useId()
+ }
  const addTodo = (todo) => {
   settodos((prev) => [{id: Date.now(), todo, completed: false}, ...prev])
  }
