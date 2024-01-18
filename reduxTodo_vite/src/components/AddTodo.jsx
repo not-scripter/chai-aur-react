@@ -12,9 +12,7 @@ const [input, setInput] = useState("")
   e.preventDefault()
 
   if( input.length < 1 ) return
-
-   dispatch(addTodo(input))
-
+  dispatch(addTodo(input))
   setInput("")
  }
 
