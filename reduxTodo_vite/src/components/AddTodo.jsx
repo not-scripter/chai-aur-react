@@ -4,7 +4,7 @@ import { addTodo } from '../features/todo/TodoSlice'
 
 export default function Todos() {
 
-const dispatch = useDispatch()
+ const dispatch = useDispatch()
 
 const [input, setInput] = useState("")
 
