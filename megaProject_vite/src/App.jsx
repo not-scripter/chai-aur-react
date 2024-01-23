@@ -1,10 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { authService } from './appwrite/auth';
+import { login, logout } from './store/AuthSlice';
+import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
+import { Outlet } from 'react-router-dom';
 
 export default function App() {
 
- console.log(import.meta.env.VITE_APPWRITE_URL);
+ const [loading, setloading] = useState(true)
 
-  return (
-   <h1>Mega Project</h1>
-  )
+ const dispatch = useDispatch()
+
+ useEffect(() => {
+  authService.getCurrentUser()
+  .then((userData) => {
+   if (userData) {
+   dispatch(login({userData}))
+   } else {
+    dispatch(logout())
+   }
+  })
+  .finally(() => setloading(false))
+ }, [])
+
+ return !loading ? (
+  <div className='min-h-screen flex flex-wrap content-between bg-gray-800'>
+  <div className='w-full block'>
+  <Header />
+  <main>
+  <Outlet />
+  </main>
+  <Footer />
+  </div>
+  </div>
+ ) : (
+  <div>
+   loading
+  </div>
+ );
+
 }
