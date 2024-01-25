@@ -6,15 +6,15 @@ export class Service = {
  databases;
  storage;
 
- constructor(){
+ constructor() {
   this.client
   .setEndpoint(conf.appwriteUrl)
-  .setProject(conf.appwriteProjectId);
+  .setProject(conf.appwriteProjectId)
   this.databases = new Databases(this.client)
   this.storage = new Storage(this.client)
  }
 
- async createPost({title, slug, content, fearturedImage, status, userId}){
+ async createPost({title, slug, content, fearturedImage, status, userId}) {
   try {
    return await this.databases.createDocument(
     conf.appwriteDatabaseId,
