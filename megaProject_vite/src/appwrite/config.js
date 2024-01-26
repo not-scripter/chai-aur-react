@@ -1,18 +1,18 @@
 import { Client, ID, Databases, Storage, Query } from "appwrite";
-import { conf } from "./conf";
+import { conf } from "../conf/conf";
 
-export class Service = {
+export class Service {
  client = new Client();
  databases;
  storage;
 
- constructor() {
+ constructor(){
   this.client
   .setEndpoint(conf.appwriteUrl)
-  .setProject(conf.appwriteProjectId)
-  this.databases = new Databases(this.client)
-  this.storage = new Storage(this.client)
- }
+  .setProject(conf.appwriteProjectId);
+  this.databases = new Databases(this.client);
+  this.storage = new Storage(this.client);
+ };
 
  async createPost({title, slug, content, fearturedImage, status, userId}) {
   try {
@@ -31,7 +31,7 @@ export class Service = {
   } catch (error) {
    throw error
   }
- }
+ };
 
  async updatePost({slug, title, content, fearturedImage, status}){
   try {

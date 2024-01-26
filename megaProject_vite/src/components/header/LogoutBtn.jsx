@@ -16,6 +16,7 @@ export default function LogoutBtn() {
 
   return (
    <button type="button"
+   onClick={logoutHandler}
    className='inline-block px-6 py-2 duration-200 rounded-full hover:bg-blue-400'>
    Logout
    </button>

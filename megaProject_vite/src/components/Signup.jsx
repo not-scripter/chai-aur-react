@@ -17,15 +17,14 @@ export default function Signup() {
  const create = async (data) => {
   seterror("")
   try {
-   
-  } catch (error) {
-   seterror(error.message)
    const userData = await authService.createAccount(data)
    if (userData) {
     const data = await authService.getCurrentUser()
     if(data) dispatch(login(data))
     navigate("/")
    }
+  } catch (error) {
+   seterror(error.message)
   }
  }
 
@@ -63,26 +62,28 @@ export default function Signup() {
    <Input 
    label="Full Name: "
    placeholder="Enter Your Full Name"
-   {...register("fullname"), {
-    required: true,
-   }}/>
+   {...register("fullname", { required: true }
+   )}
+   />
    <Input 
    label="Email: "
    placeholder="Enter Your Email"
    type="email"
-   {...register("email"), {
+   {...register("email", {
     required: true,
     validate: {
-   matchPattern: (value) => /^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+5/.text(value) || "Email Address Must be a Valid Address"
+   matchPattern: (value) => "/^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+5/".text(value) || "Email Address Must be a Valid Address"
     }
-   }}/> 
+   })}
+   /> 
    <Input 
    label="Password: "
    placeholder="Enter Your Password"
    type="password"
-   {...register("password"), {
+   {...register("password", {
     required: true,
-   }}/>
+   })}
+   />
    <Button 
    type='submit'
    className='w-full'>

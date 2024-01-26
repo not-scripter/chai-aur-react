@@ -66,19 +66,21 @@ export default function Login() {
    label="Email: "
    placeholder="Enter Your Email"
    type="email"
-   {...register("email"), {
+   {...register("email", {
     required: true,
     validate: {
    matchPattern: (value) => /^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+5/.text(value) || "Email Address Must be a Valid Address"
     }
-   }}/> 
+   })}
+   /> 
    <Input 
    label="Password: "
    placeholder="Enter Your Password"
    type="password"
-   {...register("password"), {
+   {...register("password", {
     required: true,
-   }}/>
+   })}
+   />
    <Button 
    type='submit'
    className='w-full'>

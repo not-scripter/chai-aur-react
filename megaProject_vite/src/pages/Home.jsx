@@ -4,7 +4,7 @@ import { appwriteService } from '../appwrite/config'
 
 export default function Home() {
 
-const [posts, setposts] = useState(null)
+const [posts, setposts] = useState([])
 
  useEffect(() => {
   if (slug) {
