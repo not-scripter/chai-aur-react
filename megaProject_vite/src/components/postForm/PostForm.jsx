@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import {Button, Input, Select, RTE} from '../index'
+import { Button, Input, Select, RTE } from '../index'
 import { appwriteService } from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 export default function PostForm({ post }) {
 
@@ -15,13 +15,12 @@ export default function PostForm({ post }) {
    status: post?.status || "active"
   }
  })
- const dispatch = useDispatch()
  const navigate = useNavigate()
- const userData = useSelector(state => state.user.userData)
+ const userData = useSelector(state => state.auth.userData)
   
  const submit = async (data) => {
   if (post) {
-   const file = data.image[0] ? appwriteService.uploadFile(dala.image[0]) : null
+   const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null;
    if (file) {
     appwriteService.deleteFile(post.featuredImage)
    }
@@ -38,7 +37,7 @@ export default function PostForm({ post }) {
    if (file) {
     const fileId = data.$id
     const dbPost = data.featuredImage = fileId
-    await appwriteService.createPost({ ...data, userId: userData.$id, })
+    await appwriteService.createPost({ ...data, userId: userData.$id })
     if (dbPost) {
      navigate(`/post/${dbPost.$id}`)
     }
@@ -48,29 +47,30 @@ export default function PostForm({ post }) {
  }
   
  const slugTransform = useCallback((value) => {
-  if (value && typeof value === 'string') {
+  if (value && typeof value === 'string') 
    return value
-   .trim()
-   .toLowerCase()
-   .replace(/^[a-zA-Z\d\s]+/g, '-') //RegEx
-   .replace(/\s/g, '-')
-  } return ''
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-zA-Z\d\s]+/g, '-') //RegEx
+    .replace(/\s/g, '-');
+  return '';
  }, [])
 
  useEffect(() => {
   const subscription = watch((value, {name}) => {
    if (name === 'title') {
-    setValue('slug', slugTransform(value.title, {shouldValidate: true}))
+    setValue('slug', slugTransform(value.title), {shouldValidate: true});
    }
   })
 
-  return () => {
-   subscription.unsubscribe()
-  }
- }, [watch, slugTransform, setValue])
+  return () => subscription.unsubscribe();
+
+ }, [watch, slugTransform, setValue]);
 
  return (
-  <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+  <form 
+  onSubmit={handleSubmit(submit)} 
+  className="flex flex-wrap">
   <div className="w-2/3 px-2">
   <Input
   label="Title :"
@@ -87,7 +87,11 @@ export default function PostForm({ post }) {
    setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
   }}
   />
-  <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+  <RTE 
+  label="Content :" 
+  name="content" 
+  control={control} 
+  defaultValue={getValues("content")} />
   </div>
   <div className="w-1/3 px-2">
   <Input

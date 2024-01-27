@@ -62,8 +62,7 @@ export default function Signup() {
    <Input 
    label="Full Name: "
    placeholder="Enter Your Full Name"
-   {...register("fullname", { required: true }
-   )}
+   {...register("name", { required: true } )}
    />
    <Input 
    label="Email: "
@@ -72,7 +71,7 @@ export default function Signup() {
    {...register("email", {
     required: true,
     validate: {
-   matchPattern: (value) => "/^\w+([.-]?\w+)+@\w+([.-]?\w+)*(\.\w{2,3})+5/".text(value) || "Email Address Must be a Valid Address"
+     matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Email address must be a valid address",
     }
    })}
    /> 

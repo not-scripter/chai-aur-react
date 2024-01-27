@@ -35,9 +35,7 @@ export default function App() {
   </div>
   </div>
  ) : (
-  <div>
-   loading
-  </div>
+  <h1>Loading</h1>
  );
 
 }

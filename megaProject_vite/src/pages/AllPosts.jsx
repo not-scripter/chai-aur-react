@@ -10,24 +10,28 @@ useEffect(() => {
 appwriteService.getPosts([])
 .then(posts => {
 if (posts) {
- setposts(posts.document)
+ setposts(posts.documents)
 }
 })
 }, [])
 
-  return (
-    <div className='py-8'>
-   <Container>
-   <div className='flex flex-wrap'>
-   {
+ return (
+  <div 
+  className='py-8'>
+  <Container>
+  <div 
+  className='flex flex-wrap'>
+  {
    posts.map(post => (
-   <div key={post.$id}>
-   <PostCard post={post} className="p-2 w-1/4" />
-   </div>
+    <div key={post.$id}>
+    <PostCard 
+    post={post}
+    />
+    </div>
    ))
-   }
-   </div>
-   </Container>
-   </div>
-  )
+  }
+  </div>
+  </Container>
+  </div>
+ )
 }
