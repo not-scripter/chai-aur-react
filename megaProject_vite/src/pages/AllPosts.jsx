@@ -6,14 +6,13 @@ export default function AllPosts() {
 
 const [posts, setposts] = useState([])
 
-useEffect(() => {
-appwriteService.getPosts([])
-.then(posts => {
+useEffect(() => {}, [])
+
+appwriteService.getPosts([]).then(posts => {
 if (posts) {
  setposts(posts.documents)
 }
 })
-}, [])
 
  return (
   <div 
@@ -25,7 +24,7 @@ if (posts) {
    posts.map(post => (
     <div key={post.$id}>
     <PostCard 
-    post={post}
+    {...post}
     />
     </div>
    ))

@@ -5,7 +5,9 @@ import { appwriteService } from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-export default function PostForm({ post }) {
+export default function PostForm({post}) {
+
+ // const post = useSelector(state => state.post)
 
  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
   defaultValues: {
@@ -35,11 +37,11 @@ export default function PostForm({ post }) {
    //TODO improve this code
    const file = await appwriteService.uploadFile(data.image[0])
    if (file) {
-    const fileId = data.$id
-    const dbPost = data.featuredImage = fileId
-    await appwriteService.createPost({ ...data, userId: userData.$id })
+    const fileId = data.$id;
+    data.featuredImage = fileId;
+    const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
     if (dbPost) {
-     navigate(`/post/${dbPost.$id}`)
+     navigate(`/post/${dbPost.$id}`);
     }
 
    }
