@@ -6,13 +6,14 @@ export default function AllPosts() {
 
 const [posts, setposts] = useState([])
 
-useEffect(() => {}, [])
+ useEffect(() => {
+  appwriteService.getPosts([]).then(posts => {
+   if (posts) {
+    setposts(posts.documents)
+   }
+  })
+ }, [])
 
-appwriteService.getPosts([]).then(posts => {
-if (posts) {
- setposts(posts.documents)
-}
-})
 
  return (
   <div 

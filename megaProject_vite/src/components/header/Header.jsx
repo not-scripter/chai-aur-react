@@ -17,22 +17,22 @@ export default function Header() {
   },
   {
    name: "Login",
-   slug: "/Login",
+   slug: "/login",
    active: !authStatus
   },
   {
    name: "Signup",
-   slug: "Signup",
+   slug: "signup",
    active: !authStatus
   },
   {
    name: "AllPost",
-   slug: "/All-Post",
+   slug: "/all-posts",
    active: authStatus
   },
   {
    name: "AddPost",
-   slug: "/Add-Post",
+   slug: "/add-post",
    active: authStatus
   },
  ]

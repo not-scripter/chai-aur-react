@@ -21,15 +21,15 @@ export class Service {
     conf.appwriteCollectionId,
     slug,
     {
-     title,
-     content,
-     featuredImage,
-     status,
-     userId,
+     Title: title,
+     Content: content,
+     Status: status,
+     UserId: userId,
+     featuredImage: featuredImage,
     }
    )
   } catch (error) {
-   console.log("Appwrite serive :: createPost :: error", error);
+   console.log("Appwrite service :: createPost :: error", error);
   }
  };
 
@@ -93,11 +93,12 @@ export class Service {
 
  // File Upload Service
  
- async uploadFile(file){
+ async uploadFile({fileId, file}){
   try {
    return await this.storage.createFile(
     conf.appwriteBucketId,
-    ID.unique(),
+    // ID.unique(),
+    fileId,
     file,
    )
   } catch (error) {
@@ -127,6 +128,18 @@ export class Service {
    )
   } catch (error) {
    console.log("Appwrite serive :: getFilePreview :: error", error);
+   return false
+  }
+ }
+
+ async getFileView(fileId){
+  try {
+   return this.storage.getFileView(
+    conf.appwriteBucketId,
+    fileId,
+   )
+  } catch (error) {
+   console.log("Appwrite serive :: getFileView :: error", error);
    return false
   }
  }

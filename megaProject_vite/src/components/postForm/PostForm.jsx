@@ -1,3 +1,4 @@
+import { ID } from "appwrite";
 import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Input, Select, RTE } from '../index'
@@ -6,8 +7,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export default function PostForm({post}) {
-
- // const post = useSelector(state => state.post)
 
  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
   defaultValues: {
@@ -22,7 +21,7 @@ export default function PostForm({post}) {
   
  const submit = async (data) => {
   if (post) {
-   const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null;
+   const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
    if (file) {
     appwriteService.deleteFile(post.featuredImage)
    }
@@ -35,11 +34,12 @@ export default function PostForm({post}) {
    }
   } else {
    //TODO improve this code
-   const file = await appwriteService.uploadFile(data.image[0])
+   const fileId = String(Date.now());
+   const file = await appwriteService.uploadFile({fileId:fileId, file:data.image[0] });
    if (file) {
-    const fileId = data.$id;
-    data.featuredImage = fileId;
-    const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id });
+    // const fileId = data.$id;
+    // data.featuredImage = data.$id;
+    const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id, featuredImage: fileId });
     if (dbPost) {
      navigate(`/post/${dbPost.$id}`);
     }
@@ -89,11 +89,26 @@ export default function PostForm({post}) {
    setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
   }}
   />
-  <RTE 
-  label="Content :" 
-  name="content" 
-  control={control} 
-  defaultValue={getValues("content")} />
+
+   <Input
+  label="Content :"
+  placeholder="Content"
+  className="mb-4"
+  {...register("content")}
+  />
+  { 
+   <h2>{getValues("content")}</h2>
+  }
+   
+   {
+  //  <RTE 
+  // label="Content :" 
+  // name="content" 
+  // control={control} 
+  // defaultValue={getValues("content")} 
+  // />
+  }
+
   </div>
   <div className="w-1/3 px-2">
   <Input
@@ -101,7 +116,7 @@ export default function PostForm({post}) {
   type="file"
   className="mb-4"
   accept="image/png, image/jpg, image/jpeg, image/gif"
-  {...register("image", { required: !post })}
+  {...register("image")}
   />
   {post && (
    <div className="w-full mb-4">
@@ -116,7 +131,7 @@ export default function PostForm({post}) {
   options={["active", "inactive"]}
   label="Status"
   className="mb-4"
-  {...register("status", { required: true })}
+  {...register("status")}
   />
   <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
   {post ? "Update" : "Submit"}
