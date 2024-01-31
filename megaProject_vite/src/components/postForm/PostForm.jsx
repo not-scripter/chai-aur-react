@@ -7,13 +7,12 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export default function PostForm({post}) {
-
  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
   defaultValues: {
-   title: post?.title || "",
-   slug: post?.slug || "",
-   content: post?.content || "",
-   status: post?.status || "active"
+   Title: post?.Title || "",
+   slug: post?.$id || "",
+   Content: post?.Content || "",
+   Status: post?.Status || "active"
   }
  })
  const navigate = useNavigate()
@@ -60,8 +59,8 @@ export default function PostForm({post}) {
 
  useEffect(() => {
   const subscription = watch((value, {name}) => {
-   if (name === 'title') {
-    setValue('slug', slugTransform(value.title), {shouldValidate: true});
+   if (name === 'Title') {
+    setValue('slug', slugTransform(value.Title), {shouldValidate: true});
    }
   })
 
@@ -122,7 +121,7 @@ export default function PostForm({post}) {
    <div className="w-full mb-4">
    <img
    src={appwriteService.getFilePreview(post.featuredImage)}
-   alt={post.title}
+   alt={post.Title}
    className="rounded-lg"
    />
    </div>

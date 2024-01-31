@@ -9,7 +9,7 @@ export class Service {
  constructor(){
   this.client
   .setEndpoint(conf.appwriteUrl)
-  .setProject(conf.appwriteProjectId);
+  .setProject(conf.appwriteProjectId)
   this.databases = new Databases(this.client);
   this.storage = new Storage(this.client);
  };
@@ -78,7 +78,7 @@ export class Service {
   }
  }
 
- async getPosts( queries = [Query.equal("status", "active")] ){
+ async getPosts( queries = [Query.equal("Status", "active")] ){
   try {
    return await this.databases.listDocuments(
     conf.appwriteDatabaseId,
@@ -120,7 +120,7 @@ export class Service {
   }
  }
 
- async getFilePreview(fileId){
+ getFilePreview(fileId){
   try {
    return this.storage.getFilePreview(
     conf.appwriteBucketId,
@@ -128,18 +128,6 @@ export class Service {
    )
   } catch (error) {
    console.log("Appwrite serive :: getFilePreview :: error", error);
-   return false
-  }
- }
-
- async getFileView(fileId){
-  try {
-   return this.storage.getFileView(
-    conf.appwriteBucketId,
-    fileId,
-   )
-  } catch (error) {
-   console.log("Appwrite serive :: getFileView :: error", error);
    return false
   }
  }

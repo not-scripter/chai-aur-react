@@ -15,9 +15,8 @@ const {slug} = useParams()
   if (slug) {
    appwriteService.getPost(slug)
     .then(post => {
-     if (post) {
-      setpost(post)
-     }  })
+     if (post) setpost(post)
+     })
   } else navigate("/")
  }, [slug, navigate])
 
