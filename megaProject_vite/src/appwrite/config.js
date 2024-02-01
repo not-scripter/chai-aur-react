@@ -40,10 +40,10 @@ export class Service {
     conf.appwriteCollectionId,
     slug,
     {
-     title,
-     content,
-     featuredImage,
-     status,
+     Title: title,
+     Content: content,
+     Status: status,
+     featuredImage: featuredImage,
     }
    )
   } catch (error) {
