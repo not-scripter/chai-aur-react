@@ -94,24 +94,21 @@ export default function PostForm({post}) {
   }}
   />
 
-   <Input
-  label="Content :"
-  placeholder="Content"
-  className="mb-4"
-  {...register("content")}
-  />
-  { 
-   <h2>{getValues("content")}</h2>
-  }
-   
-   {
-  //  <RTE 
-  // label="Content :" 
-  // name="content" 
-  // control={control} 
-  // defaultValue={getValues("content")} 
+  {
+  //  <Input
+  // label="Content :"
+  // placeholder="Content"
+  // className="mb-4"
+  // {...register("content")}
   // />
   }
+
+   <RTE 
+  label="Content :" 
+  name="content" 
+  control={control} 
+  defaultValue={getValues("content")} 
+  />
 
   </div>
   <div className="w-1/3 px-2">
@@ -137,7 +134,7 @@ export default function PostForm({post}) {
   className="mb-4"
   {...register("status")}
   />
-  <Button type="submit" bgColor={post ? "bg-green-500" : ""} className="w-full">
+  <Button type="submit" bgColor={post ? "bg-green-500" : "bg-orange-600"} className="w-full">
   {post ? "Update" : "Submit"}
   </Button>
   </div>

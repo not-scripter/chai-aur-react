@@ -15,7 +15,7 @@ const [posts, setposts] = useState([])
  }, [])
 
 
- return (
+ return posts.length > 0 ? (
   <div 
   className='py-8'>
   <Container>
@@ -33,5 +33,17 @@ const [posts, setposts] = useState([])
   </div>
   </Container>
   </div>
+ ) : (
+   <div className="w-full py-8 mt-4 text-center">
+   <Container>
+   <div className="flex flex-wrap">
+   <div className="p-2 w-full">
+   <h1 className="text-2xl font-bold hover:text-gray-500">
+   No Post Found 
+   </h1>
+   </div>
+   </div>
+   </Container>
+   </div>
  )
 }

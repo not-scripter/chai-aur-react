@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { authService } from './appwrite/auth';
 import { login, logout } from './store/AuthSlice';
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
 import { Outlet } from 'react-router-dom';
+import { Loading, Header, Footer } from './components/index';
 
 export default function App() {
 
@@ -35,9 +34,7 @@ export default function App() {
   </div>
   </div>
  ) : (
-  <div className='flex w-screen h-screen items-center justify-center'>
-   <h1 className='font-bold'>...Loading</h1>
-  </div>
+  <Loading />
  );
 
 }
