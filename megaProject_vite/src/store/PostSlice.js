@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
- title: "test",
- slug: "test",
- content: "testContent",
- status: "active"
+ Title: "",
+ Content: "",
+ Status: "",
+ featuredImage: "",
+ $id: "",
+ UserId: "",
 }
 
 const PostSlice = createSlice({
@@ -12,14 +14,24 @@ const PostSlice = createSlice({
  initialState,
  reducers: {
   setPost: (state, action) => {
-   state.title = action.payload.title;
-   state.slug = action.payload.slug;
-   state.content = action.payload.content;
-   state.status = action.payload.status;
+   state.Title = action.payload.Title;
+   state.Content = action.payload.Content;
+   state.Status = action.payload.Status;
+   state.featuredImage = action.payload.featuredImage;
+   state.$id = action.payload.$id;
+   state.UserId = action.payload.UserId;
+  },
+  clearPost: (state) => {
+   state.Title = "";
+   state.Content = "";
+   state.Status = "";
+   state.featuredImage = "";
+   state.$id = "";
+   state.UserId = "";
   },
  }
 })
 
-export const { setPost } = PostSlice.actions;
+export const { setPost, clearPost } = PostSlice.actions;
 
 export default PostSlice.reducer;

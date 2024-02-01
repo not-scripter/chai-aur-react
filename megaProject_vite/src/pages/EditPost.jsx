@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Container, PostForm } from '../components'
 import { appwriteService } from '../appwrite/config'
-import { Navigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function EditPost() {
 
-const navigate = Navigate()
+const navigate = useNavigate();
 
-const [post, setpost] = useState(null)
+const [post, setpost] = useState(null);
 
-const {slug} = useParams()
+const {slug} = useParams();
 
  useEffect(() => {
   if (slug) {
@@ -18,7 +18,7 @@ const {slug} = useParams()
      if (post) setpost(post)
      })
   } else navigate("/")
- }, [slug, navigate])
+ }, [slug, navigate]);
 
 return post ? (
 <div className='py-8'>
@@ -26,5 +26,10 @@ return post ? (
 <PostForm post={post}/>
 </Container>
 </div>
-) : null
+) : (
+ <div>
+  <h2>Post Not Found</h2>
+ </div>
+)
+
 }

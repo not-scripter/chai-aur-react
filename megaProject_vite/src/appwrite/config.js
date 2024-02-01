@@ -125,7 +125,7 @@ export class Service {
    return this.storage.getFilePreview(
     conf.appwriteBucketId,
     fileId,
-   )
+   ).href
   } catch (error) {
    console.log("Appwrite serive :: getFilePreview :: error", error);
    return false

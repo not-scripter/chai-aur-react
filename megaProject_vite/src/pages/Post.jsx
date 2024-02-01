@@ -3,7 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { appwriteService } from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearPost, setPost } from "../store/PostSlice";
 
 export default function Post() {
 
@@ -20,7 +21,9 @@ export default function Post() {
    appwriteService.getPost(slug)
     .then((post) => {
     if (post) setPost(post);
-    else navigate("/");
+    else {
+     navigate("/");
+    }
    });
   } else navigate("/");
  }, [slug, navigate]);

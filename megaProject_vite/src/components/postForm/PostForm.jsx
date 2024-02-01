@@ -9,10 +9,10 @@ import { useSelector } from 'react-redux'
 export default function PostForm({post}) {
  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
   defaultValues: {
-   Title: post?.Title || "",
+   title: post?.Title || "",
    slug: post?.$id || "",
-   Content: post?.Content || "",
-   Status: post?.Status || "active"
+   content: post?.Content || "",
+   status: post?.Status || "active"
   }
  })
  const navigate = useNavigate()
@@ -26,18 +26,15 @@ export default function PostForm({post}) {
    }
    const dbPost = await appwriteService.updatePost(post.$id, {
     ...data,
-    featuredImage: file ? file.$id : undefined,
+    featuredImage: file ? file.$id : null,
    })
    if (dbPost) {
     navigate(`/post/${dbPost.$id}`)
    }
   } else {
-   //TODO improve this code
    const fileId = String(Date.now());
    const file = await appwriteService.uploadFile({fileId:fileId, file:data.image[0] });
    if (file) {
-    // const fileId = data.$id;
-    // data.featuredImage = data.$id;
     const dbPost = await appwriteService.createPost({ ...data, userId: userData.$id, featuredImage: fileId });
     if (dbPost) {
      navigate(`/post/${dbPost.$id}`);
@@ -59,8 +56,8 @@ export default function PostForm({post}) {
 
  useEffect(() => {
   const subscription = watch((value, {name}) => {
-   if (name === 'Title') {
-    setValue('slug', slugTransform(value.Title), {shouldValidate: true});
+   if (name === 'title') {
+    setValue('slug', slugTransform(value.title), {shouldValidate: true});
    }
   })
 
@@ -132,7 +129,7 @@ export default function PostForm({post}) {
   className="mb-4"
   {...register("status")}
   />
-  <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+  <Button type="submit" bgColor={post ? "bg-green-500" : ""} className="w-full">
   {post ? "Update" : "Submit"}
   </Button>
   </div>

@@ -35,7 +35,9 @@ export default function App() {
   </div>
   </div>
  ) : (
-  <h1>Loading</h1>
+  <div className='flex w-screen h-screen items-center justify-center'>
+   <h1 className='font-bold'>...Loading</h1>
+  </div>
  );
 
 }
