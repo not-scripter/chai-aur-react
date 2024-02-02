@@ -1,28 +1,70 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Logo from '../Logo'
+import React, {useState} from 'react'
+import { Button, Container, Loading, Logo, LogoutBtn } from "../index"
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function Footer() {
- return (
+
+ const [loading, setloading] = useState(false);
+
+ const navigate = useNavigate();
+
+ const authStatus = useSelector(state => state.auth.status);
+ const navItems = useSelector(state => state.nav.navItems)
+ const authItems = useSelector(state => state.nav.authItems)
+
+ return !loading ? (
   <footer 
-  className="w-full h-fit overflow-hidden bg-orange-950 grid items-center justify-evenly px-2 py-4">
+  className={`relative grid bg-zinc-200 text-black w-full shadow`}>
+  <Container>
+  
+  <div 
+  className='w-full flex items-center justify-center py-6'>
+  <Link to="/">
+  <Logo width="100px"/>
+  </Link>
+  </div>
 
-  <section
-  className='grid left-0 w-screen h-full'>
-  <ul>
-   <li>Home</li>
-  <li>About</li>
+  <nav 
+  className={`grid w-full`}>
+  <ul 
+  className='w-full px-2 py-4 grid items-center justify-center gap-2'>
+  {navItems.map(item => item.active ? (
+   <li key={item.slug}>
+   <Button onClick={() => navigate(item.slug)}
+   className='w-full'>
+   {item.name}
+   </Button>
+   </li>
+  ) : null )} 
   </ul>
-  </section>
 
-  <section
-  className='rtl:'>
-  <ul>
-   <li>Home</li>
-  <li>About</li>
+  <ul 
+  dir='ltr'
+  className='w-full px-2 py-4 grid items-center justify-center gap-2'>
+  {
+   !authStatus ? (
+    authItems.map(item => 
+     <li key={item.slug}>
+     <Button 
+     onClick={() => navigate(item.slug)}
+     className='w-full'>
+     {item.name}
+     </Button>
+     </li>
+    )
+   ) : (
+    <li>
+    <LogoutBtn className=''/>
+    </li>
+   )
+  }
   </ul>
-  </section>
-
+  </nav>
+  
+  </Container>
   </footer>
+ ) : (
+  <Loading />
  )
 }

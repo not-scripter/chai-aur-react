@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit"
-import authSlice from "./AuthSlice"
-import PostSlice from "./PostSlice"
+import AuthSlice from "./AuthSlice"
+import NavSlice from "./NavSlice"
 
 export const Store = configureStore({
  reducer: {
-  auth: authSlice,
-  post: PostSlice,
+  auth: AuthSlice,
+  nav: NavSlice,
  }
 })
- //TODO add more slises for post

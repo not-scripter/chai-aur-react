@@ -2,8 +2,11 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { authService } from '../../appwrite/auth'
 import { logout } from '../../store/AuthSlice'
+import Button from '../Button'
 
-export default function LogoutBtn() {
+export default function LogoutBtn({
+ className = ""
+}) {
 
  const dispatch = useDispatch()
 
@@ -15,10 +18,10 @@ export default function LogoutBtn() {
  }
 
   return (
-   <button type="button"
+   <Button type="button"
    onClick={logoutHandler}
-   className='inline-block px-6 py-2 duration-200 rounded-full hover:bg-blue-400'>
+   className='inline-block px-6 py-2 duration-200 rounded-full bg-red-600 hover:bg-red-900'>
    Logout
-   </button>
+   </Button>
   )
 }

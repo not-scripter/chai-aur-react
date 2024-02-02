@@ -4,7 +4,6 @@ import { appwriteService } from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useDispatch, useSelector } from "react-redux";
-import { clearPost, setPost } from "../store/PostSlice";
 
 export default function Post() {
 

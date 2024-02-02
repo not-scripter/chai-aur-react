@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Button, Container, Logo, LogoutBtn} from "../index.js"
+import { Button, Container, Logo, LogoutBtn } from "../index.js"
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -7,43 +7,15 @@ import { useSelector } from 'react-redux'
 export default function Header() {
 
  const navigate = useNavigate()
+ const [navToggle, setnavToggle] = useState(false);
+
  const authStatus = useSelector(state => state.auth.status)
- const [navToggle, setnavToggle] = useState(true);
+ const navItems = useSelector(state => state.nav.navItems)
+ const authItems = useSelector(state => state.nav.authItems)
 
- const navItems = [
-  {
-   name: "Home",
-   slug: "/",
-   active: true
-  },
-  {
-   name: "AllPost",
-   slug: "/all-posts",
-   active: authStatus
-  },
-  {
-   name: "AddPost",
-   slug: "/add-post",
-   active: authStatus
-  },
- ]
- const authItems = [
-  {
-   name: "Login",
-   slug: "/login",
-   active: !authStatus
-  },
-  {
-   name: "Signup",
-   slug: "signup",
-   active: !authStatus
-  },
- ]
-
-
- return (
+ return  (
   <header 
-  className={`relative grid bg-zinc-200 text-black w-full shadow 
+  className={`relative grid bg-zinc-200 text-black w-full shadow touch-none
    ${navToggle ? "h-[100dvh] fixed" : ""}
    `}>
   <Container>
@@ -51,7 +23,7 @@ export default function Header() {
   <div 
   className='flex items-center justify-between w-full h-fit px-2 py-1'>
   <Link to="/">
-  <Logo width="100px"/>
+  <Logo width="250px"/>
   </Link>
   <Button 
   onClick={() => setnavToggle(prev => !prev)}
@@ -68,10 +40,13 @@ export default function Header() {
   className='w-full grid px-2 py-4 gap-2'>
   {navItems.map(item => item.active ? (
    <li key={item.slug}>
-   <button onClick={() => navigate(item.slug)}
+   <Button onClick={() => {
+    navigate(item.slug) 
+    setnavToggle(false)
+   }}
    className='inline-block rounded-full hover:bg-zinc-800 hover:text-white w-full py-2 items-center justify-center'>
    {item.name}
-   </button>
+   </Button>
    </li>
   ) : null )} 
   </ul>
@@ -83,7 +58,10 @@ export default function Header() {
     authItems.map(item => 
      <li key={item.slug}>
      <Button 
-     onClick={() => navigate(item.slug)}
+     onClick={() => {
+      navigate(item.slug)
+      setnavToggle(false)
+     }}
      className='inline-block rounded-full bg-blue-700 text-white hover:bg-blue-950 hover:text-white w-full py-2 items-center justify-center'>
      {item.name}
      </Button>
