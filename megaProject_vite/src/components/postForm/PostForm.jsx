@@ -1,5 +1,4 @@
-import { ID } from "appwrite";
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Input, Select, RTE } from '../index'
 import { appwriteService } from '../../appwrite/config'
@@ -18,7 +17,12 @@ export default function PostForm({post}) {
  })
  const navigate = useNavigate()
  const userData = useSelector(state => state.auth.userData)
-  
+
+
+ const [localImageUrl, setlocalImageUrl] = useState(null)
+ const dbImage = post ? appwriteService.getFilePreview(post.featuredImage) : null ;
+ console.log(localImageUrl)
+
  const submit = async (data) => {
   if (post) {
    const fileId = nanoid();
@@ -71,7 +75,7 @@ export default function PostForm({post}) {
 
   return () => subscription.unsubscribe();
 
- }, [watch, slugTransform, setValue]);
+ }, [watch, slugTransform, setValue, localImageUrl]);
 
  return (
   <form 
@@ -94,6 +98,13 @@ export default function PostForm({post}) {
   }}
   />
 
+   <RTE 
+  label="Content :" 
+  name="content" 
+  control={control} 
+  defaultValue={getValues("content")} 
+  />
+
   {
   //  <Input
   // label="Content :"
@@ -103,31 +114,26 @@ export default function PostForm({post}) {
   // />
   }
 
-   <RTE 
-  label="Content :" 
-  name="content" 
-  control={control} 
-  defaultValue={getValues("content")} 
-  />
-
   </div>
   <div className="w-1/3 px-2">
+
   <Input
-  label="Featured Image :"
+  label="Local Image :"
   type="file"
   className="mb-4"
-  accept="image/png, image/jpg, image/jpeg, image/gif"
-  {...register("image")}
+  accept="image/*"
+   {...register("image")}
+  onChange={e => setlocalImageUrl(URL.createObjectURL(e.target.files[0])) }
   />
-  {post && (
-   <div className="w-full mb-4">
-   <img
-   src={appwriteService.getFilePreview(post.featuredImage)}
-   alt={post.Title}
-   className="rounded-lg"
-   />
-   </div>
-  )}
+
+  <div className="w-full mb-4">
+  <img
+  src={localImageUrl ? localImageUrl : dbImage }
+  alt=""
+  className="rounded-lg"
+  />
+  </div>
+
   <Select
   options={["active", "inactive"]}
   label="Status"
