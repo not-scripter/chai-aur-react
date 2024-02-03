@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
-import { Button, Container, Loading, Logo, LogoutBtn } from "../index"
+import { Button, Container, Logo, LogoutBtn } from "../index"
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export default function Footer() {
-
- const [loading, setloading] = useState(false);
 
  const navigate = useNavigate();
 
@@ -13,7 +11,7 @@ export default function Footer() {
  const navItems = useSelector(state => state.nav.navItems)
  const authItems = useSelector(state => state.nav.authItems)
 
- return !loading ? (
+ return (
   <footer 
   className={`relative grid bg-zinc-200 text-black w-full shadow`}>
   <Container>
@@ -29,14 +27,17 @@ export default function Footer() {
   className={`grid w-full`}>
   <ul 
   className='w-full px-2 py-4 grid items-center justify-center gap-2'>
-  {navItems.map(item => item.active ? (
-   <li key={item.slug}>
-   <Button onClick={() => navigate(item.slug)}
-   className='w-full'>
-   {item.name}
-   </Button>
-   </li>
-  ) : null )} 
+  {
+   authStatus ? 
+   navItems.map(item => (
+    <li key={item.slug}>
+    <Button onClick={() => navigate(item.slug)}
+    className='w-full'>
+    {item.name}
+    </Button>
+    </li>
+   )) : null 
+  } 
   </ul>
 
   <ul 
@@ -64,7 +65,5 @@ export default function Footer() {
   
   </Container>
   </footer>
- ) : (
-  <Loading />
  )
 }

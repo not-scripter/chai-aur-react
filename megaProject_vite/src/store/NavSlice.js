@@ -5,29 +5,24 @@ const initialState = {
   {
    name: "Home",
    slug: "/",
-   active: true
   },
   {
    name: "AllPost",
    slug: "/all-posts",
-   active: ""
   },
   {
    name: "AddPost",
    slug: "/add-post",
-   active: ""
   }
  ],
  authItems: [
   {
    name: "Login",
    slug: "/login",
-   active: ""
   },
   {
    name: "Signup",
    slug: "signup",
-   active: ""
   }
  ]
 }

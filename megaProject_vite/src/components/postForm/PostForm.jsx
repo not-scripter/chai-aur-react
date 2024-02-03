@@ -21,7 +21,6 @@ export default function PostForm({post}) {
 
  const [localImageUrl, setlocalImageUrl] = useState(null)
  const dbImage = post ? appwriteService.getFilePreview(post.featuredImage) : null ;
- console.log(localImageUrl)
 
  const submit = async (data) => {
   if (post) {

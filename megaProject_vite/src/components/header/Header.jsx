@@ -13,7 +13,7 @@ export default function Header() {
  const navItems = useSelector(state => state.nav.navItems)
  const authItems = useSelector(state => state.nav.authItems)
 
- return  (
+ return (
   <header 
   className={`relative grid bg-zinc-200 text-black w-full shadow touch-none
    ${navToggle ? "h-[100dvh] fixed" : ""}
@@ -38,7 +38,9 @@ export default function Header() {
    `}>
   <ul 
   className='w-full grid px-2 py-4 gap-2'>
-  {navItems.map(item => item.active ? (
+  {
+   authStatus ? 
+   navItems.map(item => (
    <li key={item.slug}>
    <Button onClick={() => {
     navigate(item.slug) 
@@ -48,7 +50,8 @@ export default function Header() {
    {item.name}
    </Button>
    </li>
-  ) : null )} 
+  )) : null 
+  } 
   </ul>
 
   <ul 
