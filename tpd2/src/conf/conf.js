@@ -1,4 +1,4 @@
-export default const conf = {
+const conf = {
   endpoint: String(import.meta.env.VITE_APP_ENDPOINT),
   projectId: String(import.meta.env.VITE_APP_PROJECT_ID),
   databaseId: String(import.meta.env.VITE_APP_DATABASE_ID),
@@ -6,3 +6,4 @@ export default const conf = {
   repliesId: String(import.meta.env.VITE_APP_REPLIES_ID),
   imagesId: String(import.meta.env.VITE_APP_IMAGES_ID),
 };
+export default conf;

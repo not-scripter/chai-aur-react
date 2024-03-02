@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import React from "react";
+import Signin from "./components/signin/Signin";
 
-function App() {
-
+export default function App() {
   return (
     <>
-      <h1>test</h1>
+      <Signin />
     </>
-  )
+  );
 }
-
-export default App

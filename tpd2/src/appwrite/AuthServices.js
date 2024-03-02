@@ -10,13 +10,13 @@ export class authServices {
     this.account = new Account(this.client);
   }
 
-  async signup({email, password, name}){
+  async createAccount({email, password, fullname}){
     try {
       const userAccount = await this.account.create(
         ID.unique(),
         email,
         password,
-        name
+        fullname
       )
       if (userAccount) {
         return this.signin(email, password)
@@ -28,7 +28,7 @@ export class authServices {
     }
   }
 
-  async signin({email, password}){
+  async login({email, password}){
     try {
       return await this.account.createEmailSession(email, password)
     } catch (error) {
@@ -54,4 +54,4 @@ export class authServices {
 
 }
 
-export default const AuthServices = new authServices();
+export default new authServices();
