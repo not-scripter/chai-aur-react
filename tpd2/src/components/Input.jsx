@@ -27,7 +27,7 @@ const Input = (
         type={type}
         ref={ref}
         {...props}
-        className={`${className} ${bg} ${fg} rounded-full px-4 py-4 hover:outline-none focus:border-x-2 focus:border-zinc-200`}
+        className={`${className} ${bg} ${fg} rounded-full px-4 py-4 outline-none border-none hover:outline-none focus:border-x-2 focus:border-zinc-200`}
       />
     </div>
   );

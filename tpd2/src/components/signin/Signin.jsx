@@ -70,7 +70,7 @@ export default function Signin() {
         draggable
         pauseOnHover
         theme="dark"
-        transition: Flip
+        transition:Flip
       />
     </form>
   );

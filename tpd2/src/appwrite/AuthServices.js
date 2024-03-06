@@ -10,48 +10,47 @@ export class authServices {
     this.account = new Account(this.client);
   }
 
-  async createAccount({email, password, fullname}){
+  async createAccount({ email, password, name }) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
         email,
         password,
-        fullname
-      )
+        name,
+      );
       if (userAccount) {
-        return this.signin(email, password)
+        return this.signin(email, password);
       } else {
-        return userAccount
+        return userAccount;
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async login({email, password}){
+  async login({ email, password }) {
     try {
-      return await this.account.createEmailSession(email, password)
+      return await this.account.createEmailSession(email, password);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async getUser(){
+  async getUser() {
     try {
-      return await this.account.get()
+      return await this.account.get();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  async logout(){
+  async logout() {
     try {
-      return await this.account.deleteSessions()
+      return await this.account.deleteSessions();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
-
 }
 
 export default new authServices();
