@@ -7,6 +7,7 @@ export default function Button({
   fg = "text-black",
   className = "",
   loading = false,
+  onClick = {},
   ...props
 }) {
   return (

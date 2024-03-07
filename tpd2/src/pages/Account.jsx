@@ -1,51 +1,39 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import AuthServices from "../appwrite/AuthServices";
+import React from "react";
 import { useSelector } from "react-redux";
-import { Input } from "postcss";
-import NotFound from "../components/NotFound";
-import { Button } from "../components";
+import { NavLink, useNavigate } from "react-router-dom";
 
-export default function Account() {
+export default function Account({ children }) {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
-  console.log(userData);
-  const logout = async () => {
-    try {
-      const res = await AuthServices.logout();
-      if (res) navigate("/login");
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-  const [editable, seteditable] = useState(false);
+  const accItems = [
+    {
+      name: "Info",
+      slug: "/account/info",
+    },
+    {
+      name: "Security",
+      slug: "/account/security",
+    },
+    {
+      name: "Advance",
+      slug: "/account/advance",
+    },
+  ];
   return (
     <>
-      {userData ? (
-        <form>
-          <Input
-            label="Name"
-            value={userData.name}
-            {...(!editable && "readOnly")}
-          />
-          <Input
-            label="Email"
-            value={userData.email}
-            {...(!editable && "readOnly")}
-          />
-          <Input
-            label="Password"
-            value={userData.password}
-            {...(!editable && "readOnly")}
-          />
-          <Button onClick={() => seteditable((prev) => !prev)}>
-            {!editable ? "Edit" : "Save"}
-          </Button>
-        </form>
-      ) : (
-        <NotFound />
-      )}
+      <main>
+        <section>
+          {accItems.map((item) => (
+            <NavLink
+              to={item.slug}
+              className={({ isActive }) => (isActive ? "bg-orange-400" : "")}
+            >
+              {item.name}
+            </NavLink>
+          ))}
+        </section>
+        <section>{children}</section>
+      </main>
     </>
   );
 }

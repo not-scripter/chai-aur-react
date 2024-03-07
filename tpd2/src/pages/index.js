@@ -1,7 +1,9 @@
 import Account from "./Account";
+import AccountAdvance from "./AccountAdvance";
+import AccountInfo from "./AccountInfo";
+import AccountSecurity from "./AccountSecurity";
 import AddPost from "./AddPost";
 import AllPost from "./AllPost";
-import EditAccount from "./EditAccount";
 import EditPost from "./EditPost";
 import Home from "./Home";
 import Post from "./Post";
@@ -16,6 +18,8 @@ export {
   AddPost,
   EditPost,
   AllPost,
-  EditAccount,
   Account,
+  AccountInfo,
+  AccountSecurity,
+  AccountAdvance,
 };
