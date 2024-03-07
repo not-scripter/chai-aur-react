@@ -40,6 +40,7 @@ export default function Signin() {
       <h1 className="text-zinc-100">Signin to Your Account</h1>
       <Input
         label="Email"
+        type="email"
         placeholder="Enter Your Email Address"
         {...register("email", {
           required: true,
@@ -52,6 +53,7 @@ export default function Signin() {
       />
       <Input
         label="Password"
+        type="password"
         placeholder="Enter Your Password"
         {...register("password", {
           required: true,

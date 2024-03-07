@@ -6,16 +6,6 @@ export default function App() {
   const [loading, setloading] = useState(false);
   useEffect(() => {}, []);
 
-  // !loading && (
-  //   <>
-  //     <Container>
-  //       <Header />
-  //       <Outlet />
-  //       <Footer />
-  //     </Container>
-  //   </>
-  // );
-  // return <Loader />;
   return (
     <>
       <Container>

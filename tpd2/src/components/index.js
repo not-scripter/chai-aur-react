@@ -21,5 +21,5 @@ export {
   Select,
   Signin,
   Signup,
-  Loader
-}
+  Loader,
+};

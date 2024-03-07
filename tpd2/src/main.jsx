@@ -8,11 +8,11 @@ import { Provider } from "react-redux";
 import Store from "./store/Store.js";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
-import Signin from "./pages/Signin.jsx";
 import Account from "./pages/Account.jsx";
 import AccountInfo from "./pages/AccountInfo.jsx";
 import AccountSecurity from "./pages/AccountSecurity.jsx";
 import AccountAdvance from "./pages/AccountAdvance.jsx";
+import Login from "./pages/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: (
           <AuthLayout auth={false}>
-            <Signin />
+            <Login />
           </AuthLayout>
         ),
       },
