@@ -13,6 +13,7 @@ export default function Button({
   return (
     <button
       type={type}
+      onClick={onClick}
       {...props}
       className={`${bg} ${fg} ${className} rounded-full px-6 py-1 font-semibold flex items-center justify-center hover:shadow active:bg-opacity-80`}
     >

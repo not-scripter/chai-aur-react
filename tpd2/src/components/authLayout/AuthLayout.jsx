@@ -17,7 +17,7 @@ export default function AuthLayout({
     if ( auth && authStatus !== auth ) {
       navigate("/login")
     } else if (!auth && authStatus !== auth) {
-      // navigate("/")
+      navigate("/")
     }
     setloading(false)
   }, [authStatus, navigate, auth])

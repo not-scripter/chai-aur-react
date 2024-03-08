@@ -34,7 +34,6 @@ export default function Signup() {
       onSubmit={handleSubmit(create)}
       className="grid items-center justify-center"
     >
-      <Logo />
       <h1 className="text-zinc-100">Create Your Account</h1>
       <Input
         label="Full Name"

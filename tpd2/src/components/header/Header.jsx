@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../Logo";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Button from "../Button";
 
 export default function Header() {
-  const authStatus = useSelector((state) => state.auth.loginStatus);
+  const authStatus = useSelector((state) => state.auth.authStatus);
   const navItems = [
     {
       name: "Login",
@@ -31,13 +32,19 @@ export default function Header() {
       slug: "/add-post",
       active: authStatus,
     },
+    {
+      name: "Account",
+      slug: "/account",
+      active: authStatus,
+    },
   ];
+  const [mobNav, setmobNav] = useState(false)
   return (
-    <>
-      <header>
-        <section className="">
+     <header>
+        <section className="grid col-span-2 sm:flex">
           <Logo />
-          <nav>
+        <Button onClick={() => setmobNav(prev => !prev)} className="visible sm:hidden">Menu</Button> 
+          <nav className={`${mobNav ? 'visible' : 'hidden'} sm:visible text-white`}>
             {navItems.map((items) =>
               items.active ? (
                 <NavLink
@@ -54,6 +61,5 @@ export default function Header() {
           </nav>
         </section>
       </header>
-    </>
   );
 }

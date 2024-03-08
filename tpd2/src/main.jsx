@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/home",
+        path: "/",
         element: <Home />,
       },
       {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: (
-          <AuthLayout auth={false}>
+          <AuthLayout auth>
             <Account />
           </AuthLayout>
         ),
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       {
         path: "/account/info",
         element: (
-          <AuthLayout auth={false}>
+          <AuthLayout auth>
             <Account>
               <AccountInfo />
             </Account>
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
       {
         path: "/account/security",
         element: (
-          <AuthLayout auth={false}>
+          <AuthLayout auth>
             <Account>
               <AccountSecurity />
             </Account>
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
       {
         path: "/account/advance",
         element: (
-          <AuthLayout auth={false}>
+          <AuthLayout auth>
             <Account>
               <AccountAdvance />
             </Account>

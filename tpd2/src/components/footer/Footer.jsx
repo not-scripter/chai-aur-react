@@ -1,5 +1,28 @@
 import React from "react";
+import Logo from "../Logo";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 export default function Footer() {
-  return <div>Footer</div>;
+  const authStatus = useSelector(state => state.auth.authStatus)
+  const services = [
+    {
+      name: "",
+      slug: "",
+      active: authStatus
+    }
+  ]
+  return (
+  <footer>
+      <Logo />
+    <section>
+        <h1>Services</h1>
+        <div> 
+          {
+            services.map(item => <NavLink to={item.slug} key={item.slug}>{item.name}</NavLink>)
+          }
+        </div>
+    </section>
+  </footer>
+  )
 }

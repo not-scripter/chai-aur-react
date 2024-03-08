@@ -36,7 +36,6 @@ export default function Signin() {
       onSubmit={handleSubmit(login)}
       className="grid items-center justify-center"
     >
-      <Logo />
       <h1 className="text-zinc-100">Signin to Your Account</h1>
       <Input
         label="Email"
