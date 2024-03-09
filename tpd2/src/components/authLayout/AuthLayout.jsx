@@ -11,7 +11,7 @@ export default function AuthLayout({
 }) {
   const navigate = useNavigate()
   const [loading, setloading] = useState(true)
-  const authStatus = useSelector(state => state.auth.status)
+  const authStatus = useSelector(state => state.auth.authStatus)
 
   useEffect(() => {
     if ( auth && authStatus !== auth ) {
@@ -19,7 +19,7 @@ export default function AuthLayout({
     } else if (!auth && authStatus !== auth) {
       navigate("/")
     }
-    setloading(false)
+    // setloading(false)
   }, [authStatus, navigate, auth])
 
   return !loading ? <>{children}</> : <Loader />

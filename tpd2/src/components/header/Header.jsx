@@ -47,7 +47,8 @@ export default function Header() {
           <nav className={`${mobNav ? 'visible' : 'hidden'} sm:visible text-white`}>
             {navItems.map((items) =>
               items.active ? (
-                <NavLink
+                <NavLink 
+                onClick={() => setmobNav(false)}
                   key={items.slug}
                   to={items.slug}
                   className={({ isActive }) =>
