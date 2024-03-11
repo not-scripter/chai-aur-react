@@ -12,23 +12,25 @@ export class postServices {
     this.storage = new Storage(this.client);
   }
 
-  async createPost({ title, slug, content, images }) {
+  async createPost({ slug, userId, title, content, images, status }) {
     try {
       return await this.databases.createDocument(
         conf.databaseId,
         conf.postsId,
         slug,
         {
+          userId,
           title,
           content,
           images,
+          status,
         },
       );
     } catch (error) {
       throw error;
     }
   }
-  async updatePost({ title, slug, content, images }) {
+  async updatePost({ slug, title, content, image, status }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
@@ -37,7 +39,8 @@ export class postServices {
         {
           title,
           content,
-          images,
+          image,
+          status,
         },
       );
     } catch (error) {
