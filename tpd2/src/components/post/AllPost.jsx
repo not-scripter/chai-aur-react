@@ -1,0 +1,16 @@
+import React, { useEffect, useState } from "react";
+import PostServices from "../../appwrite/PostServices";
+import PostCard from "./PostCard";
+import NotFound from "../NotFound";
+
+export default function AllPost() {
+  const [posts, setposts] = useState(null);
+
+  useEffect(() => {
+    PostServices.getPosts([]).then(
+      (posts) => posts && setposts(posts.documents),
+    );
+  }, []);
+
+  return posts ? <PostCard /> : <NotFound title="Post Not Found" />;
+}

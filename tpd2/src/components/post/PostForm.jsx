@@ -49,8 +49,8 @@ export default function PostForm({ post }) {
           image: file.$id,
         });
         if (newPost) {
-          toast.success("Post Created")
-          navigate(`/post/${newPost.$id}`)
+          toast.success("Post Created");
+          navigate(`/post/${newPost.$id}`);
         }
       }
     }
@@ -74,14 +74,20 @@ export default function PostForm({ post }) {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, slugTransform, setValue])
+  }, [watch, slugTransform, setValue]);
 
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Input label="Title" {...register("title", { required: true })} />
       <Input label="Content" {...register("content", { required: true })} />
-      <Input label="Image" type="file" accept="image/*" {...register("image")} onChange={e => setlocalImage(URL.createObjectURL(e.target.files[0]))} />
-      <img src={localImage ? localImage : dbImage}/>
+      <Input
+        label="Image"
+        type="file"
+        accept="image/*"
+        {...register("image")}
+        onChange={(e) => setlocalImage(URL.createObjectURL(e.target.files[0]))}
+      />
+      <img src={localImage ? localImage : dbImage} />
       <Button type="submit">Submit</Button>
     </form>
   );
