@@ -13,7 +13,7 @@ export default function Footer() {
     }
   ]
   return (
-  <footer>
+  <footer className="fixed bottom-0">
       <Logo />
     <section>
         <h1>Services</h1>

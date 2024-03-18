@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { AuthLayout, Container } from "./components/index.js";
+import { AllPost, AuthLayout, Container, EditPost } from "./components/index.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Store from "./store/Store.js";
@@ -13,6 +13,7 @@ import AccountInfo from "./pages/AccountInfo.jsx";
 import AccountSecurity from "./pages/AccountSecurity.jsx";
 import AccountAdvance from "./pages/AccountAdvance.jsx";
 import Login from "./pages/Login.jsx";
+import AddPost from "./pages/AddPost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,10 +41,36 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/add-post",
+        element: (
+          <AuthLayout auth>
+            <AddPost />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/edit-post",
+        element: (
+          <AuthLayout auth>
+            <EditPost />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/my-posts",
+        element: (
+          <AuthLayout auth>
+            <AllPost />
+          </AuthLayout>
+        ),
+      },
+      {
         path: "/account",
         element: (
           <AuthLayout auth>
-            <Account />
+            <Account>
+            <AccountInfo />
+            </Account>
           </AuthLayout>
         ),
       },

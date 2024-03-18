@@ -15,8 +15,6 @@ import EditPost from "./post/EditPost";
 import Post from "./post/Post";
 import PostCard from "./post/PostCard";
 import PostForm from "./post/PostForm";
-import Signin from "./signin/Signin";
-import Signup from "./signup/Signup";
 
 export {
   AuthLayout,
@@ -29,8 +27,6 @@ export {
   Select,
   TextArea,
   ImgBox,
-  Signin,
-  Signup,
   Loader,
   NotFound,
   AllPost,

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button, Input } from "../components";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import AuthServices from "../appwrite/AuthServices";
 import { login } from "../store/AuthSlice";
 
@@ -13,18 +13,14 @@ export default function Signup() {
   const { register, handleSubmit } = useForm();
 
   const create = async (data) => {
-    try {
-      const account = await AuthServices.createAccount(data);
-      if (account) {
-        const userData = await AuthServices.getUser();
-        if (userData) {
-          toast.success("Account Created Successfull");
-          dispatch(login(userData));
-          navigate("/");
-        }
+    const account = await AuthServices.createAccount(data);
+    if (account) {
+      const userData = await AuthServices.getUser();
+      if (userData) {
+        dispatch(login(userData));
+        toast.success("Account Created Successfull");
+        navigate("/");
       }
-    } catch (error) {
-      toast.error(error);
     }
   };
   return (
@@ -49,7 +45,7 @@ export default function Signup() {
           validate: {
             matchPatern: (value) =>
               /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-              "Email address must be a valid address",
+                "Email address must be a valid address",
           },
         })}
       />

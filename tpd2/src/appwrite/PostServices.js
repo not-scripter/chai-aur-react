@@ -114,4 +114,4 @@ export class postServices {
   }
 }
 
-export default const PostServices = new postServices();
+export default new postServices();

@@ -5,6 +5,7 @@ import { Input, Logo, Button } from "../components";
 import { useDispatch } from "react-redux";
 import AuthServices from "../appwrite/AuthServices";
 import { login as loginAuth } from "../store/AuthSlice";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();

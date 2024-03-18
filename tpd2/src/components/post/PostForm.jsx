@@ -6,6 +6,7 @@ import PostServices from "../../appwrite/PostServices";
 import { toast } from "react-toastify";
 import Input from "../Input";
 import Button from "../Button";
+import ImgBox from "../ImgBox";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();
@@ -41,18 +42,16 @@ export default function PostForm({ post }) {
     } else {
       const file = data.image[0]
         ? await PostServices.uploadFile(data.image[0])
-        : "";
-      if (file) {
+        : null;
         const newPost = await PostServices.createPost({
           ...data,
           userId: userData.$id,
-          image: file.$id,
+          image: file ? file.$id : null,
         });
         if (newPost) {
           toast.success("Post Created");
           navigate(`/post/${newPost.$id}`);
-        }
-      }
+        } 
     }
   };
 
@@ -87,7 +86,7 @@ export default function PostForm({ post }) {
         {...register("image")}
         onChange={(e) => setlocalImage(URL.createObjectURL(e.target.files[0]))}
       />
-      <img src={localImage ? localImage : dbImage} />
+      <ImgBox src={localImage ? localImage : dbImage} />
       <Button type="submit">Submit</Button>
     </form>
   );

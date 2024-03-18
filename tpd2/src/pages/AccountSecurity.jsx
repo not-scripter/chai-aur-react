@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import AuthServices from "../appwrite/AuthServices";
 import { useSelector } from "react-redux";
-import { Input } from "postcss";
-import { Button } from "../components";
+import { Button, Input } from "../components";
 
 export default function AccountSecurity() {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
-  console.log(userData);
   const [editable, seteditable] = useState(false);
   return (
     <>
