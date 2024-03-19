@@ -1,8 +1,10 @@
 import React from 'react'
-import { AllPost } from '../components'
+import { AllPost, Container } from '../components'
 
 export default function Home() {
   return (
-  <AllPost />
+    <Container>
+      <AllPost />
+    </Container>
   )
 }

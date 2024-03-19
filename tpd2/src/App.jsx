@@ -23,7 +23,7 @@ export default function App() {
 
   return !loading ? (
     <>
-      <Container>
+      {/* <Container> */}
         <Header />
         <Outlet />
         <Footer />
@@ -40,7 +40,7 @@ export default function App() {
           theme="colored"
           transition:Flip
         />
-      </Container>
+      {/* </Container> */}
     </>
   ) : (
     <Loader />

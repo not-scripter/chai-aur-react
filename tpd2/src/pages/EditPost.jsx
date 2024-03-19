@@ -1,8 +1,10 @@
-import React from 'react'
-import { EditPost as EditPostComp } from '../components'
+import React from "react";
+import { Container, EditPost as EditPostComp } from "../components";
 
 export default function EditPost() {
   return (
-  <EditPostComp />
-  )
+    <Container>
+      <EditPostComp />
+    </Container>
+  );
 }

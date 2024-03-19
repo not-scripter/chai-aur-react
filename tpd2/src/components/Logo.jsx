@@ -1,7 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export default function Logo() {
+export default function Logo({ className = "" }) {
   return (
-  <h1 className="font-bold text-2xl text-orange-600">TPD2</h1>
-  )
+    <div className={`${className} w-fit`}>
+      <h1 className="font-bold text-2xl text-orange-600">TPD2</h1>
+    </div>
+  );
 }

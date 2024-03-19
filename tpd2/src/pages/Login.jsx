@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Input, Logo, Button } from "../components";
+import { Input, Logo, Button, Container } from "../components";
 import { useDispatch } from "react-redux";
 import AuthServices from "../appwrite/AuthServices";
 import { login as loginAuth } from "../store/AuthSlice";
@@ -28,6 +28,7 @@ export default function Login() {
     }
   };
   return (
+    <Container>
     <form
       onSubmit={handleSubmit(login)}
       className="grid items-center justify-center"
@@ -56,5 +57,6 @@ export default function Login() {
       />
       <Button type="submit">Login</Button>
     </form>
+    </Container>
   );
 }

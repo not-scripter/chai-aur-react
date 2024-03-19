@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Button, Input } from "../components";
+import { Button, Container, Input } from "../components";
 import { toast } from "react-toastify";
 import AuthServices from "../appwrite/AuthServices";
 import { login } from "../store/AuthSlice";
@@ -24,6 +24,7 @@ export default function Signup() {
     }
   };
   return (
+    <Container>
     <form
       onSubmit={handleSubmit(create)}
       className="grid items-center justify-center"
@@ -59,5 +60,6 @@ export default function Signup() {
       />
       <Button type="submit">Create Account</Button>
     </form>
+    </Container>
   );
 }

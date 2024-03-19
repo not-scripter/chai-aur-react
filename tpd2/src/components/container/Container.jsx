@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
-export default function Container({children}) {
-  return (
-    <div className='w-screen h-dvh text-white'>{children}</div>
-  )
+export default function Container({ children }) {
+  return <div className="w-screen px-4 py-2 text-white">{children}</div>;
 }

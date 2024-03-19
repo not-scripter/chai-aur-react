@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Container } from "../components";
 
 export default function Account({ children }) {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function Account({ children }) {
   ];
   return (
     <>
+      <Container>
       <div>
         <section className="bg-zinc-950 overflow-x-scroll flex gap-2 px-4 py-1">
           {accItems.map((item) => (
@@ -37,6 +39,7 @@ export default function Account({ children }) {
         </section>
         <section>{children}</section>
       </div>
+      </Container>
     </>
   );
 }

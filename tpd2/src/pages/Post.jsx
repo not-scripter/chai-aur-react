@@ -1,8 +1,10 @@
-import React from 'react'
-import { Post as PostComp } from '../components'
+import React from "react";
+import { Container, Post as PostComp } from "../components";
 
 export default function Post() {
   return (
-  <PostComp />
-  )
+    <Container>
+      <PostComp />
+    </Container>
+  );
 }
