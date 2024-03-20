@@ -28,11 +28,11 @@ export default function Footer() {
     },
   ];
   return (
-    <footer className="fixed bottom-0 bg-zinc-950 text-white flex flex-col px-4 py-4">
+    <footer className="bottom-0 w-full bg-zinc-950 text-white flex flex-col px-4 py-4">
       <Logo />
       <section>
-        <h1 className="font-semibold">Services</h1>
-        <div className="flex flex-col">
+        <h1 className="font-semibold text-3xl">Services</h1>
+        <div className="flex flex-col text-2xl">
           {services.map((item) => (
             <NavLink to={item.slug} key={item.name}>
               {item.name}
@@ -41,8 +41,8 @@ export default function Footer() {
         </div>
       </section>
       <section>
-        <h1 className="font-semibold">Connect</h1>
-        <div className="flex flex-col">
+        <h1 className="font-semibold text-3xl">Connect</h1>
+        <div className="flex flex-col text-2xl">
           {connect.map((item) => (
             <Link to={item.slug} key={item.name}>
               {item.name}

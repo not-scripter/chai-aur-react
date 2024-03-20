@@ -43,8 +43,8 @@ export default function Header() {
   const [mobNav, setmobNav] = useState(false);
 
   return (
-    <header className="grid">
-      <section className="relative w-full flex justify-between bg-zinc-950/20 px-4 py-2">
+    <header className="flex flex-col">
+      <section className="relative w-full flex items-center justify-between bg-zinc-950/20 px-4 py-2">
         <Button className="visible sm:hidden w-8 h-8 px-0 py-0 z-30">
           <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
         </Button>
@@ -56,7 +56,7 @@ export default function Header() {
           {!mobNav ? <FontAwesomeIcon icon="fa-solid fa-hanukiah" /> : <FontAwesomeIcon icon="fa-solid fa-xmark" />}
         </Button>
         <nav
-          className={`${mobNav ? "visible" : "hidden"} absolute z-20 pt-14 left-0 sm:visible bg-zinc-950/20 text-white backdrop-blur flex flex-col gap-2  px-4 w-full h-dvh`}
+          className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-zinc-950/20 text-white backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}
         >
           {navItems.map((items) =>
             items.active ? (

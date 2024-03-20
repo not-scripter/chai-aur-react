@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Footer, Header, Loader } from "./components";
+import { Footer, Header, Loader } from "./components";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthServices from "./appwrite/AuthServices";
@@ -22,8 +22,7 @@ export default function App() {
   }, []);
 
   return !loading ? (
-    <>
-      {/* <Container> */}
+    <main className="min-h-dvh bg-zinc-900 text-white">
         <Header />
         <Outlet />
         <Footer />
@@ -40,8 +39,7 @@ export default function App() {
           theme="colored"
           transition:Flip
         />
-      {/* </Container> */}
-    </>
+    </main>
   ) : (
     <Loader />
   );
