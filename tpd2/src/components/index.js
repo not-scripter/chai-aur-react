@@ -1,4 +1,5 @@
 import Button from "./Button";
+import CardBox from "./CardBox";
 import ImgBox from "./ImgBox";
 import Input from "./Input";
 import Loader from "./Loader";
@@ -29,6 +30,7 @@ export {
   Select,
   TextArea,
   ImgBox,
+  CardBox,
   Loader,
   NotFound,
   AllPost,

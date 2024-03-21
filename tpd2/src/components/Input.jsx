@@ -13,11 +13,11 @@ const Input = (
 ) => {
   const id = useId();
   return (
-    <div className="grid">
+    <div className="relative flex flex-col py-2">
       {label && (
         <label
           htmlFor={id}
-          className="translate-y-1/2 bg-secondary text-primary ml-8 px-4 w-fit rounded-full"
+          className="absolute top-0 bg-secondary text-primary ml-8 px-4 w-fit rounded-full text-sm"
         >
           {label}
         </label>
@@ -27,7 +27,7 @@ const Input = (
         type={type}
         ref={ref}
         {...props}
-        className={`${className} ${bg} ${fg} rounded-full px-4 py-4 outline-none border-none hover:outline-none focus:border-x-2 focus:border-zinc-200`}
+        className={`${className} ${bg} ${fg} rounded-full px-4 py-2 outline-none border-presecondary border-4 focus:border-4 focus:border-secondary focus:outline-secondary/20 focus:outline-4`}
       />
     </div>
   );

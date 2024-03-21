@@ -23,7 +23,7 @@ export default function Account({ children }) {
   return (
     <>
       <Container>
-      <div>
+      <div className="flex flex-col gap-4">
         <section className="bg-preprimary overflow-x-scroll flex gap-2 px-2 py-2 rounded-full shadow">
           {accItems.map((item) => (
             <NavLink

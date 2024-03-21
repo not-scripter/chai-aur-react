@@ -35,7 +35,7 @@ export default function Header() {
     },
     {
       name: "Account",
-      slug: "/account",
+      slug: "/account/info",
       active: authStatus,
     },
   ];
@@ -56,7 +56,7 @@ export default function Header() {
           {!mobNav ? <FontAwesomeIcon icon="fa-solid fa-hanukiah" /> : <FontAwesomeIcon icon="fa-solid fa-xmark" />}
         </Button>
         <nav
-          className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-primary text-secondary backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}
+          className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-primary/20 text-secondary backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}
         >
           {navItems.map((items) =>
             items.active ? (

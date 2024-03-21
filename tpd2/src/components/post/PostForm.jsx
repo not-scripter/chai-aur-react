@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Input from "../Input";
 import Button from "../Button";
 import ImgBox from "../ImgBox";
+import CardBox from "../CardBox";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();
@@ -43,15 +44,15 @@ export default function PostForm({ post }) {
       const file = data.image[0]
         ? await PostServices.uploadFile(data.image[0])
         : null;
-        const newPost = await PostServices.createPost({
-          ...data,
-          userId: userData.$id,
-          image: file ? file.$id : null,
-        });
-        if (newPost) {
-          toast.success("Post Created");
-          navigate(`/post/${newPost.$id}`);
-        } 
+      const newPost = await PostServices.createPost({
+        ...data,
+        userId: userData.$id,
+        image: file ? file.$id : null,
+      });
+      if (newPost) {
+        toast.success("Post Created");
+        navigate(`/post/${newPost.$id}`);
+      }
     }
   };
 
@@ -76,7 +77,8 @@ export default function PostForm({ post }) {
   }, [watch, slugTransform, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
+    <CardBox>
+    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
       <Input label="Title" {...register("title", { required: true })} />
       <Input label="Content" {...register("content", { required: true })} />
       <Input
@@ -87,7 +89,11 @@ export default function PostForm({ post }) {
         onChange={(e) => setlocalImage(URL.createObjectURL(e.target.files[0]))}
       />
       <ImgBox src={localImage ? localImage : dbImage} />
-      <Button type="submit">Submit</Button>
+      <div className="flex justify-evenly gap-2">
+      <Button type="button" className="w-full py-2">Cancel</Button>
+      <Button type="submit" className="w-full py-2">Submit</Button>
+      </div>
     </form>
+    </CardBox>    
   );
 }
