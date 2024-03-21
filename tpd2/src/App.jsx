@@ -22,7 +22,7 @@ export default function App() {
   }, []);
 
   return !loading ? (
-    <main className="min-h-dvh bg-zinc-900 text-white">
+    <main className="min-h-dvh flex flex-col bg-zinc-900 text-white">
         <Header />
         <Outlet />
         <Footer />

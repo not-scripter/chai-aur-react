@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Container } from "../components";
+import { Button, Container } from "../components";
 
 export default function Account({ children }) {
   const navigate = useNavigate();
@@ -24,13 +24,13 @@ export default function Account({ children }) {
     <>
       <Container>
       <div>
-        <section className="bg-zinc-950 overflow-x-scroll flex gap-2 px-2 py-2 rounded-full shadow">
+        <section className="bg-preprimary overflow-x-scroll flex gap-2 px-2 py-2 rounded-full shadow">
           {accItems.map((item) => (
             <NavLink
               to={item.slug}
               className={({ isActive }) => [
-                isActive ? "bg-orange-500 text-black" : "bg-zinc-800 text-white",
-                "px-4 py-1 shadow hover:bg-orange-500 hover:text-black rounded-full"
+                isActive ? "bg-secondary text-primary" : "bg-primary text-secondary",
+                "rounded-full px-6 py-1 font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4"
               ].join(" ")}
             >
               {item.name}

@@ -3,8 +3,8 @@ import React, { useId } from "react";
 const Input = (
   {
     type = "text",
-    bg = "bg-zinc-800",
-    fg = "text-zinc-200",
+    bg = "bg-preprimary",
+    fg = "text-presecondary",
     className = "",
     label,
     ...props
@@ -17,7 +17,7 @@ const Input = (
       {label && (
         <label
           htmlFor={id}
-          className="translate-y-1/2 bg-zinc-100 text-zinc-900 ml-8 px-4 w-fit rounded-full"
+          className="translate-y-1/2 bg-secondary text-primary ml-8 px-4 w-fit rounded-full"
         >
           {label}
         </label>

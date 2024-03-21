@@ -3,11 +3,12 @@ import React from "react";
 export default function Button({
   children,
   type = "button",
-  bg = "bg-orange-500",
-  fg = "text-black",
-  className = "",
+  bg = "bg-secondary",
+  fg = "text-primary",
+  className = "px-6 py-1",
   loading = false,
   onClick = {},
+  key = {},
   ...props
 }) {
   return (
@@ -15,7 +16,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       {...props}
-      className={`${bg} ${fg} ${className} rounded-full px-6 py-1 font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-orange-500/20 hover:outline-4`}
+      className={`${bg} ${fg} ${className} rounded-full font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4`}
     >
       {loading ? (
         <svg

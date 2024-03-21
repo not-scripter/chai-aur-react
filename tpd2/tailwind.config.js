@@ -12,14 +12,28 @@ export default {
   plugins: [
     createThemes({
       light: {
-        primary: "orange-600",
-        secondary: "zinc-200",
-        brand: "#ff0000",
+        primary: "#ffffff",
+        preprimary: "#f0f0f0",
+        presecondary: "#0f0f0f",
+        secondary: "#000000",
       },
       dark: {
-        primary: "orange-600",
-        secondary: "zinc-800",
-        brand: "#ff00ff",
+        primary: "#000000",
+        preprimary: "#0f0f0f",
+        presecondary: "#f0f0f0",
+        secondary: "#ffffff",
+      },
+      pestle: {
+        primary: "#FF204E",
+        preprimary: "#A0153E",
+        presecondary: "#5D0E41",
+        secondary: "#00224D",
+      },
+      darkpestle: {
+        primary: "#00224D",
+        preprimary: "#5D0E41",
+        presecondary: "#A0153E",
+        secondary: "#FF204E",
       },
     }),
   ],

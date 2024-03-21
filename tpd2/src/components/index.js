@@ -3,6 +3,7 @@ import ImgBox from "./ImgBox";
 import Input from "./Input";
 import Loader from "./Loader";
 import Logo from "./Logo";
+import NavLinkBtn from "./NavLinkBtn";
 import NotFound from "./NotFound";
 import Select from "./Select";
 import TextArea from "./TextArea";
@@ -23,6 +24,7 @@ export {
   Footer,
   Logo,
   Button,
+  NavLinkBtn,
   Input,
   Select,
   TextArea,
