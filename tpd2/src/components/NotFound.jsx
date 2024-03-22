@@ -1,9 +1,10 @@
 import React from "react";
+import CardBox from "./CardBox";
 
 export default function NotFound({ title = "" }) {
   return (
-    <div className="grid bg-zinc-500/50 items-center justify-center rounded-l shadow">
-      <h1>{title ? title : "Not Found"}</h1>
-    </div>
+    <CardBox>
+      <h1 className="font-semibold">{title ? title : "Not Found"}</h1>
+    </CardBox>
   );
 }

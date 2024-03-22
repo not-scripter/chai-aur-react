@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Input, Logo, Button, Container } from "../components";
+import { Input, Logo, Button, Container, CardBox } from "../components";
 import { useDispatch } from "react-redux";
 import AuthServices from "../appwrite/AuthServices";
 import { login as loginAuth } from "../store/AuthSlice";
@@ -29,34 +29,39 @@ export default function Login() {
   };
   return (
     <Container>
-    <form
-      onSubmit={handleSubmit(login)}
-      className="grid items-center justify-center"
-    >
-      <h1 className="text-zinc-100">Signin to Your Account</h1>
-      <Input
-        label="Email"
-        type="email"
-        placeholder="Enter Your Email Address"
-        {...register("email", {
-          required: true,
-          validate: {
-            matchPatern: (value) =>
-              /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-              "Email address must be a valid address",
-          },
-        })}
-      />
-      <Input
-        label="Password"
-        type="password"
-        placeholder="Enter Your Password"
-        {...register("password", {
-          required: true,
-        })}
-      />
-      <Button type="submit">Login</Button>
-    </form>
+      <CardBox>
+        <form
+          onSubmit={handleSubmit(login)}
+          className="flex flex-col items-center justify-center"
+        >
+          <h1 className="text-secondary">Signin to Your Account</h1>
+          <Input
+            label="Email"
+            type="email"
+            placeholder="Enter Your Email Address"
+            {...register("email", {
+              required: true,
+              validate: {
+                matchPatern: (value) =>
+                  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                  "Email address must be a valid address",
+              },
+            })}
+          />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Enter Your Password"
+            {...register("password", {
+              required: true,
+            })}
+          />
+          <Button
+            type="submit"
+            className="w-full py-2"
+          >Login</Button>
+        </form>
+      </CardBox>
     </Container>
   );
 }

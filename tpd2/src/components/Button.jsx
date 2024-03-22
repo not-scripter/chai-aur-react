@@ -7,7 +7,7 @@ export default function Button({
   fg = "text-primary",
   className = "px-6 py-1",
   loading = false,
-  onClick = {},
+  onClick,
   key = {},
   ...props
 }) {
@@ -16,7 +16,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       {...props}
-      className={`${bg} ${fg} ${className} rounded-full font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4`}
+      className={`${bg} ${fg} ${className} rounded-full font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4 backdrop-blur`}
     >
       {loading ? (
         <svg

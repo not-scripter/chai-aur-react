@@ -14,6 +14,7 @@ import Footer from "./footer/Footer";
 import Header from "./header/Header";
 import AllPost from "./post/AllPost";
 import EditPost from "./post/EditPost";
+import MyPosts from "./post/MyPosts";
 import Post from "./post/Post";
 import PostCard from "./post/PostCard";
 import PostForm from "./post/PostForm";
@@ -34,8 +35,9 @@ export {
   Loader,
   NotFound,
   AllPost,
+  MyPosts as MyPostComp,
   PostForm,
   PostCard,
   EditPost,
-  Post,
+  Post as PostComp,
 };

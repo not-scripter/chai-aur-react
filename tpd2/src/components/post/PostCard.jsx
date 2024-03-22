@@ -4,14 +4,14 @@ import PostServices from "../../appwrite/PostServices";
 import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
 
-export default function PostCard({ $id, title, featuredImage }) {
+export default function PostCard({ slug, title, images }) {
   return (
-    <Link to={`/post/${$id}`}>
+    <Link to={`/post/${slug}`} key={slug}>
       <CardBox>
-      <ImgBox src={PostServices.getFilePreview(featuredImage)} alt={title} />
-      <div>
-        <h1>{title}</h1>
-      </div>
+        <ImgBox src={PostServices.getFilePreview({ fileId: images })} alt={title} />
+        <div>
+          <h1>{title}</h1>
+        </div>
       </CardBox>
     </Link>
   );

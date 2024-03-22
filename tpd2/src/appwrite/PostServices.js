@@ -58,9 +58,9 @@ export class postServices {
       throw error;
     }
   }
-  async getPost({ slug }) {
+  async getPost(slug) {
     try {
-      return await this.databases.deleteDocument(
+      return await this.databases.getDocument(
         conf.databaseId,
         conf.postsId,
         slug,
@@ -74,40 +74,43 @@ export class postServices {
       return await this.databases.listDocuments(
         conf.databaseId,
         conf.postsId,
-        queries
+        queries,
       );
     } catch (error) {
       throw error;
     }
   }
+
+  async getMyPosts({ userId, queries = [Query.equal("userId", userId)] }) {
+    try {
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.postsId,
+        queries,
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Storage Services
-  async uploadFile({ file }) {
+  async uploadFile(file) {
     try {
-      return await this.storage.createFile(
-        conf.imagesId,
-        ID.unique(),
-        file
-      );
+      return await this.storage.createFile(conf.imagesId, ID.unique(), file);
     } catch (error) {
       throw error;
     }
   }
-  async deleteFile({fileId}) {
+  async deleteFile({ fileId }) {
     try {
-      return await this.storage.deleteFile(
-        conf.imagesId,
-        fileId,
-      );
+      return await this.storage.deleteFile(conf.imagesId, fileId);
     } catch (error) {
       throw error;
     }
   }
-  getFilePreview({fileId}) {
+  getFilePreview({ fileId }) {
     try {
-      return this.storage.getFilePreview(
-        conf.imagesId,
-        fileId,
-      );
+      return this.storage.getFilePreview(conf.imagesId, fileId);
     } catch (error) {
       throw error;
     }

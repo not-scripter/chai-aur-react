@@ -12,5 +12,7 @@ export default function AllPost() {
     );
   }, []);
 
-  return posts ? <PostCard /> : <NotFound title="Post Not Found" />;
+  return posts 
+    ? posts.map(item => <PostCard slug={item.$id} title={item.title} images={item.images}/>) 
+    : <NotFound title="Post Not Found" />;
 }

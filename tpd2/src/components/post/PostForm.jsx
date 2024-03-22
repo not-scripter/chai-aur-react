@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import { toast } from "react-toastify";
 import Input from "../Input";
@@ -16,44 +16,62 @@ export default function PostForm({ post }) {
       slug: post?.slug || "",
       title: post?.title || "",
       content: post?.content || "",
-      status: post?.status || "active",
+      status: post?.status || "",
     },
   });
   const userData = useSelector((state) => state.auth.userData);
+  const isAuthor = post && userData ? post.userId === userData.$id : false;
+  const [postEditable, setpostEditable] = useState(post ? false : true);
 
   const [localImage, setlocalImage] = useState(null);
   const dbImage = post
-    ? PostServices.getFilePrzeview(post.featuredImage)
+    ? PostServices.getFilePreview({ fileId: post.images })
     : null;
 
   const submit = async (data) => {
     if (post) {
       const file =
-        data.image[0] && (await PostServices.uploadFile(data.image[0]));
-      if (file) PostServices.deleteFile(post.featuredImage);
+        data.images[0] && (await PostServices.uploadFile(data.images[0]));
+      if (file) PostServices.deleteFile(post.images);
       const updated = await PostServices.updatePost({
         ...data,
         slug: post.$id,
-        image: file ? file.$id : dbImage,
+        images: file ? file.$id : dbImage,
       });
       if (updated) {
+        // setpostEditable(false);
         toast.success("Post Updated Successfully");
         navigate(`/post/${updated.$id}`);
       }
     } else {
-      const file = data.image[0]
-        ? await PostServices.uploadFile(data.image[0])
+      const file = data.images[0]
+        ? await PostServices.uploadFile(data.images[0])
         : null;
       const newPost = await PostServices.createPost({
-        ...data,
+        slug: getValues("slug"),
         userId: userData.$id,
-        image: file ? file.$id : null,
+        title: data.title,
+        content: data.content,
+        images: file ? file.$id : null,
+        status: "public",
+        // ...data,
       });
       if (newPost) {
         toast.success("Post Created");
         navigate(`/post/${newPost.$id}`);
       }
     }
+    // reset()
+  };
+
+  const deletePost = () => {
+    PostServices.deletePost({slug: post.$id}).then((status) => {
+      if (status) {
+        PostServices.deleteFile(post.images);
+        toast.success("Post Deleted");
+        navigate("/");
+      }
+    });
   };
 
   const slugTransform = useCallback((value) => {
@@ -78,22 +96,51 @@ export default function PostForm({ post }) {
 
   return (
     <CardBox>
-    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
-      <Input label="Title" {...register("title", { required: true })} />
-      <Input label="Content" {...register("content", { required: true })} />
-      <Input
-        label="Image"
-        type="file"
-        accept="image/*"
-        {...register("image")}
-        onChange={(e) => setlocalImage(URL.createObjectURL(e.target.files[0]))}
-      />
-      <ImgBox src={localImage ? localImage : dbImage} />
-      <div className="flex justify-evenly gap-2">
-      <Button type="button" className="w-full py-2">Cancel</Button>
-      <Button type="submit" className="w-full py-2">Submit</Button>
-      </div>
-    </form>
-    </CardBox>    
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+        <Input
+          readOnly={!postEditable}
+          label="Title"
+          {...register("title", { required: true })}
+        />
+        <Input
+          readOnly={!postEditable}
+          label="Content"
+          {...register("content", { required: true })}
+        />
+        <Input
+          label="Image"
+          type="file"
+          accept="image/*"
+          readOnly={!postEditable}
+          {...register("images")}
+          onChange={(e) =>
+            setlocalImage(URL.createObjectURL(e.target.files[0]))
+          }
+        />
+        <ImgBox src={localImage ? localImage : dbImage} />
+        {post && isAuthor ? (
+          <div className="flex gap-2">
+            <Button
+              className="w-full py-2"
+              bg="bg-red-500"
+              onClick={ postEditable ? "" : deletePost}
+            >
+              {postEditable ? "Cancel" : "Delete"}
+            </Button>
+            <Button
+              className="w-full py-2"
+              type={!postEditable ? "submit" : "button"}
+              onClick={() => setpostEditable(prev => !prev)}
+            >
+              {!postEditable ? "Edit" : "Save"}
+            </Button>
+          </div>
+        ) : (
+          <Button className="w-full py-2" type="submit">
+            Submit
+          </Button>
+        )}
+      </form>
+    </CardBox>
   );
 }

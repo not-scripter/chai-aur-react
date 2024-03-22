@@ -6,7 +6,9 @@ export class authServices {
   account;
 
   constructor() {
-    this.client.setEndpoint(conf.endpoint).setProject(conf.projectId);
+    this.client
+      .setEndpoint(conf.endpoint)
+      .setProject(conf.projectId);
     this.account = new Account(this.client);
   }
 
@@ -19,7 +21,7 @@ export class authServices {
         name,
       );
       if (userAccount) {
-        return this.signin(email, password);
+        return this.login(email, password)
       } else {
         return userAccount;
       }
@@ -43,14 +45,15 @@ export class authServices {
       throw error;
     }
   }
-
-  async logout() {
+    
+  async logout() { 
     try {
       return await this.account.deleteSessions();
     } catch (error) {
       throw error;
     }
   }
+
 }
 
 export default new authServices();
