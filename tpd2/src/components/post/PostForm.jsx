@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import { toast } from "react-toastify";
 import Input from "../Input";
@@ -25,9 +25,9 @@ export default function PostForm({ post }) {
   const [postEditable, setpostEditable] = useState(post ? false : true);
 
   const [localImage, setlocalImage] = useState(null);
-  const dbImage = post
-    ? PostServices.getFilePreview({ fileId: post.images })
-    : null;
+  const dbImage = post && post.images ? PostServices.getFilePreview({ fileId: post.images }) : null
+
+  const [open, setopen] = useState(false)
 
   const submit = async (data) => {
     if (post) {
@@ -75,12 +75,6 @@ export default function PostForm({ post }) {
     });
   };
 
-  const [showConfirm, setshowConfirm] = useState(false)
-  const handleCancel = () => {
-  }
-  const handleDelete = () => {
-  }
-
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string") {
       return value
@@ -102,6 +96,7 @@ export default function PostForm({ post }) {
   }, [watch, slugTransform, setValue]);
 
   return (
+    <>
     <CardBox>
       <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
         <Input
@@ -114,6 +109,8 @@ export default function PostForm({ post }) {
           label="Content"
           {...register("content", { required: true })}
         />
+          {
+            postEditable && (
         <Input
           label="Image"
           type="file"
@@ -124,13 +121,18 @@ export default function PostForm({ post }) {
             setlocalImage(URL.createObjectURL(e.target.files[0]))
           }
         />
-        <ImgBox src={localImage ? localImage : dbImage} />
+
+            )
+          }
+          {
+            localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
+          }
         {post && isAuthor ? (
           <div className="flex gap-2">
             <Button
               className="w-full py-2"
               bg="bg-red-500"
-              onClick={ postEditable ? handleCancel : handleDelete }
+              onClick={() => setopen(true)}
             >
               {postEditable ? "Cancel" : "Delete"}
             </Button>
@@ -148,6 +150,11 @@ export default function PostForm({ post }) {
           </Button>
         )}
       </form>
-    </CardBox>
+      </CardBox>
+      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Exit" : "Delete"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={postEditable ? (() => {
+        setpostEditable(false);
+        setopen(false)
+      }) : deletePost}/>
+      </>
   );
 }

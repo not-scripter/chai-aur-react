@@ -17,7 +17,7 @@ const Input = (
       {label && (
         <label
           htmlFor={id}
-          className="absolute top-0 bg-secondary text-primary ml-8 px-4 w-fit rounded-full text-sm"
+          className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
         >
           {label}
         </label>
@@ -27,7 +27,7 @@ const Input = (
         type={type}
         ref={ref}
         {...props}
-        className={`${className} ${bg} ${fg} rounded-full px-4 py-2 outline-none border-presecondary border-4 focus:border-4 focus:border-secondary focus:outline-secondary/20 focus:outline-4`}
+        className={`${className} ${bg} ${fg} rounded-xl px-4 py-2 outline-none border-secondary/60 border-4 focus:border-4 focus:border-secondary`}
       />
     </div>
   );

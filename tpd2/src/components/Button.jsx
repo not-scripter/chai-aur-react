@@ -18,7 +18,7 @@ export default function Button({
       onClick={onClick}
       ref={ref}
       {...props}
-      className={`${bg} ${fg} ${className} rounded-full font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4 backdrop-blur`}
+      className={`${bg} ${fg} ${className} rounded-xl font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4 backdrop-blur`}
     >
       {loading ? (
         <svg
