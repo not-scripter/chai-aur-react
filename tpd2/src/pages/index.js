@@ -9,8 +9,10 @@ import MyPosts from "./MyPosts";
 import Post from "./Post";
 import Login from "./Login";
 import Signup from "./Signup";
+import Test from "./Test";
 
 export {
+  Test,
   Home,
   Login,
   Signup,

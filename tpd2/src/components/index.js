@@ -1,9 +1,11 @@
 import Button from "./Button";
 import CardBox from "./CardBox";
+import Confirm from "./Confirm";
 import ImgBox from "./ImgBox";
 import Input from "./Input";
 import Loader from "./Loader";
 import Logo from "./Logo";
+import Modal from "./Modal";
 import NavLinkBtn from "./NavLinkBtn";
 import NotFound from "./NotFound";
 import Select from "./Select";
@@ -29,6 +31,8 @@ export {
   NavLinkBtn,
   Input,
   Select,
+  Modal,
+  Confirm,
   TextArea,
   ImgBox,
   CardBox,

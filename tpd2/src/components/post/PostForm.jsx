@@ -8,6 +8,7 @@ import Input from "../Input";
 import Button from "../Button";
 import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
+import Confirm from "../Confirm";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();
@@ -74,6 +75,12 @@ export default function PostForm({ post }) {
     });
   };
 
+  const [showConfirm, setshowConfirm] = useState(false)
+  const handleCancel = () => {
+  }
+  const handleDelete = () => {
+  }
+
   const slugTransform = useCallback((value) => {
     if (value && typeof value === "string") {
       return value
@@ -123,7 +130,7 @@ export default function PostForm({ post }) {
             <Button
               className="w-full py-2"
               bg="bg-red-500"
-              onClick={ postEditable ? "" : deletePost}
+              onClick={ postEditable ? handleCancel : handleDelete }
             >
               {postEditable ? "Cancel" : "Delete"}
             </Button>

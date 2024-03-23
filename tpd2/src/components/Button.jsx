@@ -8,13 +8,15 @@ export default function Button({
   className = "px-6 py-1",
   loading = false,
   onClick,
-  key = {},
+  key,
+  ref,
   ...props
 }) {
   return (
     <button
       type={type}
       onClick={onClick}
+      ref={ref}
       {...props}
       className={`${bg} ${fg} ${className} rounded-full font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4 backdrop-blur`}
     >
