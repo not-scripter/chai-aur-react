@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import Button from "./Button";
 
 export default function Modal({ open, onClose, children, className }) {
   return (
@@ -18,12 +19,12 @@ export default function Modal({ open, onClose, children, className }) {
           ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}
         `}
       >
-        <button
+        <Button
           onClick={onClose}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full text-primary bg-secondary hover:bg-preprimary hover:text-presecondary"
+          className="absolute top-2 right-2 w-8 h-8 rounded-full "
         >
           <FontAwesomeIcon icon="fa-solid fa-xmark" />
-        </button>
+        </Button>
         {children}
       </div>
     </div>

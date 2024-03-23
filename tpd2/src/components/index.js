@@ -10,6 +10,7 @@ import NavLinkBtn from "./NavLinkBtn";
 import NotFound from "./NotFound";
 import Select from "./Select";
 import TextArea from "./TextArea";
+import Toaster from "./Toaster";
 import AuthLayout from "./authLayout/AuthLayout";
 import Container from "./container/Container";
 import Footer from "./footer/Footer";
@@ -33,6 +34,7 @@ export {
   Select,
   Modal,
   Confirm,
+  Toaster,
   TextArea,
   ImgBox,
   CardBox,

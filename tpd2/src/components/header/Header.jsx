@@ -69,7 +69,7 @@ export default function Header() {
                     isActive
                       ? "bg-secondary text-primary"
                       : "bg-primary text-secondary",
-                    "rounded-full px-6 py-1 font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4",
+                    "rounded-full px-6 py-1 font-semibold flex items-center justify-center shadow active:bg-opacity-80 hover:bg-secondary hover:text-primary hover:outline hover:outline-secondary/20 hover:outline-4",
                   ].join(" ")
                 }
               >
