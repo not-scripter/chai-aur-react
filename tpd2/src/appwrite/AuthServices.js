@@ -6,13 +6,11 @@ export class authServices {
   account;
 
   constructor() {
-    this.client
-      .setEndpoint(conf.endpoint)
-      .setProject(conf.projectId);
+    this.client.setEndpoint(conf.endpoint).setProject(conf.projectId);
     this.account = new Account(this.client);
   }
 
-  async createAccount({ email, password, name }) {
+  async createAccount({ name, email, password }) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
@@ -21,7 +19,7 @@ export class authServices {
         name,
       );
       if (userAccount) {
-        return this.login(email, password)
+        return this.login({ email, password });
       } else {
         return userAccount;
       }
@@ -38,22 +36,29 @@ export class authServices {
     }
   }
 
-  async getUser() {
+  async getUser({ userId }) {
+    try {
+      return await this.account.get(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCurrentUser() {
     try {
       return await this.account.get();
     } catch (error) {
       throw error;
     }
   }
-    
-  async logout() { 
+
+  async logout() {
     try {
       return await this.account.deleteSessions();
     } catch (error) {
       throw error;
     }
   }
-
 }
 
 export default new authServices();

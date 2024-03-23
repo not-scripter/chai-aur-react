@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Button, CardBox, Container, Input } from "../components";
-import { toast } from "react-toastify";
 import AuthServices from "../appwrite/AuthServices";
 import { login } from "../store/AuthSlice";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export default function Signup() {
   const create = async (data) => {
     const account = await AuthServices.createAccount(data);
     if (account) {
-      const userData = await AuthServices.getUser();
+      const userData = await AuthServices.getCurrentUser();
       if (userData) {
         dispatch(login(userData));
         toast.success("Account Created Successfull");
@@ -59,10 +59,9 @@ export default function Signup() {
               required: true,
             })}
           />
-          <Button
-            type="submit"
-            className="w-full py-2"
-          >Create Account</Button>
+          <Button type="submit" className="w-full py-2">
+            Create Account
+          </Button>
         </form>
       </CardBox>
     </Container>

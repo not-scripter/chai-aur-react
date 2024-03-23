@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
-import { toast } from "react-toastify";
 import Input from "../Input";
 import Button from "../Button";
 import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
 import Confirm from "../Confirm";
+import toast from "react-hot-toast";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();

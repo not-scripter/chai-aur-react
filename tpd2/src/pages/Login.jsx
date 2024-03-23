@@ -5,7 +5,7 @@ import { Input, Logo, Button, Container, CardBox } from "../components";
 import { useDispatch } from "react-redux";
 import AuthServices from "../appwrite/AuthServices";
 import { login as loginAuth } from "../store/AuthSlice";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Login() {
     try {
       const session = await AuthServices.login(data);
       if (session) {
-        const userData = await AuthServices.getUser();
+        const userData = await AuthServices.getCurrentUser();
         if (userData) {
           toast.success("Login Sucsessful");
           dispatch(loginAuth(userData));
@@ -56,10 +56,9 @@ export default function Login() {
               required: true,
             })}
           />
-          <Button
-            type="submit"
-            className="w-full py-2"
-          >Login</Button>
+          <Button type="submit" className="w-full py-2">
+            Login
+          </Button>
         </form>
       </CardBox>
     </Container>

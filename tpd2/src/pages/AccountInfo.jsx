@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Button, CardBox, Input } from "../components";
+import toast from "react-hot-toast";
 
 export default function AccountInfo() {
   const userData = useSelector((state) => state.auth.userData);

@@ -1,10 +1,10 @@
 import React from "react";
-import { CardBox, Container, MyPostComp } from "../components";
+import { Container, MyPostComp } from "../components";
 
 export default function MyPosts() {
   return (
     <Container>
-      <MyPostComp/>
+      <MyPostComp />
     </Container>
   );
 }

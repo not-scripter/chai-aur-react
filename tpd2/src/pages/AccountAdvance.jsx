@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import AuthServices from "../appwrite/AuthServices";
 import { Button, CardBox, Confirm } from "../components";
 import { useDispatch } from "react-redux";
 import { logout } from "../store/AuthSlice";
+import toast from "react-hot-toast";
 
 export default function AccountAdvance() {
   const navigate = useNavigate();

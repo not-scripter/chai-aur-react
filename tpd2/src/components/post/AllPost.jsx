@@ -5,14 +5,16 @@ import NotFound from "../NotFound";
 
 export default function AllPost() {
   const [posts, setposts] = useState(null);
-
   useEffect(() => {
     PostServices.getPosts([]).then(
       (posts) => posts && setposts(posts.documents),
     );
+      console.log(posts)
   }, []);
 
-  return posts 
-    ? posts.map(item => <PostCard slug={item.$id} title={item.title} images={item.images}/>) 
-    : <NotFound title="Post Not Found" />;
+  return posts ? (
+    posts.map((item) => <PostCard slug={item.$id} {...item} />)
+  ) : (
+    <NotFound title="Post Not Found" />
+  );
 }
