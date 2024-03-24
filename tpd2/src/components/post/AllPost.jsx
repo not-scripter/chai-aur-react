@@ -9,7 +9,6 @@ export default function AllPost() {
     PostServices.getPosts([]).then(
       (posts) => posts && setposts(posts.documents),
     );
-      console.log(posts)
   }, []);
 
   return posts ? (

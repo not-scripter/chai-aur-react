@@ -1,11 +1,9 @@
 import { Account, Client, ID } from "appwrite";
 import conf from "../conf/conf";
-// import sdk from "node-appwrite";
 
 export class authServices {
   client = new Client();
   account;
-  // users = new sdk.Users();
 
   constructor() {
     this.client.setEndpoint(conf.endpoint).setProject(conf.projectId);
@@ -33,14 +31,6 @@ export class authServices {
   async login({ email, password }) {
     try {
       return await this.account.createEmailSession(email, password);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getUser({ userId }) {
-    try {
-      return await this.account.get(userId);
     } catch (error) {
       throw error;
     }

@@ -13,12 +13,12 @@ export default function AccountSecurity() {
       <form>
         <Input
           label="Email"
-          value={userData.email}
+          value={userData?.email}
           {...(!editable && "readOnly")}
         />
         <Input
           label="Password"
-          value={userData.password}
+          value={userData?.password}
           {...(!editable && "readOnly")}
         />
         <div className="flex gap-2">

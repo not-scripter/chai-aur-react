@@ -10,7 +10,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    AuthServices.getUser()
+    AuthServices.getCurrentUser()
       .then((userData) => {
         if (userData) dispatch(login(userData));
         else dispatch(logout());

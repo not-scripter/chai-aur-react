@@ -5,7 +5,7 @@ import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
 import AuthServices from "../../appwrite/AuthServices";
 
-export default function PostCard({ slug, title, images, userId, $createdAt }) {
+export default function PostCard({ slug, title, images, $createdAt }) {
   const [user, setuser] = useState(null);
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
@@ -26,7 +26,7 @@ export default function PostCard({ slug, title, images, userId, $createdAt }) {
   }
 
   useEffect(() => {
-    AuthServices.getUser(userId).then((res) => setuser(res));
+    AuthServices.getCurrentUser().then((res) => setuser(res));
     handleIso($createdAt);
   }, []);
   return (
@@ -45,7 +45,7 @@ export default function PostCard({ slug, title, images, userId, $createdAt }) {
             </h1>
           </div>
           <h1 className="flex flex-col text-sm left-auto right-0 font-semibold text-secondary/80">
-            {date}{" "}
+            {date}
             <span className="text-sm align-bottom font-semibold text-secondary/50">
               {time}
             </span>

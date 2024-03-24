@@ -11,7 +11,7 @@ export default function AccountInfo() {
       <form>
         <Input
           label="Name"
-          value={userData.name}
+          value={userData?.name}
           {...(!editable && "readOnly")}
         />
         <div className="flex gap-2">

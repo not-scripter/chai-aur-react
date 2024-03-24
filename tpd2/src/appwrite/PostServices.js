@@ -12,14 +12,82 @@ export class postServices {
     this.storage = new Storage(this.client);
   }
  //Profile Services
-  async createProfile({ userId, ...data }) {
+  async createProfile({
+    userId,
+    fullname,
+    username,
+    dob,
+    isPrivate,
+    avatar,
+    banner,
+    email,
+    ip,
+    location,
+    website,
+    following,
+    followers,
+    joined,
+  }) {
     try {
       return await this.databases.createDocument(
         conf.databaseId,
         conf.profilesId,
         userId,
         {
-          ...data
+          fullname,
+          username,
+          dob,
+          isPrivate,
+          avatar,
+          banner,
+          email,
+          ip,
+          location,
+          website,
+          following,
+          followers,
+          joined,
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateProfile({
+    userId,
+    fullname,
+    username,
+    dob,
+    isPrivate,
+    avatar,
+    banner,
+    email,
+    ip,
+    location,
+    website,
+    following,
+    followers,
+    joined,
+  }) {
+    try {
+      return await this.databases.updateDocument(
+        conf.databaseId,
+        conf.profilesId,
+        userId,
+        {
+          fullname,
+          username,
+          dob,
+          isPrivate,
+          avatar,
+          banner,
+          email,
+          ip,
+          location,
+          website,
+          following,
+          followers,
+          joined,
         },
       );
     } catch (error) {
