@@ -1,9 +1,11 @@
 import { Account, Client, ID } from "appwrite";
 import conf from "../conf/conf";
+// import sdk from "node-appwrite";
 
 export class authServices {
   client = new Client();
   account;
+  // users = new sdk.Users();
 
   constructor() {
     this.client.setEndpoint(conf.endpoint).setProject(conf.projectId);

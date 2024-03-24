@@ -11,7 +11,45 @@ export class postServices {
     this.databases = new Databases(this.client);
     this.storage = new Storage(this.client);
   }
+ //Profile Services
+  async createProfile({ userId, ...data }) {
+    try {
+      return await this.databases.createDocument(
+        conf.databaseId,
+        conf.profilesId,
+        userId,
+        {
+          ...data
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getProfile(userId) {
+    try {
+      return await this.databases.getDocument(
+        conf.databaseId,
+        conf.profilesId,
+        userId,
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getProfiles({ queries = [Query.equal("isPrivate", false)] }) {
+    try {
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.profilesId,
+        queries,
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
+  //Post Services
   async createPost({ slug, userId, title, content, images, status }) {
     try {
       return await this.databases.createDocument(
