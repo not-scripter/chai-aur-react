@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import AuthServices from "../appwrite/AuthServices";
 import { login as loginAuth } from "../store/AuthSlice";
 import toast from "react-hot-toast";
+import PostServices from "../appwrite/PostServices";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,12 +15,15 @@ export default function Login() {
 
   const login = async (data) => {
     try {
-      const session = await AuthServices.login(data);
-      if (session) {
+      const account = await AuthServices.login(data);
+      if (account) {
+        const profileData = await PostServices.getProfile({
+          userId: account.userId,
+        });
         const userData = await AuthServices.getCurrentUser();
-        if (userData) {
+        if (userData && profileData) {
           toast.success("Login Sucsessful");
-          dispatch(loginAuth(userData));
+          dispatch(loginAuth(userData, profileData));
           navigate("/");
         }
       }

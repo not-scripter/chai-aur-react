@@ -10,19 +10,48 @@ export class authServices {
     this.account = new Account(this.client);
   }
 
-  async createAccount({ name, email, password }) {
+  async createAccount({ username, email, password }) {
     try {
       const userAccount = await this.account.create(
         ID.unique(),
         email,
         password,
-        name,
+        username,
       );
       if (userAccount) {
         return this.login({ email, password });
       } else {
         return userAccount;
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateName({ username }) {
+    try {
+      return await this.account.updateName(username);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updatePhone({ phone, password }) {
+    try {
+      return await this.account.updatePhone(phone, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateEmail({ email, password }) {
+    try {
+      return await this.account.updateEmail(email, password);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updatePassword({ password, oldPassword }) {
+    try {
+      return await this.account.updatePassword(password, oldPassword);
     } catch (error) {
       throw error;
     }

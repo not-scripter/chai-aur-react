@@ -6,6 +6,7 @@ import { Button, CardBox, Container, Input } from "../components";
 import AuthServices from "../appwrite/AuthServices";
 import { login } from "../store/AuthSlice";
 import toast from "react-hot-toast";
+import PostServices from "../appwrite/PostServices";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -16,8 +17,16 @@ export default function Signup() {
     const account = await AuthServices.createAccount(data);
     if (account) {
       const userData = await AuthServices.getCurrentUser();
-      if (userData) {
-        dispatch(login(userData));
+      const profileData = await PostServices.createProfile({
+        userId: userData.userId,
+        username: userData.name,
+        ip: userData.ip,
+        joined: userData.$createdAt,
+        location: userData.countryName,
+        email: userData.email,
+      });
+      if (userData && profileData) {
+        dispatch(login(userData, profileData));
         toast.success("Account Created Successfull");
         navigate("/");
       }
@@ -32,9 +41,9 @@ export default function Signup() {
         >
           <h1 className="text-secondary">Create Your Account</h1>
           <Input
-            label="Name"
-            placeholder="Enter Your Full Name"
-            {...register("name", {
+            label="UserName"
+            placeholder="Enter Your UserName"
+            {...register("username", {
               required: true,
             })}
           />

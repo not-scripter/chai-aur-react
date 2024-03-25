@@ -1,10 +1,17 @@
 import React from "react";
-import toast, { Toaster as HotToaster, ToastIcon, resolveValue } from "react-hot-toast";
+import toast, {
+  Toaster as HotToaster,
+  ToastIcon,
+  resolveValue,
+} from "react-hot-toast";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Toaster() {
   return (
-    <HotToaster>
+    <HotToaster
+      containerClassName=""
+      containerStyle={{ top: 8, left: 8, bottom: 8, right: 8, }}
+    >
       {(t) => (
         <div
           className="relative bg-preprimary text-presecondary w-full px-4 py-4 rounded-xl shadow-sm shadow-secondary/20 flex gap-2 font-semibold"
