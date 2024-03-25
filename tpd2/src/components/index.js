@@ -13,6 +13,7 @@ import TextArea from "./TextArea";
 import Toaster from "./Toaster";
 import ResetPassword from "./account/ResetPassword";
 import UpdateContacts from "./account/UpdateContacts";
+import UpdateInfo from "./account/UpdateInfo";
 import AuthLayout from "./authLayout/AuthLayout";
 import Container from "./container/Container";
 import Footer from "./footer/Footer";
@@ -49,6 +50,7 @@ export {
   EditPost,
   Post as PostComp,
   //account
+  UpdateInfo,
   UpdateContacts,
   ResetPassword,
 };

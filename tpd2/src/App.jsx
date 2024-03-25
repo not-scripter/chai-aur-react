@@ -4,7 +4,8 @@ import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import AuthServices from "./appwrite/AuthServices";
 import { login, logout } from "./store/AuthSlice";
-  
+import PostServices from "./appwrite/PostServices";
+
 export default function App() {
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
@@ -12,8 +13,11 @@ export default function App() {
   useEffect(() => {
     AuthServices.getCurrentUser()
       .then((userData) => {
-        if (userData) dispatch(login(userData));
-        else dispatch(logout());
+        if (userData) {
+          PostServices.getProfile(userData.$id).then((profileData) => {
+            dispatch(login({ userData, profileData }));
+          });
+        } else dispatch(logout());
       })
       .finally(setloading(false));
   }, []);

@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
-import AuthServices from "../../appwrite/AuthServices";
 
-export default function PostCard({ slug, title, images, $createdAt }) {
-  const [user, setuser] = useState(null);
+export default function PostCard({ userId, slug, title, images, $createdAt }) {
+  const [profile, setprofile] = useState(null);
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
 
@@ -26,7 +25,7 @@ export default function PostCard({ slug, title, images, $createdAt }) {
   }
 
   useEffect(() => {
-    AuthServices.getCurrentUser().then((res) => setuser(res));
+    PostServices.getProfile(userId).then((res) => setprofile(res));
     handleIso($createdAt);
   }, []);
   return (
@@ -38,9 +37,9 @@ export default function PostCard({ slug, title, images, $createdAt }) {
               P
             </h1>
             <h1 className="flex flex-col font-semibold">
-              {user?.name}
+              {profile?.fullname}
               <span className="font-semibold text-sm text-secondary/50">
-                @username
+                {profile?.username}
               </span>
             </h1>
           </div>

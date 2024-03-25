@@ -94,7 +94,7 @@ export class postServices {
       throw error;
     }
   }
-  async getProfile({userId}) {
+  async getProfile(userId) {
     try {
       return await this.databases.getDocument(
         conf.databaseId,

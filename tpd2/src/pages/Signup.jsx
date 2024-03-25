@@ -18,15 +18,15 @@ export default function Signup() {
     if (account) {
       const userData = await AuthServices.getCurrentUser();
       const profileData = await PostServices.createProfile({
-        userId: userData.userId,
+        userId: userData.$id,
+        fullname: data.fullname,
         username: userData.name,
-        ip: userData.ip,
-        joined: userData.$createdAt,
-        location: userData.countryName,
         email: userData.email,
+        joined: userData.$createdAt,
       });
       if (userData && profileData) {
-        dispatch(login(userData, profileData));
+        dispatch(login(userData));
+        dispatch(login(profileData));
         toast.success("Account Created Successfull");
         navigate("/");
       }
@@ -40,6 +40,13 @@ export default function Signup() {
           className="flex flex-col items-center justify-center"
         >
           <h1 className="text-secondary">Create Your Account</h1>
+          <Input
+            label="UserName"
+            placeholder="Enter Your UserName"
+            {...register("fullname", {
+              required: true,
+            })}
+          />
           <Input
             label="UserName"
             placeholder="Enter Your UserName"
