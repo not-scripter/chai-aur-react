@@ -17,10 +17,7 @@ export default function AccountInfo() {
   const [editable, seteditable] = useState(false);
 
   const submit = async (data) => {
-    const res =
-      AuthServices.updateName(data)
-    res
-      .then(() => {
+      AuthServices.updateName(data).then(() => {
         toast.success("Username Updated");
         seteditable(false);
       })

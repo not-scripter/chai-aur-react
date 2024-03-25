@@ -31,7 +31,7 @@ export default function AccountAdvance() {
           Logout
         </Button>
       </CardBox>
-      <Confirm open={open} setopen={setopen} proceedText="Logout" warningDesc="Logout" proceedTo={handleLogout}/>
+      <Confirm open={open} setopen={setopen} proceedText="Logout" warningDesc="Are You Sure ? You want to Logout ?" proceedTo={handleLogout}/>
     </>
   );
 }

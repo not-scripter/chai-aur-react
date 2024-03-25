@@ -49,9 +49,9 @@ export class authServices {
       throw error;
     }
   }
-  async updatePassword({ password, oldPassword }) {
+  async updatePassword({ newPassword, password }) {
     try {
-      return await this.account.updatePassword(password, oldPassword);
+      return await this.account.updatePassword(newPassword, password);
     } catch (error) {
       throw error;
     }

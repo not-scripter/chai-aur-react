@@ -7,7 +7,7 @@ export default function Modal({ open, onClose, children, className }) {
     <div
       onClick={onClose}
       className={`
-        fixed inset-0 flex justify-center items-center transition-colors px-8 py-4
+        fixed inset-0 z-40 flex justify-center items-center transition-colors px-8 py-4
         ${open ? "visible bg-primary/20 text-secondary backdrop-blur" : "invisible"}
       `}
     >

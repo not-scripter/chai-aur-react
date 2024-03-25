@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Toaster() {
   return (
     <HotToaster
-      containerClassName=""
-      containerStyle={{ top: 8, left: 8, bottom: 8, right: 8, }}
+      containerClassName="z-50"
+      containerStyle={{ top: 8, left: 8, bottom: 8, right: 8 }}
     >
       {(t) => (
         <div

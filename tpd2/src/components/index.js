@@ -11,6 +11,8 @@ import NotFound from "./NotFound";
 import Select from "./Select";
 import TextArea from "./TextArea";
 import Toaster from "./Toaster";
+import ResetPassword from "./account/ResetPassword";
+import UpdateContacts from "./account/UpdateContacts";
 import AuthLayout from "./authLayout/AuthLayout";
 import Container from "./container/Container";
 import Footer from "./footer/Footer";
@@ -46,4 +48,7 @@ export {
   PostCard,
   EditPost,
   Post as PostComp,
+  //account
+  UpdateContacts,
+  ResetPassword,
 };

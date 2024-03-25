@@ -151,7 +151,7 @@ export default function PostForm({ post }) {
         )}
       </form>
       </CardBox>
-      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Exit" : "Delete"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={postEditable ? (() => {
+      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure ? You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={postEditable ? (() => {
         setpostEditable(false);
         setopen(false)
       }) : deletePost}/>
