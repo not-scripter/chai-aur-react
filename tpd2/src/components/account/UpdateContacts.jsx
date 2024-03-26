@@ -1,36 +1,46 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, CardBox, Confirm, Input } from "../index";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AuthServices from "../../appwrite/AuthServices";
+import { login } from "../../store/AuthSlice";
 
 export default function UpdateContacts() {
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.userData);
-  const { handleSubmit, register, reset } = useForm({
-    defaultValues: {
+  const dispatch = useDispatch()
+  const {userData, profileData} = useSelector((state) => state.auth);
+    const defaultValues = {
       phone: userData.phone,
       email: userData.email,
       password: null,
-    },
+    }
+  const { handleSubmit, register, setValue, reset } = useForm({
+    defaultValues
   });
   const [editable, seteditable] = useState(false);
   const [open, setopen] = useState(false);
-
+console.log(userData)
   const updateContacts = async (data) => {
-    console.log(data);
-    AuthServices.updatePhone(data) &&
-      AuthServices.updateEmail(data)
-        .then(() => {
-          toast.success("Contacts Updated");
+    data.phone && AuthServices.updatePhone(data) 
+        .then((authRes) => {
+          dispatch(login({userData: authRes}))
+          setValue("phone", authRes.phone)
+          toast.success("Phone Updated");
           seteditable(false);
           setopen(false);
         })
         .catch(() => toast.error("Password Incorrect"));
-
-    reset();
+      data.email && AuthServices.updateEmail(data)
+        .then((authRes) => {
+          dispatch(login({userData: authRes}))
+          setValue("email", authRes.email)
+          toast.success("Email Updated");
+          seteditable(false);
+          setopen(false);
+        })
+        .catch(() => toast.error("Password Incorrect"));
   };
   return (
     <form onSubmit={handleSubmit(updateContacts)}>
@@ -45,13 +55,13 @@ export default function UpdateContacts() {
           label="Email"
           readOnly={!editable}
           placeholder="Enter your Email"
-          {...register("email", { required: false })}
+          {...register("email", { required: true })}
         />
         <div className="flex gap-2">
           {editable ? (
             <>
               <Button
-                onClick={() => seteditable(false)}
+                onClick={() => {seteditable(false); reset(defaultValues)}}
                 className="w-full py-2"
               >
                 Cancel
@@ -61,10 +71,10 @@ export default function UpdateContacts() {
               </Button>
             </>
           ) : (
-            <Button onClick={() => seteditable(true)} className="w-full py-2">
-              Edit
-            </Button>
-          )}
+              <Button onClick={() => seteditable(true)} className="w-full py-2">
+                Edit
+              </Button>
+            )}
         </div>
       </CardBox>
       <Confirm

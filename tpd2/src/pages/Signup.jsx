@@ -25,8 +25,7 @@ export default function Signup() {
         joined: userData.$createdAt,
       });
       if (userData && profileData) {
-        dispatch(login(userData));
-        dispatch(login(profileData));
+        dispatch(login({ userData, profileData }));
         toast.success("Account Created Successfull");
         navigate("/");
       }
@@ -41,8 +40,8 @@ export default function Signup() {
         >
           <h1 className="text-secondary">Create Your Account</h1>
           <Input
-            label="UserName"
-            placeholder="Enter Your UserName"
+            label="Fullname"
+            placeholder="Enter Your Fullname"
             {...register("fullname", {
               required: true,
             })}

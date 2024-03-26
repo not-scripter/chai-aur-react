@@ -1,30 +1,42 @@
-import React, { useId } from 'react'
+import React, { useId } from "react";
 
 const Select = ({
-  label,
+  label = "",
   options = [],
-  bg = "bg-zinc-800",
-  fg = "text-zinc-200",
+  bg = "bg-preprimary",
+  fg = "text-presecondary",
   className = "",
-  placeholder = "Choose Options",
+  placeholder,
+  disabled,
   ...props
-}, ref) => {
-  const id = useId()
+}) => {
+  const id = useId();
+  function cfl(item) {
+    return item.charAt(0).toUpperCase() + item.slice(1);
+  }
   return (
-    <div className='grid'>
-      {label && <label htmlFor={id} className='translate-y-1/2 bg-zinc-200 ml-8 px-2 w-fit rounded-full'>{label}</label> } 
+    <div className="relative flex flex-col py-2">
+      {label && (
+        <label
+          htmlFor={id}
+          className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
+        >
+          {label}
+        </label>
+      )}
       <select
         id={id}
         {...props}
-        className={`${className} ${bg} ${fg} rounded-full px-4 py-4 hover:outline-none focus:border-x-2 focus:border-zinc-200`}
-        ref={ref}
+        className={`${className} ${bg} ${fg} rounded-xl px-4 py-2 outline-none border-secondary/60 border-4 focus:border-4 focus:border-secondary`}
       >
-        <option value={placeholder}>{placeholder}</option>
-        {
-          options.map(items => <option value={items}>{items}</option>)
-        }
+        {placeholder && <option value={placeholder}>{placeholder}</option>}
+        {options.map((item) => (
+          <option disabled={disabled} value={item}>
+            {cfl(item)}
+          </option>
+        ))}
       </select>
     </div>
-  )
-}
-export default React.forwardRef(Select)
+  );
+};
+export default Select;

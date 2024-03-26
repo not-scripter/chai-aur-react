@@ -14,21 +14,19 @@ export default function Login() {
   const { register, handleSubmit } = useForm();
 
   const login = async (data) => {
-    try {
-      const account = await AuthServices.login(data);
-      if (account) {
+    const account = await AuthServices.login(data);
+    if (account) {
+      const userData = await AuthServices.getCurrentUser();
+      if (userData) {
         const profileData = await PostServices.getProfile({
-          userId: account.userId,
+          userId: userData.$id,
         });
-        const userData = await AuthServices.getCurrentUser();
         if (userData && profileData) {
           toast.success("Login Sucsessful");
-          dispatch(loginAuth(userData, profileData));
+          dispatch(loginAuth({ userData, profileData }));
           navigate("/");
         }
       }
-    } catch (error) {
-      toast.error(error);
     }
   };
   return (

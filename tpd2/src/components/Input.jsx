@@ -7,6 +7,7 @@ const Input = (
     fg = "text-presecondary",
     className = "",
     label,
+    readOnly,
     ...props
   },
   ref,
@@ -26,6 +27,7 @@ const Input = (
         id={id}
         type={type}
         ref={ref}
+        readOnly={readOnly}
         {...props}
         className={`${className} ${bg} ${fg} rounded-xl px-4 py-2 outline-none border-secondary/60 border-4 focus:border-4 focus:border-secondary`}
       />

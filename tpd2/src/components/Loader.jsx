@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Loader() {
   return (
-    <main className="absolute w-full h-dvh top-0 bg-primary text-secondary backdrop-blur flex items-center justify-center">
+    <main className="absolute w-full h-dvh top-0 left-0 bg-primary text-secondary backdrop-blur flex items-center justify-center">
       <svg
         width="45"
         height="45"

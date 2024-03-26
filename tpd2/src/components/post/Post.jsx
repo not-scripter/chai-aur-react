@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import NotFound from "../NotFound";
 import PostForm from "./PostForm";
+import Loader from "../Loader";
 
 export default function Post() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [post, setpost] = useState(null);
+  const [loading, setloading] = useState(true)
 
   useEffect(() => {
     if (slug) {
@@ -17,5 +19,7 @@ export default function Post() {
     }
   }, [slug, navigate]);
 
-  return post ? <PostForm post={post} /> : <NotFound title="Post Not Found" />;
+  return !loading ? (
+  post ? <PostForm post={post} /> : <NotFound title="Post Not Found" />
+  ) : <Loader />
 }

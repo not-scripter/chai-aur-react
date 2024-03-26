@@ -136,7 +136,7 @@ export class postServices {
       throw error;
     }
   }
-  async updatePost({ slug, title, content, image, status }) {
+  async updatePost({ slug, title, content, images, status }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
@@ -145,7 +145,7 @@ export class postServices {
         {
           title,
           content,
-          image,
+          images,
           status,
         },
       );

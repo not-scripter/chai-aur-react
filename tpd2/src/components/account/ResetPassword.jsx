@@ -1,25 +1,29 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, CardBox, Confirm, Input } from "../index";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import AuthServices from "../../appwrite/AuthServices";
+import { login } from "../../store/AuthSlice";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const { handleSubmit, register, reset } = useForm({
-    defaultValues: {
+  const dispatch = useDispatch()
+    const defaultValues = {
       password: null,
       newPassword: null,
-    },
+    }
+  const { handleSubmit, register, setValue, reset } = useForm({
+    defaultValues
   });
   const [editable, seteditable] = useState(false);
   const [open, setopen] = useState(false);
 
   const updatePassword = async (data) => {
     AuthServices.updatePassword(data)
-      .then(() => {
+      .then((authRes) => {
+        dispatch(login({userData: authRes}))
         toast.success("Password Updated");
         seteditable(false);
         setopen(false);
@@ -27,7 +31,6 @@ export default function ResetPassword() {
       .catch(() => {
         toast.error("Password Incorrect");
       });
-    reset();
   };
   return (
     <form onSubmit={handleSubmit(updatePassword)}>
@@ -43,7 +46,7 @@ export default function ResetPassword() {
           {editable ? (
             <>
               <Button
-                onClick={() => seteditable(false)}
+                onClick={() => {seteditable(false); reset(defaultValues)}}
                 className="w-full py-2"
               >
                 Cancel

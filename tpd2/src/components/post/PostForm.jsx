@@ -9,6 +9,7 @@ import ImgBox from "../ImgBox";
 import CardBox from "../CardBox";
 import Confirm from "../Confirm";
 import toast from "react-hot-toast";
+import Select from "../Select";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function PostForm({ post }) {
       slug: post?.slug || "",
       title: post?.title || "",
       content: post?.content || "",
-      status: post?.status || "",
+      status: post?.status || "public",
     },
   });
   const userData = useSelector((state) => state.auth.userData);
@@ -25,14 +26,15 @@ export default function PostForm({ post }) {
   const [postEditable, setpostEditable] = useState(post ? false : true);
 
   const [localImage, setlocalImage] = useState(null);
-  const dbImage = post && post.images ? PostServices.getFilePreview({ fileId: post.images }) : null
+  const dbImage = post && post.images ? PostServices.getFilePreview({ fileId: post.images }) : null 
 
   const [open, setopen] = useState(false)
+  const [updateOpen, setupdateOpen] = useState(false)
 
-  const submit = async (data) => {
+  const submit = async (data) => {console.log(data)
     if (post) {
       const file =
-        data.images[0] && (await PostServices.uploadFile(data.images[0]));
+        data.images[0] && (await PostServices.uploadFile(data.images[0]))
       if (file) PostServices.deleteFile(post.images);
       const updated = await PostServices.updatePost({
         ...data,
@@ -40,7 +42,8 @@ export default function PostForm({ post }) {
         images: file ? file.$id : dbImage,
       });
       if (updated) {
-        // setpostEditable(false);
+        setpostEditable(false);
+        setupdateOpen(false)
         toast.success("Post Updated Successfully");
         navigate(`/post/${updated.$id}`);
       }
@@ -65,13 +68,16 @@ export default function PostForm({ post }) {
     // reset()
   };
 
-  const deletePost = () => {
-    PostServices.deletePost({slug: post.$id}).then((status) => {
-      if (status) {
-        PostServices.deleteFile(post.images);
+  const deletePost = async () => {
+    PostServices.deletePost({slug: post.$id}).then(() => {
+      dbImage ? PostServices.deleteFile({fileId: post.images}).then(() => {
         toast.success("Post Deleted");
+        setopen(false);
         navigate("/");
-      }
+      }) :
+        toast.success("Post Deleted");
+      setopen(false);
+      navigate("/");
     });
   };
 
@@ -96,65 +102,82 @@ export default function PostForm({ post }) {
   }, [watch, slugTransform, setValue]);
 
   return (
-    <>
-    <CardBox>
-      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
-        <Input
-          readOnly={!postEditable}
-          label="Title"
-          {...register("title", { required: true })}
-        />
-        <Input
-          readOnly={!postEditable}
-          label="Content"
-          {...register("content", { required: true })}
-        />
+        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+      <CardBox>
+          <Input
+            readOnly={!postEditable}
+            label="Title"
+            {...register("title", { required: true })}
+          />
+          <Input
+            readOnly={!postEditable}
+            label="Content"
+            {...register("content", { required: true })}
+          />
           {
             postEditable && (
-        <Input
-          label="Image"
-          type="file"
-          accept="image/*"
-          readOnly={!postEditable}
-          {...register("images")}
-          onChange={(e) =>
-            setlocalImage(URL.createObjectURL(e.target.files[0]))
-          }
-        />
-
+              <Input
+                label="Image"
+                type="file"
+                accept="image/*"
+                readOnly={!postEditable}
+                {...register("images")}
+                onChange={(e) =>
+                  setlocalImage(URL.createObjectURL(e.target.files[0]))
+                }
+              />
             )
           }
           {
             localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
           }
-        {post && isAuthor ? (
-          <div className="flex gap-2">
-            <Button
-              className="w-full py-2"
-              bg="bg-red-500"
-              onClick={() => setopen(true)}
-            >
-              {postEditable ? "Cancel" : "Delete"}
-            </Button>
-            <Button
-              className="w-full py-2"
-              type={!postEditable ? "submit" : "button"}
-              onClick={() => setpostEditable(prev => !prev)}
-            >
-              {!postEditable ? "Edit" : "Save"}
-            </Button>
-          </div>
-        ) : (
-          <Button className="w-full py-2" type="submit">
-            Submit
-          </Button>
-        )}
-      </form>
+          {
+            !post || isAuthor ? (
+              <Select 
+                label="Visibility"
+                disabled={!postEditable}
+                options={["public", "private"]}
+                {...register("status")}
+              />
+            ) : null
+          }
+          {post && isAuthor && (
+            postEditable ? (
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => {
+                    setpostEditable(false);
+                    reset();
+                  }}
+                  className="w-full py-2"
+                >
+                  Cancel
+                </Button>
+                <Button onClick={() => setupdateOpen(true)} className="w-full py-2">
+                  Save
+                </Button>
+              </div>
+            ) : (
+                <div className="flex gap-2">
+                  <Button onClick={() => setopen(true)} bg="bg-red-500" className="w-full py-2">
+                    Delete
+                  </Button>
+                  <Button onClick={() => setpostEditable(true)} className="w-full py-2">
+                    Edit
+                  </Button>
+                </div>
+              )
+          )}
+          {
+            !post && (
+              <Button type="submit" className="w-full py-2">
+                Create Post
+              </Button>
+            )
+          }
       </CardBox>
-      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure ? You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={postEditable ? (() => {
-        setpostEditable(false);
-        setopen(false)
-      }) : deletePost}/>
-      </>
+      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost}/>
+      <Confirm open={updateOpen} setopen={setupdateOpen} warningDesc="Are You Sure ? You want to Update this Post ?" proceedText="Update" proceedTo={handleSubmit(submit)}/>
+        </form>
   );
 }
