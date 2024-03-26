@@ -18,6 +18,7 @@ export default function Login() {
     if (account) {
       const userData = await AuthServices.getCurrentUser();
       if (userData) {
+        console.log(userData.$id);
         const profileData = await PostServices.getProfile({
           userId: userData.$id,
         });
@@ -60,6 +61,15 @@ export default function Login() {
           />
           <Button type="submit" className="w-full py-2">
             Login
+          </Button>
+          <h1 className="font-semibold text-secondary/50 text-center">or</h1>
+          <Button
+            onClick={() => navigate("/Signup")}
+            className="w-full py-2 border-secondary border-4"
+            bg="bg-primary-50"
+            fg="text-secondary"
+          >
+            Create Account
           </Button>
         </form>
       </CardBox>

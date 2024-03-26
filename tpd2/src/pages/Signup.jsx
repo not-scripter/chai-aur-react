@@ -17,17 +17,19 @@ export default function Signup() {
     const account = await AuthServices.createAccount(data);
     if (account) {
       const userData = await AuthServices.getCurrentUser();
-      const profileData = await PostServices.createProfile({
-        userId: userData.$id,
-        fullname: data.fullname,
-        username: userData.name,
-        email: userData.email,
-        joined: userData.$createdAt,
-      });
-      if (userData && profileData) {
-        dispatch(login({ userData, profileData }));
-        toast.success("Account Created Successfull");
-        navigate("/");
+      if (userData) {
+        const profileData = await PostServices.createProfile({
+          userId: userData.$id,
+          fullname: data.fullname,
+          username: userData.name,
+          email: userData.email,
+          joined: userData.$createdAt,
+        });
+        if (userData && profileData) {
+          dispatch(login({ userData, profileData }));
+          toast.success("Account Created Successfull");
+          navigate("/");
+        } else toast.error("Signup Error");
       }
     }
   };
@@ -76,6 +78,15 @@ export default function Signup() {
           />
           <Button type="submit" className="w-full py-2">
             Create Account
+          </Button>
+          <h1 className="font-semibold text-secondary/50 text-center">or</h1>
+          <Button
+            onClick={() => navigate("/Login")}
+            className="w-full py-2 border-secondary border-4"
+            bg="bg-primary-50"
+            fg="text-secondary"
+          >
+            Login
           </Button>
         </form>
       </CardBox>
