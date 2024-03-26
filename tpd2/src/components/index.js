@@ -1,6 +1,7 @@
 import Button from "./Button";
 import CardBox from "./CardBox";
 import Confirm from "./Confirm";
+import DataLoader from "./DataLoader";
 import ImgBox from "./ImgBox";
 import Input from "./Input";
 import Loader from "./Loader";
@@ -53,4 +54,5 @@ export {
   UpdateInfo,
   UpdateContacts,
   ResetPassword,
+  DataLoader,
 };
