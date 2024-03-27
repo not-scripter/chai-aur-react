@@ -8,6 +8,7 @@ import AuthServices from "../../appwrite/AuthServices";
 import PostServices from "../../appwrite/PostServices";
 import { login } from "../../store/AuthSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { defaultAvatar, defaultBanner } from "../../assets";
 
 export default function UpdateInfo() {
   const navigate = useNavigate();
@@ -65,12 +66,19 @@ export default function UpdateInfo() {
       })
       .catch((err) => {toast.error("Error"); console.log(err.message)})
   };
-
+console.log(dbAvatar)
   return (
     <CardBox>
-      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
-        <div className="flex flex-col items-center gap-2">
-          <ImgBox src={localBanner ? localBanner : dbBanner} className="h-16 w-full relative rounded-xl aspect-[21/9] object-cover" boxClass="relative w-full">
+      <form
+        onSubmit={handleSubmit(submit)}
+        className="flex flex-col gap-2"
+      >
+        <div className="flex flex-col items-center gap-2 relative mb-8">
+          <ImgBox
+            src={localBanner ? localBanner : dbBanner ? dbBanner : defaultBanner}
+            className="h-20 w-full relative rounded-xl object-cover shadow-secondary/50 shadow-md"
+            boxClass="relative w-full"
+          >
             { !editable &&
               <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
                 <div className="relative flex items-center justify-center h-full">
@@ -90,7 +98,11 @@ export default function UpdateInfo() {
               </div>
             }
           </ImgBox>
-          <ImgBox src={localAvatar ? localAvatar : dbAvatar} className="relative w-12 h-12 rounded-full aspect-square object-cover" boxClass="w-fit relative outline-4 outline-secondary/20">
+          <ImgBox
+            src={localAvatar ? localAvatar : dbAvatar ? dbAvatar : defaultAvatar}
+            className="relative w-16 h-16 rounded-full object-cover shadow-secondary shadow-md bg-primary/80 backdrop-blur absolite bottom-0"
+            boxClass="w-fit absolute bottom-[-2rem]"
+          >
             { !editable &&
               <div className="absolute top-[-.2rem] right-[-.2rem] w-6 h-6 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
                 <div className="relative flex items-center justify-center h-full">
@@ -125,6 +137,12 @@ export default function UpdateInfo() {
             {...register("username", { required: true })}
           />
           <Input
+            label="DOB"
+            readOnly={!editable}
+            placeholder="Enter Your Date-of-Birth"
+            {...register("username", { required: false })}
+          />
+          <Input
             label="Location"
             readOnly={!editable}
             placeholder="Enter Your Location"
@@ -136,12 +154,6 @@ export default function UpdateInfo() {
             readOnly={!editable}
             placeholder="Enter Website URL"
             {...register("website", { required: false })}
-          />
-          <Input
-            label="DOB"
-            readOnly={!editable}
-            placeholder="Enter Your Date-of-Birth"
-            {...register("username", { required: false })}
           />
           <Select
             label="Visibility"

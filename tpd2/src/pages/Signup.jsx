@@ -49,9 +49,6 @@ export default function Signup() {
               placeholder="Enter Your Fullname"
               {...register("fullname", {
                 required: true,
-                validate: {
-                  matchPatern: (val) => /^[a-zA-Z0-9_-]{3,16}$/.test(val) || "Please Enter A Valid Name"
-                }
               })}
             />
             <Input
