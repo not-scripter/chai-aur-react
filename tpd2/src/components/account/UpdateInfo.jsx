@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import AuthServices from "../../appwrite/AuthServices";
 import PostServices from "../../appwrite/PostServices";
 import { login } from "../../store/AuthSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function UpdateInfo() {
   const navigate = useNavigate();
@@ -15,10 +16,10 @@ export default function UpdateInfo() {
   const defaultValues = {
     fullname: profileData?.fullname,
     username: userData?.name,
-    joined: profileData.joined,
     website: profileData.website,
     location: profileData.location,
     visibility: profileData.visibility,
+    joined: profileData.joined,
   };
   const { handleSubmit, register, reset, setValue } = useForm({
     defaultValues,
@@ -67,75 +68,93 @@ export default function UpdateInfo() {
 
   return (
     <CardBox>
-      <form onSubmit={handleSubmit(submit)}>
-        <ImgBox src={localBanner ? localBanner : dbBanner} className="h-16 w-full bg-blue-300">
-          <input
-            label="Image"
-            type="file"
-            accept="image/*"
-            readOnly={!editable}
-            className="absolute top-2 right-2 w-8 h-8 rounded-full"
-            {...register("banner")}
-            onChange={(e) =>
-              setlocalBanner(URL.createObjectURL(e.target.files[0]))
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+        <div className="flex flex-col items-center gap-2">
+          <ImgBox src={localBanner ? localBanner : dbBanner} className="h-16 w-full relative rounded-xl aspect-[21/9] object-cover" boxClass="relative w-full">
+            { !editable &&
+              <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
+                <div className="relative flex items-center justify-center h-full">
+                  <input
+                    label="Image"
+                    type="file"
+                    accept="image/*"
+                    readOnly={!editable}
+                    className="absolute w-full h-full opacity-0"
+                    {...register("banner")}
+                    onChange={(e) =>
+                      setlocalBanner(URL.createObjectURL(e.target.files[0]))
+                    }
+                  />
+                  <FontAwesomeIcon icon="fa-solid fa-pen-fancy"/>
+                </div>
+              </div>
             }
-          />
-        </ImgBox>
-        <ImgBox src={localAvatar ? localAvatar : dbAvatar} className="w-12 h-12 rounded-full bg-green-300">
-          <input
-            label="Image"
-            type="file"
-            accept="image/*"
-            readOnly={!editable}
-            className="absolute top-2 right-2 w-8 h-8 rounded-full"
-            {...register("avatar")}
-            onChange={(e) =>
-              setlocalAvatar(URL.createObjectURL(e.target.files[0]))
+          </ImgBox>
+          <ImgBox src={localAvatar ? localAvatar : dbAvatar} className="relative w-12 h-12 rounded-full aspect-square object-cover" boxClass="w-fit relative outline-4 outline-secondary/20">
+            { !editable &&
+              <div className="absolute top-[-.2rem] right-[-.2rem] w-6 h-6 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
+                <div className="relative flex items-center justify-center h-full">
+                  <input
+                    label="Image"
+                    type="file"
+                    accept="image/*"
+                    readOnly={!editable}
+                    className="absolute w-full h-full opacity-0"
+                    {...register("avatar")}
+                    onChange={(e) =>
+                      setlocalAvatar(URL.createObjectURL(e.target.files[0]))
+                    }
+                  />
+                  <FontAwesomeIcon icon="fa-solid fa-pen-fancy" className="w-3 h-3"/>
+                </div>
+              </div>
             }
+          </ImgBox>
+        </div>
+        <div>
+          <Input
+            label="Fullname"
+            readOnly={!editable}
+            placeholder="Enter Your Fullname"
+            {...register("fullname", { required: true })}
           />
-        </ImgBox>
-        <Input
-          label="Fullname"
-          readOnly={!editable}
-          placeholder="Enter Your Fullname"
-          {...register("fullname", { required: true })}
-        />
-        <Input
-          label="Username"
-          readOnly={!editable}
-          placeholder="Enter Your Username"
-          {...register("username", { required: true })}
-        />
-        <Input
-          label="Location"
-          readOnly={!editable}
-          placeholder="Enter Your Location"
-          {...register("location", { required: false })}
-        />
-        <Input
-          label="Website"
-          type="url"
-          readOnly={!editable}
-          placeholder="Enter Website URL"
-          {...register("website", { required: false })}
-        />
-        <Input
-          label="DOB"
-          readOnly={!editable}
-          placeholder="Enter Your Date-of-Birth"
-          {...register("username", { required: false })}
-        />
-        <Select
-          label="Visibility"
-          disabled={!editable}
-          options={["public", "private"]}
-          {...register("visibility")}
-        />
-        <Input
-          label="Joined"
-          readOnly={true}
-          {...register("joined")}
-        />
+          <Input
+            label="Username"
+            readOnly={!editable}
+            placeholder="Enter Your Username"
+            {...register("username", { required: true })}
+          />
+          <Input
+            label="Location"
+            readOnly={!editable}
+            placeholder="Enter Your Location"
+            {...register("location", { required: false })}
+          />
+          <Input
+            label="Website"
+            type="url"
+            readOnly={!editable}
+            placeholder="Enter Website URL"
+            {...register("website", { required: false })}
+          />
+          <Input
+            label="DOB"
+            readOnly={!editable}
+            placeholder="Enter Your Date-of-Birth"
+            {...register("username", { required: false })}
+          />
+          <Select
+            label="Visibility"
+            disabled={!editable}
+            options={["public", "private"]}
+            {...register("visibility")}
+          />
+          <Input
+            label="Joined"
+            readOnly={true}
+            {...register("joined")}
+          />
+        </div>
         <div className="flex gap-2">
           {editable ? (
             <>
