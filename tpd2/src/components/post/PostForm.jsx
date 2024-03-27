@@ -18,7 +18,7 @@ export default function PostForm({ post }) {
       slug: post?.slug || "",
       title: post?.title || "",
       content: post?.content || "",
-      status: post?.status || "public",
+      visibility: post?.visibility || "public",
     },
   });
   const userData = useSelector((state) => state.auth.userData);
@@ -34,7 +34,7 @@ export default function PostForm({ post }) {
   const submit = async (data) => {console.log(data)
     if (post) {
       const file =
-        data.images[0] && (await PostServices.uploadFile(data.images[0]))
+        data.images[0] && await PostServices.uploadFile(data.images[0])
       if (file) PostServices.deleteFile(post.images);
       const updated = await PostServices.updatePost({
         ...data,
@@ -57,7 +57,7 @@ export default function PostForm({ post }) {
         title: data.title,
         content: data.content,
         images: file ? file.$id : null,
-        status: "public",
+        visibility: data.visibility,
         // ...data,
       });
       if (newPost) {
@@ -137,7 +137,7 @@ export default function PostForm({ post }) {
                 label="Visibility"
                 disabled={!postEditable}
                 options={["public", "private"]}
-                {...register("status")}
+                {...register("visibility")}
               />
             ) : null
           }

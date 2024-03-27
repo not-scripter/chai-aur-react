@@ -21,7 +21,7 @@ export default function Modal({ open, onClose, children, className }) {
       >
         <Button
           onClick={onClose}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full "
+          className="absolute top-2 right-2 w-8 h-8 rounded-full"
         >
           <FontAwesomeIcon icon="fa-solid fa-xmark" />
         </Button>

@@ -18,10 +18,7 @@ export default function Login() {
     if (account) {
       const userData = await AuthServices.getCurrentUser();
       if (userData) {
-        console.log(userData.$id);
-        const profileData = await PostServices.getProfile({
-          userId: userData.$id,
-        });
+        const profileData = await PostServices.getProfile(userData.$id);
         if (userData && profileData) {
           toast.success("Login Sucsessful");
           dispatch(loginAuth({ userData, profileData }));
@@ -35,9 +32,10 @@ export default function Login() {
       <CardBox>
         <form
           onSubmit={handleSubmit(login)}
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center gap-2"
         >
-          <h1 className="text-secondary">Signin to Your Account</h1>
+          <h1 className="text-secondary font-semibold text-xl py-2">Signin to Your Account</h1>
+          <div>
           <Input
             label="Email"
             type="email"
@@ -59,6 +57,8 @@ export default function Login() {
               required: true,
             })}
           />
+          </div>
+          <div className="w-full">
           <Button type="submit" className="w-full py-2">
             Login
           </Button>
@@ -71,6 +71,7 @@ export default function Login() {
           >
             Create Account
           </Button>
+          </div>
         </form>
       </CardBox>
     </Container>

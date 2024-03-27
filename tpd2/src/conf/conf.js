@@ -6,5 +6,7 @@ const conf = {
   postsId: String(import.meta.env.VITE_APP_POSTS_ID),
   repliesId: String(import.meta.env.VITE_APP_REPLIES_ID),
   imagesId: String(import.meta.env.VITE_APP_IMAGES_ID),
+  avatarsId: String(import.meta.env.VITE_APP_AVATARS_ID),
+  bannersId: String(import.meta.env.VITE_APP_BANNERS_ID),
 };
 export default conf;
