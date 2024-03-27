@@ -36,7 +36,7 @@ export default function UpdateInfo() {
     ? PostServices.getBannerPreview(profileData.banner)
     : null;
 
-  const submit = async (data) => {
+  const submit = async (data) => {console.log(data.visibility)
     const avatar = data.avatar[0] && await PostServices.uploadAvatar(data.avatar[0]);
     const banner = data.banner[0] && await PostServices.uploadBanner(data.banner[0]);
     avatar && profileData.avatar && PostServices.deleteAvatar(profileData.avatar);
@@ -66,7 +66,7 @@ export default function UpdateInfo() {
       })
       .catch((err) => {toast.error("Error"); console.log(err.message)})
   };
-console.log(dbAvatar)
+  console.log(dbAvatar)
   return (
     <CardBox>
       <form
@@ -155,12 +155,23 @@ console.log(dbAvatar)
             placeholder="Enter Website URL"
             {...register("website", { required: false })}
           />
-          <Select
-            label="Visibility"
-            disabled={!editable}
-            options={["public", "private"]}
-            {...register("visibility")}
-          />
+          {/*Pending Problem in Select Component*/}
+          <div className="relative flex flex-col py-2">
+            <label
+              htmlFor="visibility"
+              className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
+            />
+            <select
+              id="visibility"
+              className="bg-primary/50 text-presecondary rounded-xl px-4 py-2 outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary"
+              defaultValue={profileData.visivility}
+              disabled={!editable}
+              {...register("visibility")}
+            >
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
           <Input
             label="Joined"
             readOnly={true}

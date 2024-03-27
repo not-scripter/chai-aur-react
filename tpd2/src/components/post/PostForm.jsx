@@ -102,82 +102,93 @@ export default function PostForm({ post }) {
   }, [watch, slugTransform, setValue]);
 
   return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
       <CardBox>
-          <Input
-            readOnly={!postEditable}
-            label="Title"
-            {...register("title", { required: true })}
-          />
-          <Input
-            readOnly={!postEditable}
-            label="Content"
-            {...register("content", { required: true })}
-          />
-          {
-            postEditable && (
-              <Input
-                label="Image"
-                type="file"
-                accept="image/*"
-                readOnly={!postEditable}
-                {...register("images")}
-                onChange={(e) =>
-                  setlocalImage(URL.createObjectURL(e.target.files[0]))
-                }
+        <Input
+          readOnly={!postEditable}
+          label="Title"
+          {...register("title", { required: true })}
+        />
+        <Input
+          readOnly={!postEditable}
+          label="Content"
+          {...register("content", { required: true })}
+        />
+        {
+          postEditable && (
+            <Input
+              label="Image"
+              type="file"
+              accept="image/*"
+              readOnly={!postEditable}
+              {...register("images")}
+              onChange={(e) =>
+                setlocalImage(URL.createObjectURL(e.target.files[0]))
+              }
+            />
+          )
+        }
+        {
+          localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
+        }
+        {/*Pending Problem in Select Component*/}
+        {
+          !post || isAuthor ? (
+            <div className="relative flex flex-col py-2">
+              <label
+                htmlFor="visibility"
+                className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
               />
-            )
-          }
-          {
-            localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
-          }
-          {
-            !post || isAuthor ? (
-              <Select 
-                label="Visibility"
+              <select
+                id="visibility"
+                className="bg-primary/50 text-presecondary rounded-xl px-4 py-2 outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary"
+                defaultValue={post ? post.visibility : "public"}
                 disabled={!postEditable}
-                options={["public", "private"]}
                 {...register("visibility")}
-              />
-            ) : null
-          }
-          {post && isAuthor && (
-            postEditable ? (
+              >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+          ) : null
+        }
+        {post && isAuthor && (
+          postEditable ? (
+            <div className="flex gap-2">
+              <Button
+                onClick={() => {
+                  setpostEditable(false);
+                  reset();
+                }}
+                className="w-full py-2"
+              >
+                Cancel
+              </Button>
+              <Button onClick={() => setupdateOpen(true)} className="w-full py-2">
+                Save
+              </Button>
+            </div>
+          ) : (
               <div className="flex gap-2">
-                <Button
-                  onClick={() => {
-                    setpostEditable(false);
-                    reset();
-                  }}
-                  className="w-full py-2"
-                >
-                  Cancel
+                <Button onClick={() => setopen(true)} bg="bg-red-500" className="w-full py-2">
+                  Delete
                 </Button>
-                <Button onClick={() => setupdateOpen(true)} className="w-full py-2">
-                  Save
+                <Button onClick={() => setpostEditable(true)} className="w-full py-2">
+                  Edit
                 </Button>
               </div>
-            ) : (
-                <div className="flex gap-2">
-                  <Button onClick={() => setopen(true)} bg="bg-red-500" className="w-full py-2">
-                    Delete
-                  </Button>
-                  <Button onClick={() => setpostEditable(true)} className="w-full py-2">
-                    Edit
-                  </Button>
-                </div>
-              )
-          )}
-          {
-            !post && (
-              <Button type="submit" className="w-full py-2">
-                Create Post
-              </Button>
             )
-          }
+        )}
+        {
+          !post && (
+            <Button type="submit" className="w-full py-2">
+              Create Post
+            </Button>
+          )
+        }
       </CardBox>
       <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost}/>
       <Confirm open={updateOpen} setopen={setupdateOpen} warningDesc="Are You Sure ? You want to Update this Post ?" proceedText="Update" proceedTo={handleSubmit(submit)}/>
-        </form>
+    </form>
   );
 }
