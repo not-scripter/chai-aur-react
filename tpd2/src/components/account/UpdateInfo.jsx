@@ -31,6 +31,8 @@ export default function UpdateInfo() {
   }
   });
 
+  const [btnLoading, setbtnLoading] = useState(false)
+
   const [editable, seteditable] = useState(false);
   const [localAvatar, setlocalAvatar] = useState(null);
   const [localBanner, setlocalBanner] = useState(null);
@@ -38,34 +40,30 @@ export default function UpdateInfo() {
   const dbBanner = profileData.banner && PostServices.getBannerPreview(profileData.banner)
 
   const submit = async (data) => {
+    setbtnLoading(true)
     const avatar = data.avatar[0] && await PostServices.uploadAvatar(data.avatar[0]);
     const banner = data.banner[0] && await PostServices.uploadBanner(data.banner[0]);
     avatar && profileData.avatar && PostServices.deleteAvatar(profileData.avatar);
     banner && profileData.banner && PostServices.deleteBanner(profileData.banner);
-    AuthServices.updateName(data)
-      .then((authRes) => {
-        PostServices.updateProfile({
-          userId: userData?.$id,
-          avatar: avatar ? avatar.$id : profileData.avatar,
-          banner: banner ? banner.$id : profileData.banner,
-          fullname: data.fullname,
-          username: data.username,
-          website: data.website,
-          location: data.location,
-          visibility: data.visibility,
-        })
-          .then((proRes) => {
-            dispatch(login({ userData: authRes, profileData: proRes }));
-            toast.success("Info Updated");
-            seteditable(false);
-            //setValue("fullname", proRes.fullname);
-            //setValue("username", authRes.name);
-          })
-          .catch((err) => {
-            toast.error("Fullname Error");console.log(err.message)
-          });
-      })
-      .catch((err) => {toast.error("Error"); console.log(err.message)})
+    const authRes = data.username && await AuthServices.updateName(data)
+    const proRes = await PostServices.updateProfile({
+      userId: userData?.$id,
+      avatar: avatar ? avatar.$id : profileData.avatar,
+      banner: banner ? banner.$id : profileData.banner,
+      fullname: data.fullname,
+      username: data.username,
+      website: data.website,
+      location: data.location,
+      visibility: data.visibility,
+    })
+    if (proRes) {
+      dispatch(login({ userData: authRes ? authRes : userData, profileData: proRes }));
+      toast.success("Info Updated");
+      setbtnLoading(false)
+      seteditable(false);
+      //setValue("fullname", proRes.fullname);
+      //setValue("username", authRes.name);
+    }
   };
 
   return (
@@ -181,7 +179,11 @@ export default function UpdateInfo() {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="w-full py-2">
+              <Button
+                loading={btnLoading}
+                type="submit"
+                className="w-full py-2"
+              >
                 Save
               </Button>
             </>

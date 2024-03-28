@@ -16,6 +16,7 @@ export default function Signup() {
   const [loading, setloading] = useState(false)
 
   const create = async (data) => {
+    setloading(true)
     seterror({})
     const account = await AuthServices.createAccount(data);
     if (account) {
@@ -91,7 +92,6 @@ export default function Signup() {
               loading={loading}
               type="submit"
               className="w-full py-2"
-              onClick={() => setloading(true)}
             >
               Create Account
             </Button>

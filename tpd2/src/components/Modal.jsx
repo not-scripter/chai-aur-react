@@ -23,7 +23,8 @@ export default function Modal({ open, onClose, children, className }) {
         <Button
           onClick={onClose}
           bg="bg-primary/50"
-          className="absolute top-2 right-2 w-8 h-8 rounded-full"
+          rounded="rounded-full"
+          className="absolute top-2 right-2 w-8 h-8 p-1"
         >
           <img src={cross}/>
         </Button>

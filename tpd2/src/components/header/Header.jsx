@@ -47,7 +47,8 @@ export default function Header() {
       <section className="relative w-full flex items-center justify-between bg-primary text-secondary px-4 py-2">
         <Button
           bg="bg-primary/50"
-          className="visible sm:hidden w-8 h-8 px-0 py-0 z-30"
+          className="visible sm:hidden w-8 h-8 p-1 z-30"
+          rounded="rounded-full"
         >
           <img src={search} />
         </Button>
@@ -55,13 +56,10 @@ export default function Header() {
         <Button
           onClick={() => setmobNav((prev) => !prev)}
           bg="bg-primary/50"
-          className="visible sm:hidden w-8 h-8 px-0 py-0 z-30"
+          className="visible sm:hidden w-8 h-8 p-1 z-30"
+          rounded="rounded-full"
         >
-          {
-            !mobNav 
-            ? <img src={menu}/>
-            : <img src={cross}/>
-          }
+          {!mobNav ? <img src={menu} /> : <img src={cross} />}
         </Button>
         <nav
           className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-primary/20 text-secondary backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}

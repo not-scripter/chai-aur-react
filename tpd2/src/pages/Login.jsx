@@ -15,6 +15,7 @@ export default function Login() {
   const [loading, setloading] = useState(false);
 
   const login = async (data) => {
+    setloading(true);
     const account = await AuthServices.login(data);
     if (account) {
       const userData = await AuthServices.getCurrentUser();
@@ -63,12 +64,7 @@ export default function Login() {
             />
           </div>
           <div className="w-full">
-            <Button
-              loading={loading}
-              type="submit"
-              className="w-full py-2"
-              onClick={() => setloading(true)}
-            >
+            <Button loading={loading} type="submit" className="w-full py-2">
               Login
             </Button>
             <h1 className="font-semibold text-secondary/50 text-center">or</h1>

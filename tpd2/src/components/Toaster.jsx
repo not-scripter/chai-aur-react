@@ -5,7 +5,7 @@ import toast, {
   resolveValue,
 } from "react-hot-toast";
 import Button from "./Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cross } from "../assets";
 export default function Toaster() {
   return (
     <HotToaster
@@ -20,10 +20,12 @@ export default function Toaster() {
           <ToastIcon toast={t} />
           {resolveValue(t.message, t)}
           <Button
-            className="absolute top-3 right-2 w-8 h-8 rounded-full"
+            rounded="rounded-full"
+            bg="bg-primary/50"
+            className="absolute top-3 right-3 w-8 h-8 p-1"
             onClick={() => toast.dismiss(t.id)}
           >
-            <FontAwesomeIcon icon="fa-solid fa-xmark" />
+            <img src={cross} />
           </Button>
         </div>
       )}
