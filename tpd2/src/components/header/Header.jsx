@@ -3,7 +3,7 @@ import Logo from "../Logo";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cross, menu, search } from "../../assets";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.authStatus);
@@ -45,15 +45,23 @@ export default function Header() {
   return (
     <header className="flex flex-col">
       <section className="relative w-full flex items-center justify-between bg-primary text-secondary px-4 py-2">
-        <Button className="visible sm:hidden w-8 h-8 px-0 py-0 z-30">
-          <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+        <Button
+          bg="bg-primary/50"
+          className="visible sm:hidden w-8 h-8 px-0 py-0 z-30"
+        >
+          <img src={search} className=""/>
         </Button>
         <Logo className="z-30" />
         <Button
           onClick={() => setmobNav((prev) => !prev)}
+          bg="bg-primary/50"
           className="visible sm:hidden w-8 h-8 px-0 py-0 z-30"
         >
-          {!mobNav ? <FontAwesomeIcon icon="fa-solid fa-hanukiah" /> : <FontAwesomeIcon icon="fa-solid fa-xmark" />}
+          {
+            !mobNav 
+            ? <img src={menu}/>
+            : <img src={cross}/>
+          }
         </Button>
         <nav
           className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-primary/20 text-secondary backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}

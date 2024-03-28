@@ -7,36 +7,37 @@ import { useForm } from "react-hook-form";
 import AuthServices from "../../appwrite/AuthServices";
 import PostServices from "../../appwrite/PostServices";
 import { login } from "../../store/AuthSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { defaultAvatar, defaultBanner } from "../../assets";
+import { defaultAvatar, defaultBanner, edit } from "../../assets";
 
 export default function UpdateInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData, profileData } = useSelector((state) => state.auth);
-  const defaultValues = {
+  function handleIso(isoDate) {
+    const date = new Date(isoDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${day < 10 ? "0" + day : day}-${month < 10 ? "0" + month : month}-${year}`;
+  }
+
+  const { handleSubmit, register, reset, setValue } = useForm({
+    defaultValues: {
     fullname: profileData?.fullname,
     username: userData?.name,
     website: profileData.website,
     location: profileData.location,
-    visibility: profileData.visibility,
-    joined: profileData.joined,
-  };
-  const { handleSubmit, register, reset, setValue } = useForm({
-    defaultValues,
+    joined: handleIso(profileData.joined),
+  }
   });
 
   const [editable, seteditable] = useState(false);
   const [localAvatar, setlocalAvatar] = useState(null);
   const [localBanner, setlocalBanner] = useState(null);
-  const dbAvatar = profileData.avatar
-    ? PostServices.getAvatarPreview(profileData.avatar)
-    : null;
-  const dbBanner = profileData.banner
-    ? PostServices.getBannerPreview(profileData.banner)
-    : null;
+  const dbAvatar = profileData.avatar && PostServices.getAvatarPreview(profileData.avatar)
+  const dbBanner = profileData.banner && PostServices.getBannerPreview(profileData.banner)
 
-  const submit = async (data) => {console.log(data.visibility)
+  const submit = async (data) => {
     const avatar = data.avatar[0] && await PostServices.uploadAvatar(data.avatar[0]);
     const banner = data.banner[0] && await PostServices.uploadBanner(data.banner[0]);
     avatar && profileData.avatar && PostServices.deleteAvatar(profileData.avatar);
@@ -66,7 +67,7 @@ export default function UpdateInfo() {
       })
       .catch((err) => {toast.error("Error"); console.log(err.message)})
   };
-  console.log(dbAvatar)
+
   return (
     <CardBox>
       <form
@@ -79,9 +80,9 @@ export default function UpdateInfo() {
             className="h-20 w-full relative rounded-xl object-cover shadow-secondary/50 shadow-md"
             boxClass="relative w-full"
           >
-            { !editable &&
+            { editable &&
               <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
-                <div className="relative flex items-center justify-center h-full">
+                <div className="relative flex items-center justify-center h-full p-1">
                   <input
                     label="Image"
                     type="file"
@@ -93,7 +94,7 @@ export default function UpdateInfo() {
                       setlocalBanner(URL.createObjectURL(e.target.files[0]))
                     }
                   />
-                  <FontAwesomeIcon icon="fa-solid fa-pen-fancy"/>
+                  <img src={edit} />
                 </div>
               </div>
             }
@@ -103,9 +104,9 @@ export default function UpdateInfo() {
             className="relative w-16 h-16 rounded-full object-cover shadow-secondary shadow-md bg-primary/80 backdrop-blur absolite bottom-0"
             boxClass="w-fit absolute bottom-[-2rem]"
           >
-            { !editable &&
+            { editable &&
               <div className="absolute top-[-.2rem] right-[-.2rem] w-6 h-6 rounded-full bg-primary/50 backdrop-blur overflow-hidden active:bg-opacity-80 hover:outline hover:outline-secondary/20 hover:outline-4">
-                <div className="relative flex items-center justify-center h-full">
+                <div className="relative flex items-center justify-center h-full p-1">
                   <input
                     label="Image"
                     type="file"
@@ -117,7 +118,7 @@ export default function UpdateInfo() {
                       setlocalAvatar(URL.createObjectURL(e.target.files[0]))
                     }
                   />
-                  <FontAwesomeIcon icon="fa-solid fa-pen-fancy" className="w-3 h-3"/>
+                  <img src={edit} />
                 </div>
               </div>
             }
@@ -155,23 +156,13 @@ export default function UpdateInfo() {
             placeholder="Enter Website URL"
             {...register("website", { required: false })}
           />
-          {/*Pending Problem in Select Component*/}
-          <div className="relative flex flex-col py-2">
-            <label
-              htmlFor="visibility"
-              className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
-            />
-            <select
-              id="visibility"
-              className="bg-primary/50 text-presecondary rounded-xl px-4 py-2 outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary"
-              defaultValue={profileData.visivility}
-              disabled={!editable}
-              {...register("visibility")}
-            >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-          </div>
+          <Select
+            label="Visibility"
+            disabled={!editable}
+            defaultValue={profileData.visibility}
+            options={["public", "private"]}
+            {...register("visibility")}
+          />
           <Input
             label="Joined"
             readOnly={true}

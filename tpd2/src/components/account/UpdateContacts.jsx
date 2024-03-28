@@ -11,17 +11,18 @@ export default function UpdateContacts() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const {userData, profileData} = useSelector((state) => state.auth);
-    const defaultValues = {
+
+  const { handleSubmit, register, setValue, reset } = useForm({
+    defaultValues: {
       phone: userData.phone,
       email: userData.email,
       password: null,
     }
-  const { handleSubmit, register, setValue, reset } = useForm({
-    defaultValues
+
   });
   const [editable, seteditable] = useState(false);
   const [open, setopen] = useState(false);
-console.log(userData)
+
   const updateContacts = async (data) => {
     data.phone && AuthServices.updatePhone(data) 
         .then((authRes) => {

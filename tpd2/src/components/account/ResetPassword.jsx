@@ -10,12 +10,12 @@ import { login } from "../../store/AuthSlice";
 export default function ResetPassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
-    const defaultValues = {
+  
+  const { handleSubmit, register, setValue, reset } = useForm({
+    defaultValues: {
       password: null,
       newPassword: null,
     }
-  const { handleSubmit, register, setValue, reset } = useForm({
-    defaultValues
   });
   const [editable, seteditable] = useState(false);
   const [open, setopen] = useState(false);
@@ -57,7 +57,7 @@ export default function ResetPassword() {
             </>
           ) : (
             <Button onClick={() => seteditable(true)} className="w-full py-2">
-              Edit
+              Reset Password
             </Button>
           )}
         </div>

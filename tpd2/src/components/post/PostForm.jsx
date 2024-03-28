@@ -3,13 +3,10 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
-import Input from "../Input";
-import Button from "../Button";
-import ImgBox from "../ImgBox";
-import CardBox from "../CardBox";
-import Confirm from "../Confirm";
 import toast from "react-hot-toast";
 import Select from "../Select";
+import { add } from "../../assets";
+import { Input, Button, ImgBox, CardBox, Confirm ,InputFile } from "..";
 
 export default function PostForm({ post }) {
   const navigate = useNavigate();
@@ -26,25 +23,24 @@ export default function PostForm({ post }) {
   const [postEditable, setpostEditable] = useState(post ? false : true);
 
   const [localImage, setlocalImage] = useState(null);
-  const dbImage = post && post.images ? PostServices.getFilePreview({ fileId: post.images }) : null 
+  const dbImage = post && post.images && PostServices.getFilePreview(post.images)
 
   const [open, setopen] = useState(false)
   const [updateOpen, setupdateOpen] = useState(false)
 
-  const submit = async (data) => {console.log(data)
+  const submit = async (data) => {
     if (post) {
-      const file =
-        data.images[0] && await PostServices.uploadFile(data.images[0])
-      if (file) PostServices.deleteFile(post.images);
+      const file = data.images[0] && await PostServices.uploadFile(data.images[0])
+      if (file) await PostServices.deleteFile(post.images);
       const updated = await PostServices.updatePost({
         ...data,
         slug: post.$id,
-        images: file ? file.$id : dbImage,
+        images: file ? file.$id : post.images,
       });
       if (updated) {
         setpostEditable(false);
         setupdateOpen(false)
-        toast.success("Post Updated Successfully");
+        toast.success("Post Updated");
         navigate(`/post/${updated.$id}`);
       }
     } else {
@@ -115,9 +111,20 @@ export default function PostForm({ post }) {
           {...register("content", { required: true })}
         />
         {
+          !post || isAuthor ? (
+          <Select
+            label="Visibility"
+            disabled={!postEditable}
+            defaultValue={post && post.visibility}
+            options={["public", "private"]}
+            {...register("visibility")}
+          />
+          ) : null
+        }
+        {
           postEditable && (
-            <Input
-              label="Image"
+        <InputFile 
+          label="Image"
               type="file"
               accept="image/*"
               readOnly={!postEditable}
@@ -125,32 +132,11 @@ export default function PostForm({ post }) {
               onChange={(e) =>
                 setlocalImage(URL.createObjectURL(e.target.files[0]))
               }
-            />
+        />
           )
         }
         {
           localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
-        }
-        {/*Pending Problem in Select Component*/}
-        {
-          !post || isAuthor ? (
-            <div className="relative flex flex-col py-2">
-              <label
-                htmlFor="visibility"
-                className="absolute top-0 bg-preprimary text-presecondary ml-6 px-2 w-fit rounded-full text-sm"
-              />
-              <select
-                id="visibility"
-                className="bg-primary/50 text-presecondary rounded-xl px-4 py-2 outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary"
-                defaultValue={post ? post.visibility : "public"}
-                disabled={!postEditable}
-                {...register("visibility")}
-              >
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-              </select>
-            </div>
-          ) : null
         }
         {post && isAuthor && (
           postEditable ? (

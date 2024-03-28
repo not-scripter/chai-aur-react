@@ -1,3 +1,4 @@
+import InputFile from "./InputFile";
 import Button from "./Button";
 import CardBox from "./CardBox";
 import Confirm from "./Confirm";
@@ -35,6 +36,7 @@ export {
   Button,
   NavLinkBtn,
   Input,
+  InputFile,
   Select,
   Modal,
   Confirm,

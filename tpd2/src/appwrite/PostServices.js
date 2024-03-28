@@ -253,14 +253,14 @@ export class postServices {
       throw error;
     }
   }
-  async deleteFile({ fileId }) {
+  async deleteFile(fileId) {
     try {
       return await this.storage.deleteFile(conf.imagesId, fileId);
     } catch (error) {
       throw error;
     }
   }
-  getFilePreview({ fileId }) {
+  getFilePreview(fileId) {
     try {
       return this.storage.getFilePreview(conf.imagesId, fileId);
     } catch (error) {
