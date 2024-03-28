@@ -13,6 +13,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [error, seterror] = useState({})
+  const [loading, setloading] = useState(false)
 
   const create = async (data) => {
     seterror({})
@@ -30,6 +31,7 @@ export default function Signup() {
         if (userData && profileData) {
           dispatch(login({ userData, profileData }));
           toast.success("Account Created Successfull");
+          setloading(false)
           navigate("/");
         } else toast.error("Signup Error");
       }
@@ -85,7 +87,12 @@ export default function Signup() {
             />
           </div>
           <div className="w-full">
-            <Button type="submit" className="w-full py-2">
+            <Button
+              loading={loading}
+              type="submit"
+              className="w-full py-2"
+              onClick={() => setloading(true)}
+            >
               Create Account
             </Button>
             <h1 className="font-semibold text-secondary/50 text-center">or</h1>

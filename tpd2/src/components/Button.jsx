@@ -6,7 +6,7 @@ export default function Button({
   bg = "bg-secondary",
   fg = "text-primary",
   className = "px-6 py-1",
-  loading = false,
+  loading,
   onClick,
   key,
   ref,
@@ -31,7 +31,7 @@ export default function Button({
         >
           <path
             fill="none"
-            stroke="#FFFFFF"
+            stroke="black"
             stroke-width="30"
             stroke-linecap="round"
             stroke-dasharray="300 385"

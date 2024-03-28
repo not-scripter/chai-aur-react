@@ -27,11 +27,13 @@ export default function PostForm({ post }) {
 
   const [open, setopen] = useState(false)
   const [updateOpen, setupdateOpen] = useState(false)
+  const [btnLoading, setbtnLoading] = useState(false);
 
   const submit = async (data) => {
+    setbtnLoading(true)
     if (post) {
       const file = data.images[0] && await PostServices.uploadFile(data.images[0])
-      if (file) await PostServices.deleteFile(post.images);
+      if (file && post.images) await PostServices.deleteFile(post.images);
       const updated = await PostServices.updatePost({
         ...data,
         slug: post.$id,
@@ -41,6 +43,7 @@ export default function PostForm({ post }) {
         setpostEditable(false);
         setupdateOpen(false)
         toast.success("Post Updated");
+        setbtnLoading(false)
         navigate(`/post/${updated.$id}`);
       }
     } else {
@@ -58,6 +61,7 @@ export default function PostForm({ post }) {
       });
       if (newPost) {
         toast.success("Post Created");
+        setbtnLoading(false)
         navigate(`/post/${newPost.$id}`);
       }
     }
@@ -65,16 +69,15 @@ export default function PostForm({ post }) {
   };
 
   const deletePost = async () => {
-    PostServices.deletePost({slug: post.$id}).then(() => {
-      dbImage ? PostServices.deleteFile({fileId: post.images}).then(() => {
-        toast.success("Post Deleted");
-        setopen(false);
-        navigate("/");
-      }) :
-        toast.success("Post Deleted");
+    setbtnLoading(true)
+    const postRes = await PostServices.deletePost(post.$id)
+    post.images && await PostServices.deleteFile(post.images);
+    if (postRes) {
+      toast.success("Post Deleted");
+      setbtnLoading(false)
       setopen(false);
       navigate("/");
-    });
+    }
   };
 
   const slugTransform = useCallback((value) => {
@@ -150,13 +153,20 @@ export default function PostForm({ post }) {
               >
                 Cancel
               </Button>
-              <Button onClick={() => setupdateOpen(true)} className="w-full py-2">
+              <Button
+                className="w-full py-2"
+                onClick={() => setupdateOpen(true)}
+              >
                 Save
               </Button>
             </div>
           ) : (
               <div className="flex gap-2">
-                <Button onClick={() => setopen(true)} bg="bg-red-500" className="w-full py-2">
+                <Button
+                  bg="bg-red-500"
+                  className="w-full py-2"
+                  onClick={() => setopen(true)}
+                >
                   Delete
                 </Button>
                 <Button onClick={() => setpostEditable(true)} className="w-full py-2">
@@ -167,14 +177,19 @@ export default function PostForm({ post }) {
         )}
         {
           !post && (
-            <Button type="submit" className="w-full py-2">
+            <Button
+              loading={btnLoading}
+              type="submit"
+              className="w-full py-2"
+              onClick={() => setloadingSubmit(true)}
+            >
               Create Post
             </Button>
           )
         }
       </CardBox>
-      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost}/>
-      <Confirm open={updateOpen} setopen={setupdateOpen} warningDesc="Are You Sure ? You want to Update this Post ?" proceedText="Update" proceedTo={handleSubmit(submit)}/>
+      <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost} loading={btnLoading}/>
+      <Confirm open={updateOpen} setopen={setupdateOpen} warningDesc="Are You Sure ? You want to Update this Post ?" proceedText="Update" proceedTo={handleSubmit(submit)} loading={btnLoading}/>
     </form>
   );
 }

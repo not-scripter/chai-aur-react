@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import Button from "./Button";
+import { cross } from "../assets";
 
 export default function Modal({ open, onClose, children, className }) {
   return (
@@ -21,9 +22,10 @@ export default function Modal({ open, onClose, children, className }) {
       >
         <Button
           onClick={onClose}
+          bg="bg-primary/50"
           className="absolute top-2 right-2 w-8 h-8 rounded-full"
         >
-          <FontAwesomeIcon icon="fa-solid fa-xmark" />
+          <img src={cross}/>
         </Button>
         {children}
       </div>

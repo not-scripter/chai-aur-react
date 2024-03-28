@@ -9,17 +9,31 @@ export default function Post() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [post, setpost] = useState(null);
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(true);
 
-  useEffect(() => {
+  const getPost = async () => {
     if (slug) {
-      PostServices.getPost(slug).then((res) => res && setpost(res));
+      const res = await PostServices.getPost(slug);
+      if (res) {
+        setpost(res);
+        setloading(false);
+      }
     } else {
       navigate("/");
     }
+  };
+
+  useEffect(() => {
+    getPost();
   }, [slug, navigate]);
 
   return !loading ? (
-  post ? <PostForm post={post} /> : <NotFound title="Post Not Found" />
-  ) : <Loader />
+    post ? (
+      <PostForm post={post} />
+    ) : (
+      <NotFound title="Post Not Found" />
+    )
+  ) : (
+    <Loader />
+  );
 }

@@ -12,6 +12,7 @@ export default function Confirm({
   warningDesc = "Are You Sure ? You want to Proceed ?",
   proceedTo,
   registerPassword,
+  loading,
 }) {
   return (
     <Modal open={open} onClose={() => setopen(false)}>
@@ -34,12 +35,13 @@ export default function Confirm({
           className="w-full py-2 rounded-xl"
           onClick={() => {
             setopen(false);
-            setpassword("");
+            registerPassword && setpassword("");
           }}
         >
           {cancelText}
         </Button>
         <Button
+          loading={loading}
           bg="bg-red-500"
           className="w-full py-2 rounded-xl"
           onClick={proceedTo}

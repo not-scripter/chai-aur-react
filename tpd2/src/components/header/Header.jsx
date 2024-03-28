@@ -49,7 +49,7 @@ export default function Header() {
           bg="bg-primary/50"
           className="visible sm:hidden w-8 h-8 px-0 py-0 z-30"
         >
-          <img src={search} className=""/>
+          <img src={search} />
         </Button>
         <Logo className="z-30" />
         <Button

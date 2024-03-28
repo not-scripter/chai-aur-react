@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
-import ImgBox from "../ImgBox";
-import CardBox from "../CardBox";
+import { defaultAvatar } from "../../assets";
+import { Loader, ImgBox, CardBox } from "../";
 
 export default function PostCard({ userId, slug, title, images, $createdAt }) {
   const [profile, setprofile] = useState(null);
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
-
+  const [loading, setloading] = useState(true);
+  console.log(profile?.avatar);
   function handleIso(isoDate) {
     const date = new Date(isoDate);
     const year = date.getFullYear();
@@ -24,18 +25,33 @@ export default function PostCard({ userId, slug, title, images, $createdAt }) {
     settime(time);
   }
 
+  const getProfile = async () => {
+    const res = await PostServices.getProfile(userId);
+    if (res) {
+      setprofile(res);
+      setloading(false);
+    }
+  };
+
   useEffect(() => {
-    PostServices.getProfile(userId).then((res) => setprofile(res));
+    getProfile();
     handleIso($createdAt);
-  }, []);
-  return (
+  }, [userId, $createdAt]);
+  return !loading ? (
     <Link to={`/post/${slug}`} key={slug}>
       <CardBox>
         <div className="flex justify-between">
           <div className="flex gap-2 items-center">
-            <h1 className="w-8 h-8 bg-presecondary rounded-full shadow-sm outline-secondary/20 outline-4 text-preprimary flex items-center justify-center">
-              P
-            </h1>
+              <img
+              className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
+                src={
+                  profile
+                    ? profile.avatar
+                      ? PostServices.getAvatarPreview(profile.avatar)
+                      : defaultAvatar
+                    : defaultAvatar
+                }
+              />
             <h1 className="flex flex-col font-semibold">
               {profile?.fullname}
               <span className="font-semibold text-sm text-secondary/50">
@@ -50,16 +66,15 @@ export default function PostCard({ userId, slug, title, images, $createdAt }) {
             </span>
           </h1>
         </div>
-        {images ? (
-          <ImgBox
-            src={PostServices.getFilePreview({ fileId: images })}
-            alt={title}
-          />
-        ) : null}
+        {images && (
+          <ImgBox src={PostServices.getFilePreview(images)} alt={title} />
+        )}
         <div>
           <h1>{title}</h1>
         </div>
       </CardBox>
     </Link>
+  ) : (
+    <Loader />
   );
 }
