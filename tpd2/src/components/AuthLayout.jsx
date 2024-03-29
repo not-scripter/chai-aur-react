@@ -7,16 +7,17 @@ import Loader from "../Loader";
 
 export default function AuthLayout({ children, auth = true }) {
   const navigate = useNavigate();
-  const [loading, setloading] = useState(true);
-  const authStatus = useSelector((state) => state.auth.authStatus);
+  const [loading, setloading] = useState(false);
+  const { authStatus } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (!auth && authStatus !== auth) {
+      setloading(false);
       navigate("/");
     } else if (auth && authStatus !== auth) {
+      setloading(false);
       navigate("/login");
     }
-    setloading(false);
   }, [authStatus, navigate, auth]);
 
   return !loading ? <>{children}</> : <Loader />;

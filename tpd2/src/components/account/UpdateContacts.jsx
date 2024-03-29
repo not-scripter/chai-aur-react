@@ -12,36 +12,53 @@ export default function UpdateContacts() {
   const dispatch = useDispatch()
   const {userData, profileData} = useSelector((state) => state.auth);
 
-  const { handleSubmit, register, setValue, reset } = useForm({
-    defaultValues: {
-      phone: userData.phone,
-      email: userData.email,
-      password: null,
-    }
+  const defaultValues = {
+    phone: userData.phone,
+    email: userData.email,
+    password: null,
+  }
 
+  const { handleSubmit, register, setValue, reset } = useForm({
+    defaultValues
   });
   const [editable, seteditable] = useState(false);
   const [open, setopen] = useState(false);
 
   const updateContacts = async (data) => {
-    data.phone && AuthServices.updatePhone(data) 
-        .then((authRes) => {
-          dispatch(login({userData: authRes}))
-          setValue("phone", authRes.phone)
+    if (data.phone !== userData.phone && data.email !== userData.email) {
+      const phoneRes = await AuthServices.updatePhone(data) 
+      if (phoneRes) {
+        const emailRes = await AuthServices.updateEmail(data)
+        if (phoneRes && emailRes) {
+          dispatch(login({userData: emailRes}))
+          toast.success("Contact Details Updated");
+          seteditable(false);
+          setopen(false);
+          reset(defaultValues)
+        }
+      }
+    } else {
+      if (data.phone !== userData.phone) {
+        const phoneRes = await AuthServices.updatePhone(data) 
+        if (phoneRes) {
+          dispatch(login({userData: phoneRes}))
           toast.success("Phone Updated");
           seteditable(false);
           setopen(false);
-        })
-        .catch(() => toast.error("Password Incorrect"));
-      data.email && AuthServices.updateEmail(data)
-        .then((authRes) => {
-          dispatch(login({userData: authRes}))
-          setValue("email", authRes.email)
+          reset(defaultValues)
+        }
+      }
+      if (data.email !== userData.email) {
+        const emailRes = await AuthServices.updateEmail(data)
+        if (emailRes) {
+          dispatch(login({userData: emailRes}))
           toast.success("Email Updated");
           seteditable(false);
           setopen(false);
-        })
-        .catch(() => toast.error("Password Incorrect"));
+          reset(defaultValues)
+        }
+      }
+    }
   };
   return (
     <form onSubmit={handleSubmit(updateContacts)}>

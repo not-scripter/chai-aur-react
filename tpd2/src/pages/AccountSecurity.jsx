@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ResetPassword, UpdateContacts } from "../components";
+import React from "react";
+import { ResetPassword, UpdateContacts } from "../components/account";
 
 export default function AccountSecurity() {
   return (

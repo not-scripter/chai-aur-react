@@ -4,8 +4,9 @@ import toast, {
   ToastIcon,
   resolveValue,
 } from "react-hot-toast";
-import Button from "./Button";
+import { Button } from "./";
 import { cross } from "../assets";
+
 export default function Toaster() {
   return (
     <HotToaster

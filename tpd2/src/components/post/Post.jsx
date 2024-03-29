@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import PostServices from "../../appwrite/PostServices";
-import NotFound from "../NotFound";
-import PostForm from "./PostForm";
-import Loader from "../Loader";
+import { PostServices } from "../../appwrite";
+import { NotFound, Loader } from "../";
+import { PostForm } from "../post";
 
 export default function Post() {
   const navigate = useNavigate();

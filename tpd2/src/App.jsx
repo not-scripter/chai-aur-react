@@ -2,24 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Footer, Header, Loader, Toaster } from "./components";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import AuthServices from "./appwrite/AuthServices";
+import { AuthServices, PostServices } from "./appwrite";
 import { login, logout } from "./store/AuthSlice";
-import PostServices from "./appwrite/PostServices";
 
 export default function App() {
   const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
 
+  const getAccount = async () => {
+    const userData = await AuthServices.getCurrentUser()
+    if (userData) {
+      const profileData = await PostServices.getProfile(userData.$id)
+      if (profileData) {
+        dispatch(login({ userData, profileData }))
+        setloading(false)
+      }
+    } else {
+      dispatch(logout())
+      setloading(false)
+    }
+  }
+
   useEffect(() => {
-    AuthServices.getCurrentUser()
-      .then((userData) => {
-        if (userData) {
-          PostServices.getProfile(userData.$id).then((profileData) => {
-            dispatch(login({ userData, profileData }));
-          });
-        } else dispatch(logout());
-      })
-      .finally(setloading(false));
+    getAccount()
   }, []);
 
   return !loading ? (

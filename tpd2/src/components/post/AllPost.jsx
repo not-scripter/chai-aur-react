@@ -1,21 +1,31 @@
 import React, { useEffect, useState } from "react";
-import PostServices from "../../appwrite/PostServices";
-import PostCard from "./PostCard";
-import NotFound from "../NotFound";
-import Loader from "../Loader";
+import { PostServices } from "../../appwrite";
+import { NotFound, Loader } from "../";
+import { PostCard } from "../post";
 
 export default function AllPost() {
   const [posts, setposts] = useState(null);
-  const [loading, setloading] = useState(true)
+  const [loading, setloading] = useState(true);
+
+  const getPosts = async () => {
+    const allPosts = await PostServices.getPosts();
+    if (allPosts) {
+      setposts(allPosts.documents);
+      setloading(false);
+    }
+  };
+
   useEffect(() => {
-    PostServices.getPosts([]).then(
-      (posts) => posts && setposts(posts.documents),
-    ).finally(() => setloading(false))
+    getPosts();
   }, []);
 
   return !loading ? (
-    posts ? (
+    posts.length > 0 ? (
       posts.map((item) => <PostCard slug={item.$id} {...item} />)
-    ) : <NotFound title="Post Not Found" />
-  ) : <Loader />
+    ) : (
+      <NotFound title="Post Not Found" />
+    )
+  ) : (
+    <Loader />
+  );
 }

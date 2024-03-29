@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, MyPostComp } from "../components";
+import { Container } from "../components";
+import { MyPostComp } from "../components/post"
 
 export default function MyPosts() {
   return (

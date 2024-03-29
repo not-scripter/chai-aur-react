@@ -1,6 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import Button from "./Button";
+import { Button } from "./";
 import { cross } from "../assets";
 
 export default function Modal({ open, onClose, children, className }) {

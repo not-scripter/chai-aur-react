@@ -94,6 +94,17 @@ export class postServices {
       console.log("appwrite :: update profile ::", error.message);
     }
   }
+  async deleteProfile(userId) {
+    try {
+      return await this.databases.deleteDocument(
+        conf.databaseId,
+        conf.profilesId,
+        userId,
+      );
+    } catch (error) {
+      console.log("appwrite :: delete profile ::", error.message);
+    }
+  }
   async getProfile(userId) {
     try {
       return await this.databases.getDocument(
@@ -153,12 +164,12 @@ export class postServices {
       console.log("appwrite :: update post ::", error.message);
     }
   }
-  async deletePost(slug) {
+  async deletePost(postId) {
     try {
       return await this.databases.deleteDocument(
         conf.databaseId,
         conf.postsId,
-        slug,
+        postId,
       );
     } catch (error) {
       console.log("appwrite :: delete post ::", error.message);

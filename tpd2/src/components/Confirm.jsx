@@ -1,7 +1,5 @@
 import React from "react";
-import Button from "./Button";
-import Modal from "./Modal";
-import Input from "./Input";
+import { Button, Modal, Input } from "./";
 
 export default function Confirm({
   open,

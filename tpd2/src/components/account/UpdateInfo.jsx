@@ -13,6 +13,7 @@ export default function UpdateInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData, profileData } = useSelector((state) => state.auth);
+
   function handleIso(isoDate) {
     const date = new Date(isoDate);
     const year = date.getFullYear();
@@ -20,15 +21,19 @@ export default function UpdateInfo() {
     const day = date.getDate();
     return `${day < 10 ? "0" + day : day}-${month < 10 ? "0" + month : month}-${year}`;
   }
-
-  const { handleSubmit, register, reset, setValue } = useForm({
-    defaultValues: {
+  
+  const defaultValues = {
     fullname: profileData?.fullname,
     username: userData?.name,
-    website: profileData.website,
-    location: profileData.location,
-    joined: handleIso(profileData.joined),
+    dob: profileData?.dob,
+    website: profileData?.website,
+    location: profileData?.location,
+    visibility: profileData?.visibility,
+    joined: handleIso(profileData?.joined),
   }
+
+  const { handleSubmit, register, reset, setValue } = useForm({
+    defaultValues
   });
 
   const [btnLoading, setbtnLoading] = useState(false)
@@ -52,17 +57,17 @@ export default function UpdateInfo() {
       banner: banner ? banner.$id : profileData.banner,
       fullname: data.fullname,
       username: data.username,
+      dob: data.dob,
       website: data.website,
       location: data.location,
       visibility: data.visibility,
     })
     if (proRes) {
       dispatch(login({ userData: authRes ? authRes : userData, profileData: proRes }));
+      reset(defaultValues)
       toast.success("Info Updated");
       setbtnLoading(false)
       seteditable(false);
-      //setValue("fullname", proRes.fullname);
-      //setValue("username", authRes.name);
     }
   };
 
@@ -136,10 +141,12 @@ export default function UpdateInfo() {
             {...register("username", { required: true })}
           />
           <Input
-            label="DOB"
+            type="date"
+            label="Born"
             readOnly={!editable}
             placeholder="Enter Your Date-of-Birth"
-            {...register("username", { required: false })}
+            className="w-full"
+            {...register("dob", { required: false })}
           />
           <Input
             label="Location"

@@ -1,5 +1,5 @@
 import React from "react";
-import CardBox from "./CardBox";
+import { CardBox } from "./";
 
 export default function NotFound({ title = "" }) {
   return (

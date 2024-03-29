@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import PostServices from "../../appwrite/PostServices";
+import { PostServices } from "../../appwrite";
 import { useSelector } from "react-redux";
-import { Loader, PostCard, NotFound } from "../";
+import { Loader, NotFound } from "../";
+import { PostCard } from "../post"
 
 export default function MyPosts() {
   const [myPosts, setmyPosts] = useState(null);
@@ -21,7 +22,7 @@ export default function MyPosts() {
     getMyPosts()
   }, [userData]);
 
-  return !loading ? myPosts ? (
+  return !loading ? myPosts.length > 0 ? (
       myPosts.map((item) => <PostCard slug={item.$id} {...item} />)
   ) : (
     <NotFound title="Post Not Found" />

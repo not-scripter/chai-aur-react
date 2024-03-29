@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import AuthServices from "../appwrite/AuthServices";
+import { AuthServices, PostServices } from "../appwrite";
 import { login, logout } from "../store/AuthSlice";
-import PostServices from "../appwrite/PostServices";
-import Loader from "./Loader";
+import { Loader } from "./";
 
 export default function DataLoader() {
   const [loading, setloading] = useState(true);

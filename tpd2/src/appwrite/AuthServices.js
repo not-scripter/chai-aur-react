@@ -28,6 +28,14 @@ export class authServices {
     }
   }
 
+  async deleteAccount() {
+    try {
+      return await this.account.deleteSessions();
+    } catch (error) {
+      console.log("appwrite :: delete account ::", error.message);
+    }
+  }
+
   async updateName(username) {
     try {
       return await this.account.updateName(username);

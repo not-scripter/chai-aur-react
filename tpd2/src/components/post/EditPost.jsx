@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import PostServices from '../../appwrite/PostServices'
-import NotFound from '../NotFound'
-import PostForm from './PostForm'
+import { PostServices } from '../../appwrite'
+import { NotFound } from '../'
+import { PostForm } from '../post'
 
 export default function EditPost() {
   const {slug} = useParams()
   const navigate = useNavigate()
   const [post, setpost] = useState(null)
 
-  useEffect(() => {
-    if (post) {
-      PostServices.getPost(post).then(data => setpost(data))
+  const getPost = async () => {
+    if (slug) {
+      const post = await PostServices.getPost(slug)
+      if (post) {
+      setpost(data)
+      }
     } else {
       navigate("/")
     }
+  }
+
+  useEffect(() => {
+    getPost()
   }, [slug, navigate])
+
   return post ? (
     <PostForm post={post}/>
   ) : (

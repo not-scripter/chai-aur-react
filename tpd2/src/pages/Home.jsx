@@ -1,5 +1,6 @@
 import React from 'react'
-import { AllPost, Container } from '../components'
+import { Container } from '../components'
+import { AllPost } from "../components/post"
 
 export default function Home() {
   return (

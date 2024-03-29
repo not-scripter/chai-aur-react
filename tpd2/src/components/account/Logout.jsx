@@ -11,12 +11,13 @@ export default function Logout() {
   const dispatch = useDispatch();
   const [open, setopen] = useState(null);
 
-  const handleLogout = () => {
-    AuthServices.logout().then(() => {
+  const handleLogout = async () => {
+    const outRes = await AuthServices.logout()
+    if (outRes) {
       dispatch(logout());
       toast.success("Logout Successfull");
       navigate("/login");
-    });
+    };
   };
   return (
     <>

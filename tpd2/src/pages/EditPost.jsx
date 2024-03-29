@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, EditPost as EditPostComp } from "../components";
+import { Container } from "../components";
+import { EditPostComp } from "../components/post"
 
 export default function EditPost() {
   return (
