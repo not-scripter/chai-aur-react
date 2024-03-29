@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loader from "../Loader";
+import { Loader } from "../components";
 
 export default function AuthLayout({ children, auth = true }) {
   const navigate = useNavigate();

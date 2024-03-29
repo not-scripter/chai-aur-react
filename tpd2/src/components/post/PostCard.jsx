@@ -55,7 +55,7 @@ export default function PostCard({ userId, slug, title, images, $createdAt }) {
             <h1 className="flex flex-col font-semibold">
               {profile?.fullname}
               <span className="font-semibold text-sm text-secondary/50">
-                {profile?.username}
+                @{profile?.username}
               </span>
             </h1>
           </div>

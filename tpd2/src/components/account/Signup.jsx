@@ -14,10 +14,21 @@ export default function Signup() {
   const [error, seterror] = useState({})
   const [loading, setloading] = useState(false)
 
+  function handleIso(isoDate) {
+    const date = new Date(isoDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${day < 10 ? "0" + day : day}/${month < 10 ? "0" + month : month}/${year}`;
+  }
+
   const create = async (data) => {
     setloading(true)
     seterror({})
-    const account = await AuthServices.createAccount(data);
+    const account = await AuthServices.createAccount({
+      userId: data.username,
+      ...data
+    });
     if (account) {
       const userData = await AuthServices.getCurrentUser();
       if (userData) {
@@ -26,7 +37,7 @@ export default function Signup() {
           fullname: data.fullname,
           username: userData.name,
           email: userData.email,
-          joined: userData.$createdAt,
+          joined: handleIso(userData.$createdAt),
         });
         if (userData && profileData) {
           dispatch(login({ userData, profileData }));

@@ -4,8 +4,7 @@ import { Button, CardBox, ImgBox, Input, Select } from "../index";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import AuthServices from "../../appwrite/AuthServices";
-import PostServices from "../../appwrite/PostServices";
+import { AuthServices, PostServices } from "../../appwrite";
 import { login } from "../../store/AuthSlice";
 import { defaultAvatar, defaultBanner, edit } from "../../assets";
 
@@ -13,14 +12,6 @@ export default function UpdateInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData, profileData } = useSelector((state) => state.auth);
-
-  function handleIso(isoDate) {
-    const date = new Date(isoDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return `${day < 10 ? "0" + day : day}-${month < 10 ? "0" + month : month}-${year}`;
-  }
   
   const defaultValues = {
     fullname: profileData?.fullname,
@@ -29,7 +20,7 @@ export default function UpdateInfo() {
     website: profileData?.website,
     location: profileData?.location,
     visibility: profileData?.visibility,
-    joined: handleIso(profileData?.joined),
+    joined: profileData?.joined,
   }
 
   const { handleSubmit, register, reset, setValue } = useForm({
@@ -37,7 +28,6 @@ export default function UpdateInfo() {
   });
 
   const [btnLoading, setbtnLoading] = useState(false)
-
   const [editable, seteditable] = useState(false);
   const [localAvatar, setlocalAvatar] = useState(null);
   const [localBanner, setlocalBanner] = useState(null);

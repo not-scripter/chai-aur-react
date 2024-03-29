@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Logo from "../Logo";
+import { Logo, Button } from "../components";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Button from "../Button";
-import { cross, menu, search } from "../../assets";
+import { cross, menu, search } from "../assets";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.authStatus);

@@ -10,6 +10,7 @@ import Post from "./Post";
 import Login from "./Login";
 import Signup from "./Signup";
 import Test from "./Test";
+import Profile from "./Profile";
 
 export {
   Test,
@@ -24,4 +25,5 @@ export {
   AccountInfo,
   AccountSecurity,
   AccountAdvance,
+  Profile,
 };
