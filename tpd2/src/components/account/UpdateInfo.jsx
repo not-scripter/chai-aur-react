@@ -45,7 +45,7 @@ export default function UpdateInfo() {
     const banner = data.banner[0] && await PostServices.uploadBanner(data.banner[0]);
     avatar && profileData.avatar && PostServices.deleteAvatar(profileData.avatar);
     banner && profileData.banner && PostServices.deleteBanner(profileData.banner);
-    const authRes = data.username && await AuthServices.updateName(data)
+    const authRes = data.username && await AuthServices.updateName(data.username)
     const proRes = await PostServices.updateProfile({
       userId: userData?.$id,
       avatar: avatar ? avatar.$id : profileData.avatar,

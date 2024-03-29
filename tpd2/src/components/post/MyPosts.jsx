@@ -1,26 +1,29 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostServices from "../../appwrite/PostServices";
 import { useSelector } from "react-redux";
-import PostCard from "./PostCard";
-import NotFound from "../NotFound";
+import { Loader, PostCard, NotFound } from "../";
 
 export default function MyPosts() {
   const [myPosts, setmyPosts] = useState(null);
   const userData = useSelector((state) => state.auth.userData);
+  const [loading, setloading] = useState(true)
+
+  const getMyPosts = async () => {
+   const myPosts = await PostServices.getMyPosts(userData.$id)
+    if (myPosts) {
+      setmyPosts(myPosts.documents)
+      setloading(false)
+    }
+  }
 
   useEffect(() => {
-    PostServices.getMyPosts({ userId: userData.$id }).then((data) =>
-      setmyPosts(data.documents),
-    );
-  }, []);
+    getMyPosts()
+  }, [userData]);
 
-  return myPosts ? (
-    myPosts.map((item) => (
-      <PostCard slug={item.$id} title={item.title} images={item.images} />
-    ))
+  return !loading ? myPosts ? (
+      myPosts.map((item) => <PostCard slug={item.$id} {...item} />)
   ) : (
     <NotFound title="Post Not Found" />
-  );
+  ) : <Loader />
 }

@@ -24,36 +24,36 @@ export class authServices {
         return userAccount;
       }
     } catch (error) {
-      throw error;
+      console.log("appwrite :: create account ::", error.message);
     }
   }
 
-  async updateName({ username }) {
+  async updateName(username) {
     try {
       return await this.account.updateName(username);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update name ::", error.message);
     }
   }
   async updatePhone({ phone, password }) {
     try {
       return await this.account.updatePhone(phone, password);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update phone ::", error.message);
     }
   }
   async updateEmail({ email, password }) {
     try {
       return await this.account.updateEmail(email, password);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update email ::", error.message);
     }
   }
   async updatePassword({ newPassword, password }) {
     try {
       return await this.account.updatePassword(newPassword, password);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update password ::", error.message);
     }
   }
 
@@ -61,7 +61,7 @@ export class authServices {
     try {
       return await this.account.createEmailSession(email, password);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: login ::", error.message);
     }
   }
 
@@ -69,7 +69,7 @@ export class authServices {
     try {
       return await this.account.get();
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get current user ::", error.message);
     }
   }
 
@@ -77,7 +77,7 @@ export class authServices {
     try {
       return await this.account.deleteSessions();
     } catch (error) {
-      throw error;
+      console.log("appwrite :: logout ::", error.message);
     }
   }
 }

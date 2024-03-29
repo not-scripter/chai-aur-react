@@ -50,7 +50,7 @@ export class postServices {
         },
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: create profile :: ", error.message);
     }
   }
   async updateProfile({
@@ -91,7 +91,7 @@ export class postServices {
         },
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update profile ::", error.message);
     }
   }
   async getProfile(userId) {
@@ -102,18 +102,18 @@ export class postServices {
         userId,
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get profile ::", error.message);
     }
   }
-  async getProfiles({ queries = [Query.equal("isPrivate", false)] }) {
+  async getProfiles() {
     try {
       return await this.databases.listDocuments(
         conf.databaseId,
         conf.profilesId,
-        queries,
+        [Query.equal("visibility", "public")],
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get profiles ::", error.message);
     }
   }
 
@@ -133,7 +133,7 @@ export class postServices {
         },
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: create post ::", error.message);
     }
   }
   async updatePost({ slug, title, content, images, visibility }) {
@@ -150,7 +150,7 @@ export class postServices {
         },
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: update post ::", error.message);
     }
   }
   async deletePost(slug) {
@@ -161,7 +161,7 @@ export class postServices {
         slug,
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: delete post ::", error.message);
     }
   }
   async getPost(slug) {
@@ -172,30 +172,26 @@ export class postServices {
         slug,
       );
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get post ::", error.message);
     }
   }
-  async getPosts({ queries = [Query.equal("visibility", "public")] }) {
+  async getPosts() {
     try {
-      return await this.databases.listDocuments(
-        conf.databaseId,
-        conf.postsId,
-        queries,
-      );
+      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
+        Query.equal("visibility", "public"),
+      ]);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get posts ::", error.message);
     }
   }
 
-  async getMyPosts({ userId, queries = [Query.equal("userId", userId)] }) {
+  async getMyPosts(userId) {
     try {
-      return await this.databases.listDocuments(
-        conf.databaseId,
-        conf.postsId,
-        queries,
-      );
+      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
+        Query.equal("userId", userId),
+      ]);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get my posts ::", error.message);
     }
   }
 
@@ -205,21 +201,21 @@ export class postServices {
     try {
       return await this.storage.createFile(conf.avatarsId, ID.unique(), file);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: uploaf avatar ::", error.message);
     }
   }
   async deleteAvatar(fileId) {
     try {
       return await this.storage.deleteFile(conf.avatarsId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: delete avatar ::", error.message);
     }
   }
   getAvatarPreview(fileId) {
     try {
       return this.storage.getFilePreview(conf.avatarsId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: getAvatarPreview ::", error.message);
     }
   }
   // Profile Banner
@@ -227,21 +223,21 @@ export class postServices {
     try {
       return await this.storage.createFile(conf.bannersId, ID.unique(), file);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: upload banner ::", error.message);
     }
   }
   async deleteBanner(fileId) {
     try {
       return await this.storage.deleteFile(conf.bannersId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: delete banner ::", error.message);
     }
   }
   getBannerPreview(fileId) {
     try {
       return this.storage.getFilePreview(conf.bannersId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get banner preview ::", error.message);
     }
   }
 
@@ -250,21 +246,21 @@ export class postServices {
     try {
       return await this.storage.createFile(conf.imagesId, ID.unique(), file);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: upload file ::", error.message);
     }
   }
   async deleteFile(fileId) {
     try {
       return await this.storage.deleteFile(conf.imagesId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: delete file ::", error.message);
     }
   }
   getFilePreview(fileId) {
     try {
       return this.storage.getFilePreview(conf.imagesId, fileId);
     } catch (error) {
-      throw error;
+      console.log("appwrite :: get file preview ::", error.message);
     }
   }
 }
