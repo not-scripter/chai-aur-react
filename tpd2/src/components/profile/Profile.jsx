@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
 import { Button, CardBox, ImgBox } from "../";
@@ -11,45 +11,49 @@ export default function Profile() {
   const [profileData, setprofileData] = useState(null);
   const { userData } = useSelector((state) => state.auth);
   const isAuthor = profileData?.$id === userData?.$id ? true : false;
-  const [isFollowing, setisFollowing] = useState(false);
+  const [isFollowing, setisFollowing] = useState(null);
   const [btnLoading, setbtnLoading] = useState(false);
 
   const getProfile = async () => {
     const proRes = await PostServices.getProfile(slug);
     if (proRes) {
-      const isRes = proRes.followers.filter((item) =>
-        item === userData.$id
-      );
-      isRes.length > 0 ? setisFollowing(true) : setisFollowing(false);
-      console.log(isRes);
-      console.log(proRes.followers);
+      const isRes = proRes.followers.filter((item) => item === userData.$id);
+      isRes.length !== 0 ? setisFollowing(true) : setisFollowing(false);
       setprofileData(proRes);
+      console.log(isRes);
     }
   };
+
   const handleFollow = async () => {
-    // setbtnLoading(true);
+    setbtnLoading(true);
     if (!isFollowing) {
       const followRes = await PostServices.updateProfile({
         userId: profileData.$id,
         followers: [...profileData.followers, userData.$id],
       });
+      if (followRes) {
+        setprofileData(followRes);
+        setisFollowing(true);
+        setbtnLoading(false);
+      }
     } else if (isFollowing) {
-      const followRes = await PostServices.updateProfile({
+      const unFollowRes = await PostServices.updateProfile({
         userId: profileData.$id,
         followers: profileData.followers.filter(
           (item) => item !== userData.$id,
         ),
       });
-      console.log("followRes", followRes);
+      if (unFollowRes) {
+        setprofileData(unFollowRes);
+        setisFollowing(false);
+        setbtnLoading(false);
+      }
     }
-  };
-  const handleEdit = async () => {
-    navigate("/account");
   };
 
   useEffect(() => {
     getProfile();
-  }, [slug, isFollowing]);
+  }, [setprofileData]);
 
   return (
     <CardBox>
@@ -76,7 +80,7 @@ export default function Profile() {
           loading={btnLoading}
           className="h-fit px-6 py-1"
           rounded="rounded-full"
-          onClick={isAuthor ? handleEdit : handleFollow}
+          onClick={isAuthor ? () => navigate("/account") : handleFollow}
         >
           {isAuthor ? "Edit" : isFollowing ? "Following" : "Follow"}
         </Button>
