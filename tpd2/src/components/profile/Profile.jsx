@@ -11,28 +11,45 @@ export default function Profile() {
   const [profileData, setprofileData] = useState(null);
   const { userData } = useSelector((state) => state.auth);
   const isAuthor = profileData?.$id === userData?.$id ? true : false;
-  const isFollowing = profileData?.followers.filter((item) => item === userData?.$id ? true : false)
-console.log("isFollowing",isFollowing)
+  const [isFollowing, setisFollowing] = useState(false);
   const [btnLoading, setbtnLoading] = useState(false);
 
   const getProfile = async () => {
     const proRes = await PostServices.getProfile(slug);
     if (proRes) {
+      const isRes = proRes.followers.filter((item) =>
+        item === userData.$id
+      );
+      isRes.length > 0 ? setisFollowing(true) : setisFollowing(false);
+      console.log(isRes);
+      console.log(proRes.followers);
       setprofileData(proRes);
     }
   };
   const handleFollow = async () => {
-    const followRes = await PostServices.updateProfile({
-      followers: profileData?.followers.push(userData?.$id)
-    }); console.log("followRes",followRes)
+    // setbtnLoading(true);
+    if (!isFollowing) {
+      const followRes = await PostServices.updateProfile({
+        userId: profileData.$id,
+        followers: [...profileData.followers, userData.$id],
+      });
+    } else if (isFollowing) {
+      const followRes = await PostServices.updateProfile({
+        userId: profileData.$id,
+        followers: profileData.followers.filter(
+          (item) => item !== userData.$id,
+        ),
+      });
+      console.log("followRes", followRes);
+    }
   };
   const handleEdit = async () => {
-    navigate("/account")
-  }
+    navigate("/account");
+  };
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [slug, isFollowing]);
 
   return (
     <CardBox>
@@ -56,11 +73,12 @@ console.log("isFollowing",isFollowing)
           </span>
         </h1>
         <Button
+          loading={btnLoading}
           className="h-fit px-6 py-1"
           rounded="rounded-full"
           onClick={isAuthor ? handleEdit : handleFollow}
         >
-          {isAuthor ? "Edit" : "Follow"}
+          {isAuthor ? "Edit" : isFollowing ? "Following" : "Follow"}
         </Button>
       </div>
       <div className="flex flex-col">
