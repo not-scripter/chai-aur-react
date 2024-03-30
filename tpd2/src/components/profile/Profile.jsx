@@ -11,7 +11,8 @@ export default function Profile() {
   const [profileData, setprofileData] = useState(null);
   const { userData } = useSelector((state) => state.auth);
   const isAuthor = profileData?.$id === userData?.$id ? true : false;
-
+  const isFollowing = profileData?.followers.filter((item) => item === userData?.$id ? true : false)
+console.log("isFollowing",isFollowing)
   const [btnLoading, setbtnLoading] = useState(false);
 
   const getProfile = async () => {
@@ -20,7 +21,11 @@ export default function Profile() {
       setprofileData(proRes);
     }
   };
-  const handleFollow = async () => {alert("handleFollow")};
+  const handleFollow = async () => {
+    const followRes = await PostServices.updateProfile({
+      followers: profileData?.followers.push(userData?.$id)
+    }); console.log("followRes",followRes)
+  };
   const handleEdit = async () => {
     navigate("/account")
   }

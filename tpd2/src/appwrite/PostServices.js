@@ -1,4 +1,4 @@
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
 import conf from "../conf/conf";
 
 export class postServices {
@@ -48,6 +48,10 @@ export class postServices {
           followers,
           joined,
         },
+        [
+          Permission.read(Role.users()),
+          Permission.update(Role.users()),
+        ]
       );
     } catch (error) {
       console.log("appwrite :: create profile :: ", error.message);
