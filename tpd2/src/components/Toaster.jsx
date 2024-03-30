@@ -5,7 +5,7 @@ import toast, {
   resolveValue,
 } from "react-hot-toast";
 import { Button } from "./";
-import { cross } from "../assets";
+import { CrossSvg } from "../assets";
 
 export default function Toaster() {
   return (
@@ -26,7 +26,8 @@ export default function Toaster() {
             className="absolute top-3 right-3 w-8 h-8 p-1"
             onClick={() => toast.dismiss(t.id)}
           >
-            <img src={cross} />
+            <CrossSvg />
+            {/* <img src={cross} /> */}
           </Button>
         </div>
       )}

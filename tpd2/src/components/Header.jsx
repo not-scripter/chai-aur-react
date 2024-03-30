@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Logo, Button } from "../components";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { cross, menu, search } from "../assets";
+import { CrossSvg, MenuSvg, SearchSvg } from "../assets";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.authStatus);
@@ -49,7 +49,7 @@ export default function Header() {
           className="visible sm:hidden w-8 h-8 p-1 z-30"
           rounded="rounded-full"
         >
-          <img src={search} />
+          <SearchSvg />
         </Button>
         <Logo className="z-30" />
         <Button
@@ -58,7 +58,7 @@ export default function Header() {
           className="visible sm:hidden w-8 h-8 p-1 z-30"
           rounded="rounded-full"
         >
-          {!mobNav ? <img src={menu} /> : <img src={cross} />}
+          {!mobNav ? <MenuSvg /> : <CrossSvg />}
         </Button>
         <nav
           className={`${mobNav ? "visible" : "hidden"} absolute z-20 top-0 pt-14 left-0 sm:visible bg-primary/20 text-secondary backdrop-blur flex flex-col gap-2 px-4 w-full h-dvh text-2xl font-semibold`}

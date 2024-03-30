@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "./";
-import { cross } from "../assets";
+import { CrossSvg } from "../assets";
 
 export default function Modal({ open, onClose, children, className }) {
   return (
@@ -25,7 +25,8 @@ export default function Modal({ open, onClose, children, className }) {
           rounded="rounded-full"
           className="absolute top-2 right-2 w-8 h-8 p-1"
         >
-          <img src={cross}/>
+          <CrossSvg />
+          {/* <img src={cross}/> */}
         </Button>
         {children}
       </div>

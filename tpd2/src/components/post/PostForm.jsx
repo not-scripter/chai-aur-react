@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import toast from "react-hot-toast";
 import Select from "../Select";
-import { add } from "../../assets";
+import { AddSvg } from "../../assets";
 import { Input, Button, ImgBox, CardBox, Confirm ,InputFile } from "..";
 
 export default function PostForm({ post }) {

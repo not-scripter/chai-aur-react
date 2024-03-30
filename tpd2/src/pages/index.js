@@ -11,6 +11,8 @@ import Login from "./Login";
 import Signup from "./Signup";
 import Test from "./Test";
 import Profile from "./Profile";
+import ProfilePosts from "./ProfilePosts";
+import ProfileReplies from "./ProfileReplies";
 
 export {
   Test,
@@ -26,4 +28,6 @@ export {
   AccountSecurity,
   AccountAdvance,
   Profile,
+  ProfilePosts,
+  ProfileReplies,
 };

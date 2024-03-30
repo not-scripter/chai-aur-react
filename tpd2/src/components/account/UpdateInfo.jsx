@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AuthServices, PostServices } from "../../appwrite";
 import { login } from "../../store/AuthSlice";
-import { defaultAvatar, defaultBanner, edit } from "../../assets";
+import { defaultAvatar, defaultBanner, EditSvg } from "../../assets";
 
 export default function UpdateInfo() {
   const navigate = useNavigate();
@@ -87,7 +87,8 @@ export default function UpdateInfo() {
                       setlocalBanner(URL.createObjectURL(e.target.files[0]))
                     }
                   />
-                  <img src={edit} />
+                  <EditSvg />
+                  {/* <img src={edit} /> */}
                 </div>
               </div>
             }
@@ -111,7 +112,8 @@ export default function UpdateInfo() {
                       setlocalAvatar(URL.createObjectURL(e.target.files[0]))
                     }
                   />
-                  <img src={edit} />
+                  <EditSvg />
+                  {/* <img src={edit} /> */}
                 </div>
               </div>
             }

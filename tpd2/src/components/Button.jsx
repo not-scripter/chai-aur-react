@@ -1,5 +1,5 @@
 import React from "react";
-import { loader } from "../assets";
+import { BtnLoaderSvg } from "../assets";
 
 export default function Button({
   children,
@@ -27,7 +27,7 @@ export default function Button({
        hover:outline hover:outline-secondary/20 hover:outline-4 
 `}
     >
-      {loading ? <img src={loader} className="bg-cover w-6 h-6" /> : children}
+      {loading ? <BtnLoaderSvg className="bg-cover" width="6"/> : children}
     </button>
   );
 }

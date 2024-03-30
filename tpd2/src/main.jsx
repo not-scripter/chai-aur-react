@@ -19,9 +19,10 @@ import {
   EditPost,
   MyPosts,
   Profile,
-  Test,
+  ProfilePosts,
+  ProfileReplies,
+  Test
 } from "./pages/index.js";
-import { ProfilePosts, ProfileReplies, ProfileTabs } from "./components/profile/index.js";
 
 const router = createBrowserRouter([
   {
@@ -132,7 +133,9 @@ const router = createBrowserRouter([
         path: `/:slug`,
         element: (
           <AuthLayout auth>
-            <Profile />
+            <Profile>
+              <ProfilePosts />
+            </Profile>
           </AuthLayout>
         ),
       },
@@ -140,7 +143,9 @@ const router = createBrowserRouter([
         path: `/:slug/posts`,
         element: (
           <AuthLayout auth>
-            <ProfilePosts />
+            <Profile>
+              <ProfilePosts />
+            </Profile>
           </AuthLayout>
         ),
       },
@@ -148,7 +153,9 @@ const router = createBrowserRouter([
         path: `/:slug/replies`,
         element: (
           <AuthLayout auth>
-            <ProfileReplies />
+            <Profile>
+              <ProfileReplies />
+            </Profile>
           </AuthLayout>
         ),
       },

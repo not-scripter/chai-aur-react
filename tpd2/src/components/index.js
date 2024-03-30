@@ -2,7 +2,6 @@ import InputFile from "./InputFile";
 import Button from "./Button";
 import CardBox from "./CardBox";
 import Confirm from "./Confirm";
-import DataLoader from "./DataLoader";
 import ImgBox from "./ImgBox";
 import Input from "./Input";
 import Loader from "./Loader";
@@ -17,7 +16,6 @@ import AuthLayout from "./AuthLayout";
 import Container from "./Container";
 import Footer from "./Footer";
 import Header from "./Header";
-import Icon from "./Icon";
 
 export {
   AuthLayout,
@@ -38,6 +36,4 @@ export {
   CardBox,
   Loader,
   NotFound,
-  DataLoader,
-  Icon,
 };

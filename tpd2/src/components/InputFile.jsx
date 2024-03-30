@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import { add } from "../assets";
+import { AddSvg } from "../assets";
 
 const InputFile = (
   {
@@ -35,10 +35,13 @@ const InputFile = (
         {...props}
         className="absolute opacity-0 w-full h-full"
       />
-      <img
-        src={add}
+        <AddSvg 
         className={`${className} ${bg} ${fg} h-12 py-2 rounded-xl outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary`}
       />
+      {/* <img */}
+      {/*   src={add} */}
+      {/*   className={`${className} ${bg} ${fg} h-12 py-2 rounded-xl outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary`} */}
+      {/* /> */}
     </div>
   );
 };

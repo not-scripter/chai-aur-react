@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
-import { Button, CardBox, Icon, ImgBox } from "../";
-import { calendar, defaultAvatar, defaultBanner, edit, join, location, peoples, userTick, website } from "../../assets";
+import { Button, CardBox, ImgBox } from "../";
+import {defaultAvatar, defaultBanner, CalendarSvg, AvatarDefaultSvg, BannerDefaultSvg, EditSvg, JoinSvg, LocationSvg, PeoplesSvg, UserTickSvg, WebsiteSvg } from "../../assets";
 import { useSelector } from "react-redux";
+import { ProfileTabsComp } from "./";
 
-export default function Profile() {
+export default function Profile({children}) {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [profile, setprofile] = useState(null);
@@ -20,7 +21,6 @@ export default function Profile() {
       const isRes = proRes.followers.filter((item) => item === profileData.$id);
       isRes.length !== 0 ? setisFollowing(true) : setisFollowing(false);
       setprofile(proRes);
-      console.log(isRes);
     }
   };
 
@@ -96,35 +96,38 @@ export default function Profile() {
           rounded="rounded-full"
           onClick={isAuthor ? () => navigate("/account") : handleFollow}
         >
-          {isAuthor ? "Edit" : isFollowing ? <Icon src={userTick} width="6"/> : "Follow"}
+          {isAuthor ? "Edit" : isFollowing ? <UserTickSvg width="6"/> : "Follow"}
         </Button>
       </div>
       <div className="flex flex-col">
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={location}/>{profile?.location}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+          <LocationSvg/>{profile?.location}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={website}/>{profile?.website}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+         <WebsiteSvg/>{profile?.website}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={calendar}/>{profile?.dob}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+         <CalendarSvg/>{profile?.dob}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-            <Icon src={peoples}/>{profile?.followers?.length}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+           <PeoplesSvg/>{profile?.followers?.length}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-            <Icon src={peoples}/>{profile?.following?.length}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+           <PeoplesSvg/>{profile?.following?.length}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={join}/>{profile?.posts?.length}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+         <PeoplesSvg/>{profile?.posts?.length}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={join}/>{profile?.replies?.length}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+         <PeoplesSvg/>{profile?.replies?.length}
         </h1>
-        <h1 className="font-semibold text-secondary/50">
-          <Icon src={join}/>{profile?.joined}
+        <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
+         <JoinSvg/>{profile?.joined}
         </h1>
       </div>
+      <ProfileTabsComp>
+        {children}
+      </ProfileTabsComp>
     </CardBox>
   );
 }
