@@ -18,7 +18,7 @@ export default function PostForm({ post }) {
       visibility: post?.visibility || "public",
     },
   });
-  const userData = useSelector((state) => state.auth.userData);
+  const { userData, profileData } = useSelector((state) => state.auth);
   const isAuthor = post && userData ? post.userId === userData.$id : false;
   const [postEditable, setpostEditable] = useState(post ? false : true);
 
@@ -57,12 +57,16 @@ export default function PostForm({ post }) {
         content: data.content,
         images: file ? file.$id : null,
         visibility: data.visibility,
-        // ...data,
       });
       if (newPost) {
+        const posRes = await PostServices.updateProfile({
+          posts: [...profileData.posts, newPost.$id]
+        })
+        if (posRes) {
         toast.success("Post Created");
         setbtnLoading(false)
         navigate(`/post/${newPost.$id}`);
+        }
       }
     }
     // reset()
@@ -73,10 +77,15 @@ export default function PostForm({ post }) {
     const postRes = await PostServices.deletePost(post.$id)
     post.images && await PostServices.deleteFile(post.images);
     if (postRes) {
+      const posRes = await PostServices.updateProfile({
+        posts: profileData.posts.filter((item) => item !== post.$id)
+      })
+      if (posRes) {
       toast.success("Post Deleted");
       setbtnLoading(false)
       setopen(false);
       navigate("/");
+      }
     }
   };
 

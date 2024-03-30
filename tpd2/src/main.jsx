@@ -21,6 +21,7 @@ import {
   Profile,
   Test,
 } from "./pages/index.js";
+import { ProfilePosts, ProfileReplies, ProfileTabs } from "./components/profile/index.js";
 
 const router = createBrowserRouter([
   {
@@ -128,10 +129,26 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: `/profile/:slug`,
+        path: `/:slug`,
         element: (
           <AuthLayout auth>
             <Profile />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/:slug/posts`,
+        element: (
+          <AuthLayout auth>
+            <ProfilePosts />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/:slug/replies`,
+        element: (
+          <AuthLayout auth>
+            <ProfileReplies />
           </AuthLayout>
         ),
       },

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
-import { Button, CardBox, ImgBox } from "../";
-import { defaultAvatar, defaultBanner, edit } from "../../assets";
+import { Button, CardBox, Icon, ImgBox } from "../";
+import { calendar, defaultAvatar, defaultBanner, edit, join, location, peoples, userTick, website } from "../../assets";
 import { useSelector } from "react-redux";
 
 export default function Profile() {
@@ -92,37 +92,37 @@ export default function Profile() {
         </h1>
         <Button
           loading={btnLoading}
-          className="h-fit px-6 py-1"
+          className={isFollowing ? "px-1 py-1 h-fit" : "h-fit px-6 py-1"}
           rounded="rounded-full"
           onClick={isAuthor ? () => navigate("/account") : handleFollow}
         >
-          {isAuthor ? "Edit" : isFollowing ? "Following" : "Follow"}
+          {isAuthor ? "Edit" : isFollowing ? <Icon src={userTick} width="6"/> : "Follow"}
         </Button>
       </div>
       <div className="flex flex-col">
         <h1 className="font-semibold text-secondary/50">
-          {profile?.location}
+          <Icon src={location}/>{profile?.location}
         </h1>
         <h1 className="font-semibold text-secondary/50">
-          {profile?.website}
-        </h1>
-        <h1 className="font-semibold text-secondary/50">{profile?.dob}</h1>
-        <h1 className="font-semibold text-secondary/50">
-          {profile?.joined}
-        </h1>
-      </div>
-      <div className="flex justify-evenly">
-        <h1 className="font-semibold text-secondary/50">
-          Following:
-          <span className="font-semibold text-secondary/50 ml-2">
-            {profile?.following?.length}
-          </span>
+          <Icon src={website}/>{profile?.website}
         </h1>
         <h1 className="font-semibold text-secondary/50">
-          Followers:
-          <span className="font-semibold text-secondary/50 ml-2">
-            {profile?.followers?.length}
-          </span>
+          <Icon src={calendar}/>{profile?.dob}
+        </h1>
+        <h1 className="font-semibold text-secondary/50">
+            <Icon src={peoples}/>{profile?.followers?.length}
+        </h1>
+        <h1 className="font-semibold text-secondary/50">
+            <Icon src={peoples}/>{profile?.following?.length}
+        </h1>
+        <h1 className="font-semibold text-secondary/50">
+          <Icon src={join}/>{profile?.posts?.length}
+        </h1>
+        <h1 className="font-semibold text-secondary/50">
+          <Icon src={join}/>{profile?.replies?.length}
+        </h1>
+        <h1 className="font-semibold text-secondary/50">
+          <Icon src={join}/>{profile?.joined}
         </h1>
       </div>
     </CardBox>

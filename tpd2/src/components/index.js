@@ -17,6 +17,7 @@ import AuthLayout from "./AuthLayout";
 import Container from "./Container";
 import Footer from "./Footer";
 import Header from "./Header";
+import Icon from "./Icon";
 
 export {
   AuthLayout,
@@ -38,4 +39,5 @@ export {
   Loader,
   NotFound,
   DataLoader,
+  Icon,
 };
