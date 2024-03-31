@@ -1,10 +1,9 @@
 import React from "react";
 
-export default function JoinSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function JoinSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
       version="1.1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"

@@ -96,34 +96,50 @@ export default function Profile({children}) {
           rounded="rounded-full"
           onClick={isAuthor ? () => navigate("/account") : handleFollow}
         >
-          {isAuthor ? "Edit" : isFollowing ? <UserTickSvg width="6"/> : "Follow"}
+          {isAuthor ? "Edit" : isFollowing ? <UserTickSvg className="fill-primary stroke-primary" width="6"/> : "Follow"}
         </Button>
       </div>
       <div className="flex flex-col">
+        {profile?.location && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
           <LocationSvg/>{profile?.location}
         </h1>
+        }
+        {profile?.website && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
          <WebsiteSvg/>{profile?.website}
         </h1>
+        }
+        {profile?.dob && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
          <CalendarSvg/>{profile?.dob}
         </h1>
+        }
+        {profile?.followers && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
            <PeoplesSvg/>{profile?.followers?.length}
         </h1>
+        }
+        {profile?.following && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
            <PeoplesSvg/>{profile?.following?.length}
         </h1>
+        }
+        {profile?.posts && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
          <PeoplesSvg/>{profile?.posts?.length}
         </h1>
+        }
+        {profile?.replies && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
          <PeoplesSvg/>{profile?.replies?.length}
         </h1>
+        }
+        {profile?.joined && 
         <h1 className="font-semibold text-secondary/50 flex gap-1 items-center">
          <JoinSvg/>{profile?.joined}
         </h1>
+        }
       </div>
       <ProfileTabsComp>
         {children}

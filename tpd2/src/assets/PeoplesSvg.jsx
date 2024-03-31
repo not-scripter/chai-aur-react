@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function PeoplesSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function PeoplesSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0" />
 

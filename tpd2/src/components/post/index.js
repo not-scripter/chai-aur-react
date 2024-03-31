@@ -1,13 +1,13 @@
 import AllPost from "./AllPost";
 import EditPost from "./EditPost";
-import MyPosts from "./MyPosts";
+import Posts from "./Posts";
 import Post from "./Post";
 import PostCard from "./PostCard";
 import PostForm from "./PostForm";
 
 export {
   AllPost,
-  MyPosts as MyPostsComp,
+  Posts as PostsComp,
   PostForm,
   PostCard,
   EditPost as EditPostComp,

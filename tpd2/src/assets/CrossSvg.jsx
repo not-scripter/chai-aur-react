@@ -1,7 +1,6 @@
 import React from "react";
 
-export default function CrossSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function CrossSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -20,7 +19,7 @@ export default function CrossSvg({ className, width = "4" }) {
         {" "}
         <path
           d="M19 5L5 19M5 5L9.5 9.5M12 12L19 19"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
           stroke-width="2.4"
           stroke-linecap="round"
           stroke-linejoin="round"

@@ -209,6 +209,16 @@ export class postServices {
       console.log("appwrite :: get my posts ::", error.message);
     }
   }
+  async getPublicPosts(userId) {
+    try {
+      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
+        Query.equal("userId", userId),
+        Query.equal("visibility", "public"),
+      ]);
+    } catch (error) {
+      console.log("appwrite :: get public posts ::", error.message);
+    }
+  }
 
   // Storage Services
   // Profile Avatar

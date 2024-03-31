@@ -16,6 +16,7 @@ import AuthLayout from "./AuthLayout";
 import Container from "./Container";
 import Footer from "./Footer";
 import Header from "./Header";
+import Toolbar from "./Toolbar";
 
 export {
   AuthLayout,
@@ -36,4 +37,5 @@ export {
   CardBox,
   Loader,
   NotFound,
+  Toolbar,
 };

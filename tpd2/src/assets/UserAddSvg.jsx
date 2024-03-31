@@ -1,14 +1,13 @@
 import React from "react";
 
-export default function UserAddSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function UserAddSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 0 24 24"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -47,7 +46,7 @@ export default function UserAddSvg({ className, width = "4" }) {
               <path
                 d="M16,14 C18.7614,14 21,16.2386 21,19 L21,20 C21,21.1046 20.1046,22 19,22 L5,22 C3.89543,22 3,21.1046 3,20 L3,19 C3,16.2386 5.23858,14 8,14 L16,14 Z M20,8 C20.5523,8 21,8.44772 21,9 L21,10 L22,10 C22.5523,10 23,10.4477 23,11 C23,11.5523 22.5523,12 22,12 L21,12 L21,13 C21,13.5523 20.5523,14 20,14 C19.4477,14 19,13.5523 19,13 L19,12 L18,12 C17.4477,12 17,11.5523 17,11 C17,10.4477 17.4477,10 18,10 L19,10 L19,9 C19,8.44772 19.4477,8 20,8 Z M12,2 C14.7614,2 17,4.23858 17,7 C17,9.76142 14.7614,12 12,12 C9.23858,12 7,9.76142 7,7 C7,4.23858 9.23858,2 12,2 Z"
                 id="形状"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
               >
                 {" "}
               </path>{" "}

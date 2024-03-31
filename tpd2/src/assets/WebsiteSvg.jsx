@@ -1,10 +1,9 @@
 import React from "react";
 
-export default function WebsiteSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function WebsiteSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
       viewBox="0 0 512 512"
       id="_x30_1"
       version="1.1"

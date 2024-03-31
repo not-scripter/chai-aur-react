@@ -1,7 +1,6 @@
 import React from "react";
 
-export default function CalendarSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function CalendarSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="-1 0 32 32"
@@ -9,7 +8,7 @@ export default function CalendarSvg({ className, width = "4" }) {
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
       xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -36,7 +35,7 @@ export default function CalendarSvg({ className, width = "4" }) {
             id="Icon-Set-Filled"
             sketch:type="MSLayerGroup"
             transform="translate(-311.000000, -361.000000)"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
           >
             {" "}
             <path

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Footer, Header, Loader, Toaster } from "./components";
+import { Footer, Header, Loader, Toaster, Toolbar } from "./components";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AuthServices, PostServices } from "./appwrite";
@@ -32,6 +32,7 @@ export default function App() {
       <Header />
       <Outlet />
       <Footer />
+      <Toolbar />
       <Toaster />
     </main>
   ) : (

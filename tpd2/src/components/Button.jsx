@@ -27,7 +27,7 @@ export default function Button({
        hover:outline hover:outline-secondary/20 hover:outline-4 
 `}
     >
-      {loading ? <BtnLoaderSvg className="bg-cover" width="6"/> : children}
+      {loading ? <BtnLoaderSvg className="fill-primary stroke-primary" width="6"/> : children}
     </button>
   );
 }

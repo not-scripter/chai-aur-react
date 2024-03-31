@@ -15,14 +15,14 @@ import {
   AccountSecurity,
   AccountAdvance,
   Post,
+  Posts,
   AddPost,
   EditPost,
-  MyPosts,
   Profile,
   ProfilePosts,
   ProfileReplies,
-  Test
-} from "./pages/index.js";
+  Test,
+} from "./pages";
 
 const router = createBrowserRouter([
   {
@@ -82,10 +82,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/my-posts",
+        path: `/:slug/posts`,
         element: (
           <AuthLayout auth>
-            <MyPosts />
+            <Posts />
           </AuthLayout>
         ),
       },

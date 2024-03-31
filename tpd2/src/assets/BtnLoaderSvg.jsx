@@ -1,12 +1,11 @@
 import React from "react";
 
-export default function BtnLoaderSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function BtnLoaderSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 0 45 45"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${className} ${localWidth} fill-primary stroke-primary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g
         fill="none"

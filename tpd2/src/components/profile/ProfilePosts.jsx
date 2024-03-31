@@ -1,10 +1,10 @@
 import React from "react";
-import { MyPostsComp } from "../post";
+import { PostsComp } from "../post";
 
 export default function ProfilePosts() {
   return (
     <>
-      <MyPostsComp />
+      <PostsComp />
     </>
   );
 }

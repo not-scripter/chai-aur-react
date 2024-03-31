@@ -5,7 +5,7 @@ import AccountSecurity from "./AccountSecurity";
 import AddPost from "./AddPost";
 import EditPost from "./EditPost";
 import Home from "./Home";
-import MyPosts from "./MyPosts";
+import Posts from "./Posts";
 import Post from "./Post";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -22,7 +22,7 @@ export {
   Post,
   AddPost,
   EditPost,
-  MyPosts,
+  Posts,
   Account,
   AccountInfo,
   AccountSecurity,

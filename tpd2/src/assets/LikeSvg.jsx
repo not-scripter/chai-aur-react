@@ -1,14 +1,13 @@
 import React from "react";
 
-export default function LikeSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function LikeSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 -0.5 21 21"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -33,7 +32,7 @@ export default function LikeSvg({ className, width = "4" }) {
           <g
             id="Dribbble-Light-Preview"
             transform="translate(-259.000000, -760.000000)"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
           >
             {" "}
             <g id="icons" transform="translate(56.000000, 160.000000)">

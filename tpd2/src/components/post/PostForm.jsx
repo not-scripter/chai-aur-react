@@ -60,7 +60,9 @@ export default function PostForm({ post }) {
       });
       if (newPost) {
         const posRes = await PostServices.updateProfile({
-          posts: [...profileData.posts, newPost.$id]
+          userId: profileData.$id,
+          posts: [...profileData.posts, newPost.$id],
+          ...profileData
         })
         if (posRes) {
         toast.success("Post Created");
@@ -78,7 +80,9 @@ export default function PostForm({ post }) {
     post.images && await PostServices.deleteFile(post.images);
     if (postRes) {
       const posRes = await PostServices.updateProfile({
-        posts: profileData.posts.filter((item) => item !== post.$id)
+        userId: profileData.$id,
+        posts: profileData.posts.filter((item) => item !== post.$id),
+        ...profileData
       })
       if (posRes) {
       toast.success("Post Deleted");
@@ -190,7 +194,7 @@ export default function PostForm({ post }) {
               loading={btnLoading}
               type="submit"
               className="w-full py-2"
-              onClick={() => setloadingSubmit(true)}
+              onClick={() => setbtnLoading(true)}
             >
               Create Post
             </Button>

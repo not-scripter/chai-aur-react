@@ -1,14 +1,13 @@
 import React from "react";
 
-export default function UserTickSvg({ className, width = "4" }) {
-  const localWidth = `w-${width} h-${width}`;
+export default function UserTickSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
       viewBox="0 0 24 24"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -50,7 +49,7 @@ export default function UserTickSvg({ className, width = "4" }) {
               <path
                 d="M16,14 C18.7614,14 21,16.2386 21,19 L21,20 C21,21.1046 20.1046,22 19,22 L5,22 C3.89543,22 3,21.1046 3,20 L3,19 C3,16.2386 5.23858,14 8,14 L16,14 Z M21.4141,9.08134 C21.8047,8.69082 22.4378,8.69082 22.8284,9.08134 C23.1888615,9.44182923 23.2165893,10.0090309 22.9115834,10.4013771 L22.8284,10.4956 L19.9999,13.324 C19.6394385,13.6844615 19.0721793,13.7121893 18.6799027,13.4071834 L18.5857,13.324 L17.1715,11.9098 C16.781,11.5192 16.781,10.8861 17.1715,10.4956 C17.5319615,10.1350462 18.0992207,10.1073112 18.4914973,10.4123953 L18.5857,10.4956 L19.2928,11.2027 L21.4141,9.08134 Z M12,2 C14.7614,2 17,4.23858 17,7 C17,9.76142 14.7614,12 12,12 C9.23858,12 7,9.76142 7,7 C7,4.23858 9.23858,2 12,2 Z"
                 id="形状"
-      className={`${className} ${localWidth} fill-secondary stroke-secondary`}
+      className={`${className} w-${width} h-${width}`}
               >
                 {" "}
               </path>{" "}

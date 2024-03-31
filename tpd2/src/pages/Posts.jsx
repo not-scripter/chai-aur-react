@@ -1,11 +1,11 @@
 import React from "react";
 import { Container } from "../components";
-import { MyPostsComp } from "../components/post";
+import { PostsComp } from "../components/post";
 
-export default function MyPosts() {
+export default function Posts() {
   return (
     <Container>
-      <MyPostsComp />
+      <PostsComp />
     </Container>
   );
 }

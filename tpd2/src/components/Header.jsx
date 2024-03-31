@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Logo, Button } from "../components";
-import { NavLink } from "react-router-dom";
+import { Logo, Button, ImgBox } from "../components";
+import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { CrossSvg, MenuSvg, SearchSvg } from "../assets";
+import { CrossSvg, MenuSvg, defaultAvatar } from "../assets";
 
 export default function Header() {
-  const authStatus = useSelector((state) => state.auth.authStatus);
+  const { authStatus, profileData } = useSelector((state) => state.auth);
   const navItems = [
     {
       name: "Login",
@@ -44,13 +44,16 @@ export default function Header() {
   return (
     <header className="flex flex-col">
       <section className="relative w-full flex items-center justify-between bg-primary text-secondary px-4 py-2">
-        <Button
-          bg="bg-primary/50"
-          className="visible sm:hidden w-8 h-8 p-1 z-30"
-          rounded="rounded-full"
-        >
-          <SearchSvg />
-        </Button>
+        <NavLink to={`/${profileData.username}`} className={({isActive}) => [
+          isActive && "shadow-secondary shadow-md",
+          "w-8 h-8 rounded-full object-cover"
+        ].join(" ")
+        }>
+        <ImgBox
+          className=""
+          src={profileData.avatar ? profileData.avatar : defaultAvatar}
+        />
+        </NavLink>
         <Logo className="z-30" />
         <Button
           onClick={() => setmobNav((prev) => !prev)}
