@@ -31,7 +31,7 @@ export default function App() {
     <main className="min-h-dvh flex flex-col bg-zinc-900 text-white">
       <Header />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
       <Toolbar />
       <Toaster />
     </main>

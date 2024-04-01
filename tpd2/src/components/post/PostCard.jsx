@@ -9,7 +9,7 @@ export default function PostCard({ userId, slug, title, images, $createdAt }) {
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
   const [loading, setloading] = useState(true);
-  console.log(profile?.avatar);
+  
   function handleIso(isoDate) {
     const date = new Date(isoDate);
     const year = date.getFullYear();

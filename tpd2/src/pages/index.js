@@ -13,6 +13,8 @@ import Test from "./Test";
 import Profile from "./Profile";
 import ProfilePosts from "./ProfilePosts";
 import ProfileReplies from "./ProfileReplies";
+import Replies from "./Replies";
+import Saved from "./Saved";
 
 export {
   Test,
@@ -30,4 +32,6 @@ export {
   Profile,
   ProfilePosts,
   ProfileReplies,
+  Replies,
+  Saved,
 };

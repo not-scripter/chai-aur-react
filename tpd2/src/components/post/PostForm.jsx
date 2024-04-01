@@ -62,7 +62,6 @@ export default function PostForm({ post }) {
         const posRes = await PostServices.updateProfile({
           userId: profileData.$id,
           posts: [...profileData.posts, newPost.$id],
-          ...profileData
         })
         if (posRes) {
         toast.success("Post Created");
@@ -82,7 +81,6 @@ export default function PostForm({ post }) {
       const posRes = await PostServices.updateProfile({
         userId: profileData.$id,
         posts: profileData.posts.filter((item) => item !== post.$id),
-        ...profileData
       })
       if (posRes) {
       toast.success("Post Deleted");

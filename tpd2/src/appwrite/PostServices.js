@@ -71,6 +71,9 @@ export class postServices {
     website,
     following,
     followers,
+    posts,
+    replies,
+    saved,
     joined,
   }) {
     try {
@@ -91,6 +94,9 @@ export class postServices {
           website,
           following,
           followers,
+          posts,
+          replies,
+          saved,
           joined,
         },
       );
@@ -179,12 +185,12 @@ export class postServices {
       console.log("appwrite :: delete post ::", error.message);
     }
   }
-  async getPost(slug) {
+  async getPost(postId) {
     try {
       return await this.databases.getDocument(
         conf.databaseId,
         conf.postsId,
-        slug,
+        postId,
       );
     } catch (error) {
       console.log("appwrite :: get post ::", error.message);
@@ -192,9 +198,11 @@ export class postServices {
   }
   async getPosts() {
     try {
-      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
-        Query.equal("visibility", "public"),
-      ]);
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.postsId,
+        [ Query.equal("visibility", "public") ]
+      );
     } catch (error) {
       console.log("appwrite :: get posts ::", error.message);
     }
@@ -202,21 +210,38 @@ export class postServices {
 
   async getMyPosts(userId) {
     try {
-      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
-        Query.equal("userId", userId),
-      ]);
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.postsId,
+        [ Query.equal("userId", userId) ]
+      );
     } catch (error) {
       console.log("appwrite :: get my posts ::", error.message);
     }
   }
   async getPublicPosts(userId) {
     try {
-      return await this.databases.listDocuments(conf.databaseId, conf.postsId, [
-        Query.equal("userId", userId),
-        Query.equal("visibility", "public"),
-      ]);
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.postsId,
+        [
+          Query.equal("userId", userId),
+          Query.equal("visibility", "public"),
+        ]
+      );
     } catch (error) {
       console.log("appwrite :: get public posts ::", error.message);
+    }
+  }
+  async getReplies(userId) {
+    try {
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.repliesId,
+        [ Query.equal("userId", userId) ]
+      );
+    } catch (error) {
+      console.log("appwrite :: get replies posts ::", error.message);
     }
   }
 

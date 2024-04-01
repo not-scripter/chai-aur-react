@@ -9,27 +9,32 @@ export default function Toolbar() {
     {
       slug: "/",
       name: "Home",
-      icon: <PeoplesSvg width="6" />,
+      icon: <PeoplesSvg/>,
     },
     {
       slug: `/${profileData.$id}/posts`,
       name: "Posts",
-      icon: <PeoplesSvg width="6" />,
+      icon: <PeoplesSvg/>,
+    },
+    {
+      slug: `/add-post`,
+      name: "Add Post",
+      icon: <PeoplesSvg/>,
     },
     {
       slug: `/${profileData.$id}/replies`,
       name: "Replies",
-      icon: <PeoplesSvg width="6" />,
+      icon: <PeoplesSvg/>,
     },
     {
       slug: `/${profileData.$id}/saved`,
       name: "Saved",
-      icon: <PeoplesSvg width="6" />,
+      icon: <PeoplesSvg/>,
     },
   ];
   return (
     <>
-      <div className="flex justify-evenly w-full h-fit sticky bottom-0 bg-primary/80 backdrop-blur">
+      <div className="flex justify-evenly w-full h-fit fixed bottom-0 bg-primary/80 backdrop-blur">
         {ToolItems.map((item) => (
           <NavLink
             to={item.slug}
