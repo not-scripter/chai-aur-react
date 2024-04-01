@@ -1,11 +1,11 @@
 import React from "react";
 import { Container } from "../components";
-import { SavedCard } from "../components/saved";
+import { MyPostsComp } from "../components/post";
 
-export default function Saved() {
+export default function Posts() {
   return (
     <Container>
-      <SavedCard />
+      <MyPostsComp />
     </Container>
   );
 }

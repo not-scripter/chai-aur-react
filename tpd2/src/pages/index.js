@@ -15,6 +15,7 @@ import ProfilePosts from "./ProfilePosts";
 import ProfileReplies from "./ProfileReplies";
 import Replies from "./Replies";
 import Saved from "./Saved";
+import MyPosts from "./MyPosts";
 
 export {
   Test,
@@ -22,6 +23,7 @@ export {
   Login,
   Signup,
   Post,
+  MyPosts,
   AddPost,
   EditPost,
   Posts,

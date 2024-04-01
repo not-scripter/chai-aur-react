@@ -6,11 +6,11 @@ export default function ProfileTabs({ children }) {
   const tabItems = [
     {
       name: "Posts",
-      slug: `/${slug}/posts`,
+      slug: `/posts`,
     },
     {
       name: "Replies",
-      slug: `/${slug}/replies`,
+      slug: `/replies`,
     },
   ];
   return (

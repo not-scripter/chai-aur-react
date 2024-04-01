@@ -24,6 +24,7 @@ import {
   Test,
   Replies,
   Saved,
+  MyPosts,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -84,15 +85,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: `/:slug/posts`,
+        path: `/posts`,
         element: (
           <AuthLayout auth>
-            <Posts />
+            <MyPosts />
           </AuthLayout>
         ),
       },
       {
-        path: `/:slug/replies`,
+        path: `/replies`,
         element: (
           <AuthLayout auth>
             <Replies />
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: `/:slug/saved`,
+        path: `/saved`,
         element: (
           <AuthLayout auth>
             <Saved />
@@ -182,8 +183,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <Provider store={Store}>
-      <RouterProvider router={router} />
-    </Provider>
+  <Provider store={Store}>
+    <RouterProvider router={router} />
+  </Provider>,
 );
-  // <React.StrictMode>
+// <React.StrictMode>

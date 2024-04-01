@@ -12,7 +12,7 @@ export default function Toolbar() {
       icon: <PeoplesSvg/>,
     },
     {
-      slug: `/${profileData.$id}/posts`,
+      slug: `/posts`,
       name: "Posts",
       icon: <PeoplesSvg/>,
     },
@@ -22,12 +22,12 @@ export default function Toolbar() {
       icon: <PeoplesSvg/>,
     },
     {
-      slug: `/${profileData.$id}/replies`,
+      slug: `/replies`,
       name: "Replies",
       icon: <PeoplesSvg/>,
     },
     {
-      slug: `/${profileData.$id}/saved`,
+      slug: `/saved`,
       name: "Saved",
       icon: <PeoplesSvg/>,
     },

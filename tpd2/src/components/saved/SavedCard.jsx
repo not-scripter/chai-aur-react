@@ -6,17 +6,20 @@ import { PostCard } from "../post";
 
 export default function SavedCard() {
   const { profileData } = useSelector((state) => state.auth);
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [posts, setposts] = useState([]);
   const getPosts = async () => {
-    const test = await profileData.saved.map(async (postId) => {
+    profileData.saved.map(async (postId) => {
       if (postId) {
         const posRes = await PostServices.getPost(postId);
-        setposts((prev) => [...prev, posRes]);
+        if (posRes) {
+          setposts((prev) => [...prev, posRes]);
+          setloading(false);
+        }
       }
     });
   };
-  console.log(posts);
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -24,10 +27,12 @@ export default function SavedCard() {
   return !loading ? (
     posts.length > 0 ? (
       <div className="flex flex-col gap-2">
-      {posts.map((item) => <PostCard slug={item.$id} {...item} />)}
+        {posts.map((item) => (
+          <PostCard slug={item.$id} {...item} />
+        ))}
       </div>
     ) : (
-      <NotFound title="Post Not Found" />
+      <NotFound title="You Have't Save Anything" />
     )
   ) : (
     <Loader />
