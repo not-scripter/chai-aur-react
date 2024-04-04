@@ -4,8 +4,10 @@ function TextArea({
   label = "",
   children,
   className = "",
-    bg = "bg-primary/50",
-    fg = "text-presecondary",
+  bg = "bg-primary/50",
+  fg = "text-presecondary",
+  cols,
+  rows,
   ...props
 }, ref) {
   const id = useId();
@@ -20,7 +22,9 @@ function TextArea({
         </label>
       )}
       <textarea
-        id={id}
+        id={id} 
+        cols={cols}
+        rows={rows}
         ref={ref}
         {...props}
         className={`${className} ${bg} ${fg} rounded-xl px-4 py-2 outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary w-full h-full`}

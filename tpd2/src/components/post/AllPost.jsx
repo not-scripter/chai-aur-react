@@ -21,7 +21,7 @@ export default function AllPost() {
 
   return !loading ? (
     posts.length > 0 ? (
-      posts.map((item) => <PostCard slug={item.$id} {...item} />)
+      posts.map((item) => <PostCard userId={item.userId} postId={item.$id} />)
     ) : (
       <NotFound title="Post Not Found" />
     )

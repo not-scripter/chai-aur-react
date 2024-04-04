@@ -3,19 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
 import { NotFound, Loader, CardBox } from "../";
 import { PostForm, Replies } from "../post";
-import ReplieCard from "./replies/ReplyCard";
 
 export default function Post() {
   const navigate = useNavigate();
-  const { postId } = useParams();
+  const { userId, postId } = useParams();
+  const [profile, setprofile] = useState(null)
   const [post, setpost] = useState(null);
   const [loading, setloading] = useState(true);
 
   const getPost = async () => {
-    if (postId) {
-      const res = await PostServices.getPost(postId);
-      if (res) {
-        setpost(res);
+    if (userId && postId) {
+      const proRes = await PostServices.getProfile(userId);
+      const postRes = await PostServices.getPost(postId);
+      if (proRes && postRes) {
+        setprofile(proRes)
+        setpost(postRes);
         setloading(false);
       }
     } else {
@@ -25,18 +27,18 @@ export default function Post() {
 
   useEffect(() => {
     getPost();
-  }, [postId, navigate]);
+  }, [userId, postId, navigate]);
 
   return !loading ? (
     post ? (
       <CardBox>
-      <PostForm post={post} />
+        <PostForm profile={profile} post={post}/>
         <Replies />
       </CardBox>
     ) : (
-      <NotFound title="Post Not Found" />
-    )
+        <NotFound title="Post Not Found" />
+      )
   ) : (
-    <Loader />
-  );
+      <Loader />
+    );
 }

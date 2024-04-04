@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
-import { DislikeSvg, LikeSvg, PeoplesSvg, ReplySvg, SavesSvg, ShareSvg, defaultAvatar } from "../../assets";
-import { Loader, ImgBox, CardBox, Button, CheckBox } from "../";
+import { DislikeSvg, LikeSvg, ReplySvg, SavesSvg, ShareSvg, defaultAvatar } from "../../assets";
+import { Loader, ImgBox, CardBox, CheckBox } from "../";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
 
-export default function PostCard({ userId, postId, content, images, $createdAt, likes, dislikes, replies, saves, shares }) {
+export default function PostCard({ userId, postId }) {
   const [profile, setprofile] = useState(null);
+  const [post, setpost] = useState(null)
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
   const [loading, setloading] = useState(true);
@@ -22,38 +22,46 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
-
     const dated = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
     const time = `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
     setdate(dated);
     settime(time);
   }
 
-  const getProfile = async () => {
-    const res = await PostServices.getProfile(userId);
-    if (res) {
-      setprofile(res);
+  const getData = async () => {
+    const proRes = await PostServices.getProfile(userId);
+    const posRes = await PostServices.getPost(postId)
+    if (proRes && posRes) {
+      setprofile(proRes);
+      setpost(posRes)
       setloading(false);
+      const likeRes = post?.likes.find((user) => user === profileData.$id)
+      const dislikeRes = post?.dislikes.find((user) => user === profileData.$id)
+      const saveRes = post?.saves.find((user) => user === profileData.$id)
+      if (likeRes) setliked(true)
+      if (dislikeRes) setdisliked(true)
+      if (saveRes) setsaved(true)
     }
   };
 
-  const [liked, setliked] = useState(likes.find((user) => user === profileData.$id));
-  const [disliked, setdisliked] = useState(dislikes.find((user) => user === profileData.$id));
-  const [saved, setsaved] = useState(saves.find((user) => user === profileData.$id));
+  const [liked, setliked] = useState(false);
+  const [disliked, setdisliked] = useState(false);
+  const [saved, setsaved] = useState(false);
 
   const handleLike = async () => {
     if (liked) {
       setliked(false)
       await PostServices.updatePost({
         postId: postId,
-        likes: likes.filter(user => user !== profileData.$id),
+        likes: post?.likes.filter(user => user !== profileData.$id),
       })
     } else {
       setliked(true)
+      setdisliked(false)
       await PostServices.updatePost({
         postId: postId,
-        likes: [...likes, profileData.$id],
-        dislikes: dislikes.filter(user => user !== profileData.$id),
+        likes: [...post?.likes, profileData.$id],
+        dislikes: post?.dislikes.filter(user => user !== profileData.$id),
       })
     }
   };
@@ -62,26 +70,27 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
       setdisliked(false)
       await PostServices.updatePost({
         postId: postId,
-        dislikes: dislikes.filter(user => user !== profileData.$id),
+        dislikes: post?.dislikes.filter(user => user !== profileData.$id),
       })
     } else {
       setdisliked(true)
+      setliked(false)
       await PostServices.updatePost({
         postId: postId,
-        likes: likes.filter(user => user !== profileData.$id),
-        dislikes: [...dislikes, profileData.$id],
+        likes: post?.likes.filter(user => user !== profileData.$id),
+        dislikes: [...post?.dislikes, profileData.$id],
       })
     }
   };
   const handleReply = async () => {
-    navigate(`/${profile.$id}/${postId}/new-reply`)
+    navigate(`/${userId}/${postId}/new-reply`)
   };
   const handleSave = async () => {
     if (saved) {
       setsaved(false)
       await PostServices.updatePost({
         postId: postId,
-        saves: saves.filter(user => user !== profileData.$id),
+        saves: post?.saves.filter(user => user !== profileData.$id),
       })
       await PostServices.updateProfile({
         userId: profileData.$id,
@@ -91,7 +100,7 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
       setsaved(true)
       await PostServices.updatePost({
         postId: postId,
-        saves: [...likes, profileData.$id],
+        saves: [...post?.likes, profileData.$id],
       })
       await PostServices.updateProfile({
         userId: profileData.$id,
@@ -103,7 +112,7 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
     const exists = profileData.shares.filter(item => item === profileData.$id)
     await PostServices.updatePost({
       postId: postId,
-      shares: [...shares, !exists ? profileData.$id : profileData.$id + "1"]
+      shares: [...post?.shares, !exists ? profileData.$id : profileData.$id ++]
     })
   };
 
@@ -116,7 +125,7 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
           <LikeSvg className={liked ? "fill-fuchsia-400 stroke-fuchsia-400" : "fill-secondary stroke-secondary"}/>
         </CheckBox>
       ),
-      count: likes.length,
+      count: post?.likes.length,
     },
     {
       onClick: handleDislike,
@@ -126,13 +135,13 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
           <DislikeSvg className={disliked ? "fill-fuchsia-400 stroke-fuchsia-400" : "fill-secondary stroke-secondary"}/>
         </CheckBox>
       ),
-      count: dislikes.length,
+      count: post?.dislikes.length,
     },
     {
       onClick: handleReply,
       name: "Reply",
       icon: <ReplySvg />,
-      count: replies.length,
+      count: post?.replies.length,
     },
     {
       onClick: handleSave,
@@ -142,25 +151,25 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
           <SavesSvg className={saved ? "fill-fuchsia-400 stroke-fuchsia-400" : "fill-secondary stroke-secondary"}/>
         </CheckBox>
       ),
-      count: saves.length,
+      count: post?.saves.length,
     },
     {
       onClick: handleShare,
       name: "Share",
       icon: <ShareSvg />,
-      count: shares.length,
+      count: post?.shares.length,
     },
   ];
 
   useEffect(() => {
-    getProfile();
-    handleIso($createdAt);
-  }, [userId]);
+    getData();
+    handleIso(post?.$createdAt);
+  }, [userId, postId, handleLike, handleDislike, handleShare, handleSave, handleReply]);
 
   return !loading ? (
-    <CardBox>
+    <CardBox key={postId}>
       <div className="flex justify-between">
-      <Link to={`/${userId}`} key={postId}>
+      <Link to={`/${userId}`} >
         <div className="flex gap-2 items-center">
           <img
             className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
@@ -187,17 +196,15 @@ export default function PostCard({ userId, postId, content, images, $createdAt, 
           </span>
         </h1>
       </div>
-      {images && (
-        <ImgBox src={PostServices.getFilePreview(images)} alt={title} />
+      <Link to={`/${userId}/${postId}`}>
+          <h1>{post?.content}</h1>
+      {post?.images && (
+        <ImgBox src={PostServices.getFilePreview(post?.images)} />
       )}
-      <Link to={`/${userId}/${postId}`} key={postId}>
-        <div>
-          <h1>{content}</h1>
-        </div>
       </Link>
       <div className="flex justify-evenly">
         {PostCardItems.map((item) => (
-          <div className="flex w-fit gap-1">
+          <div className="flex w-fit gap-1" key={item.name}>
             <button type="button" onClick={item.onClick}>
               {item.icon}
             </button>

@@ -179,16 +179,16 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      // {
+      //   path: `/:username/:postId`,
+      //   element: (
+      //     <AuthLayout auth>
+      //       <Post />
+      //     </AuthLayout>
+      //   ),
+      // },
       {
-        path: `/:username/:postId`,
-        element: (
-          <AuthLayout auth>
-            <Post />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: `/:username/:postId/new-reply`,
+        path: `/:userId/:postId/new-reply`,
         element: (
           <AuthLayout auth>
             <NewReply />

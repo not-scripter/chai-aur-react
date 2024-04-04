@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import toast from "react-hot-toast";
 import Select from "../Select";
 import { Button, ImgBox, Confirm ,InputFile, TextArea } from "..";
+import { defaultAvatar } from "../../assets";
 
-export default function PostForm({ post }) {
-  const navigate = useNavigate();
+export default function PostForm({ profile, post }) {
+  const navigate = useNavigate(); 
   const { register, handleSubmit, setValue, getValues, watch } = useForm({
     defaultValues: {
       // postId: post?.postId || "",
@@ -25,6 +26,22 @@ export default function PostForm({ post }) {
 
   const [open, setopen] = useState(false)
   const [btnLoading, setbtnLoading] = useState(false);
+
+  const [date, setdate] = useState(null);
+  const [time, settime] = useState(null);
+  function handleIso(isoDate) {
+    const date = new Date(isoDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const dated = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
+    const time = `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+    setdate(dated);
+    settime(time);
+  }
 
   const submit = async (data) => {
     setbtnLoading(true)
@@ -106,8 +123,43 @@ export default function PostForm({ post }) {
   //   return () => subscription.unsubscribe();
   // }, [watch, postIdTransform, setValue]);
 
+  useEffect(() => {
+    post && handleIso(post.$createdAt);
+  }, [post && post])
+
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+    <>
+      <div className="flex justify-between">
+        <Link to={profile ? `/${profile?.$id}` : `/${profileData.$id}`}>
+          <div className="flex gap-2 items-center">
+            <img
+              className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
+              src={
+                profile
+                  ? profile.avatar
+                    ? PostServices.getAvatarPreview(profile.avatar)
+                    : defaultAvatar
+                  : profileData.avatar 
+                    ? PostServices.getAvatarPreview(profileData.avatar)
+                    : defaultAvatar
+              }
+            />
+            <h1 className="flex flex-col font-semibold">
+              {profile ? profile.fullname : profileData.fullname}
+              <span className="font-semibold text-sm text-secondary/50">
+                @{profile ? profile.username : profileData.username}
+              </span>
+            </h1>
+          </div>
+        </Link>
+        <h1 className="flex flex-col text-sm left-auto right-0 font-semibold text-secondary/80">
+          {date}
+          <span className="text-sm align-bottom font-semibold text-secondary/50">
+            {time}
+          </span>
+        </h1>
+      </div>
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
         <TextArea
           readOnly={!postEditable}
           label="Content"
@@ -115,19 +167,19 @@ export default function PostForm({ post }) {
         />
         {
           !post || isAuthor ? (
-          <Select
-            label="Visibility"
-            disabled={!postEditable}
-            defaultValue={post && post.visibility}
-            options={["public", "private"]}
-            {...register("visibility")}
-          />
+            <Select
+              label="Visibility"
+              disabled={!postEditable}
+              defaultValue={post && post.visibility}
+              options={["public", "private"]}
+              {...register("visibility")}
+            />
           ) : null
         }
         {
           postEditable && (
-        <InputFile 
-          label="Image"
+            <InputFile 
+              label="Image"
               type="file"
               accept="image/*"
               readOnly={!postEditable}
@@ -135,11 +187,11 @@ export default function PostForm({ post }) {
               onChange={(e) =>
                 setlocalImage(URL.createObjectURL(e.target.files[0]))
               }
-        />
+            />
           )
         }
         {
-          localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
+          localImage || dbImage && <ImgBox src={localImage ? localImage : dbImage} className="rounded-xl"/>
         }
         {post && isAuthor && (
           postEditable ? (
@@ -154,7 +206,7 @@ export default function PostForm({ post }) {
                 Cancel
               </Button>
               <Button
-              type="submit"
+                type="submit"
                 className="w-full py-2"
               >
                 Save
@@ -187,7 +239,8 @@ export default function PostForm({ post }) {
             </Button>
           )
         }
+      </form>
       <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost} loading={btnLoading}/>
-    </form>
+    </>
   );
 }

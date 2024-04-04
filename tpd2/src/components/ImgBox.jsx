@@ -8,7 +8,7 @@ export default function ImgBox({
 }) {
   return (
     <div className={boxClass}>
-      <img src={src} className={className} />
+      <img src={src} className={`${className}`} />
       {children}
     </div>
   );

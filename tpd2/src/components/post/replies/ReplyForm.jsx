@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { TextArea, ImgBox } from '../../'
+import { PostServices } from '../../../appwrite'
 import toast from 'react-hot-toast'
-import TextArea from '../../TextArea'
-import PostServices from '../../../appwrite/PostServices'
 
-export default function ReplieForm({reply}) {
-  const {userId, postId} = useParams
+export default function ReplyForm({reply}) {
+  const {userId, postId} = useParams()
   const [loading, setloading] = useState(false)
   const [btnLoading, setbtnLoading] = useState(false)
   const [editable, seteditable] = useState(false)
@@ -18,17 +18,20 @@ export default function ReplieForm({reply}) {
 
   const defaultValues = {
     content: reply?.contemt || "",
-    images: reply?.images || "",
+    // images: reply?.images || "",
   }
   const { handleSubmit, reset, register, setValue, watch } = useForm({
     defaultValues
   })
 
   const [localImage, setlocalImage] = useState(null)
-  const dbImage = reply ? PostServices.getFilePreview(reply.images) : null;
+  const dbImage = reply && PostServices.getFilePreview(reply.images);
 
   const getPost = async () => {
-    await PostServices.getPost(postId).then(res => setpost(res))
+    const posRes = await PostServices.getPost(postId)
+    if (posRes) {
+      setpost(posRes)
+    }
   }
 
   const submit = async (data) => {
@@ -90,7 +93,7 @@ export default function ReplieForm({reply}) {
 
   useEffect(() => {
   getPost()
-  }, [])
+  }, [reply])
 
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
@@ -115,7 +118,7 @@ export default function ReplieForm({reply}) {
           )
         }
         {
-          localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} /> : null
+          localImage || dbImage && <ImgBox src={localImage ? localImage : dbImage} className='rounded-xl'/>
         }
         {reply && isAuthor && (
           editable ? (
