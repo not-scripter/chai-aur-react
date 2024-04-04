@@ -26,6 +26,7 @@ import {
   MyPosts,
   Saves,
   NewReply,
+  Reply,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -66,6 +67,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout auth>
             <Post />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/:userId/:replyId`,
+        element: (
+          <AuthLayout auth>
+            <Reply />
           </AuthLayout>
         ),
       },

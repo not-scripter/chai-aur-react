@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
 import { NotFound, Loader, CardBox } from "../";
-import { PostForm, Replies } from "../post";
+import { PostForm, RepliesComp } from "../post";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function Post() {
     post ? (
       <CardBox>
         <PostForm profile={profile} post={post}/>
-        <Replies />
+        <RepliesComp />
       </CardBox>
     ) : (
         <NotFound title="Post Not Found" />

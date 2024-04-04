@@ -8,6 +8,8 @@ import MyPosts from "./MyPosts";
 import Replies from "./replies/Replies";
 import ReplyCard from "./replies/ReplyCard";
 import ReplyForm from "./replies/ReplyForm";
+import Reply from "./replies/Reply";
+
 export {
   AllPost,
   MyPosts as MyPostsComp,
@@ -16,7 +18,8 @@ export {
   PostCard,
   EditPost as EditPostComp,
   Post as PostComp,
-  Replies,
+  Reply as ReplyComp,
+  Replies as RepliesComp,
   ReplyCard as ReplyCardComp,
   ReplyForm as ReplyFormComp,
 };

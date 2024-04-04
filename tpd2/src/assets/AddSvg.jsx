@@ -6,7 +6,12 @@ export default function AddSvg({
 }) {
   //Important -- w-4 h-4
   return (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      className={`${className} w-${width} h-${width}`}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
@@ -16,7 +21,7 @@ export default function AddSvg({
       <g id="SVGRepo_iconCarrier">
         {" "}
         <path
-          className={`${className} w-${width} h-${width}`}
+          className={`${className}`}
           d="M4 12H20M12 4V20"
           stroke-width="2"
           stroke-linecap="round"

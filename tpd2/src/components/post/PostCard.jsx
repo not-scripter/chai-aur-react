@@ -28,22 +28,6 @@ export default function PostCard({ userId, postId }) {
     settime(time);
   }
 
-  const getData = async () => {
-    const proRes = await PostServices.getProfile(userId);
-    const posRes = await PostServices.getPost(postId)
-    if (proRes && posRes) {
-      setprofile(proRes);
-      setpost(posRes)
-      setloading(false);
-      const likeRes = post?.likes.find((user) => user === profileData.$id)
-      const dislikeRes = post?.dislikes.find((user) => user === profileData.$id)
-      const saveRes = post?.saves.find((user) => user === profileData.$id)
-      if (likeRes) setliked(true)
-      if (dislikeRes) setdisliked(true)
-      if (saveRes) setsaved(true)
-    }
-  };
-
   const [liked, setliked] = useState(false);
   const [disliked, setdisliked] = useState(false);
   const [saved, setsaved] = useState(false);
@@ -160,6 +144,22 @@ export default function PostCard({ userId, postId }) {
       count: post?.shares.length,
     },
   ];
+
+  const getData = async () => {
+    const proRes = await PostServices.getProfile(userId);
+    const posRes = await PostServices.getPost(postId)
+    if (proRes && posRes) {
+      setprofile(proRes);
+      setpost(posRes)
+      setloading(false);
+      const likeRes = post?.likes.find((user) => user === profileData.$id)
+      const dislikeRes = post?.dislikes.find((user) => user === profileData.$id)
+      const saveRes = post?.saves.find((user) => user === profileData.$id)
+      if (likeRes) setliked(true)
+      if (dislikeRes) setdisliked(true)
+      if (saveRes) setsaved(true)
+    }
+  };
 
   useEffect(() => {
     getData();

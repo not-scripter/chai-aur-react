@@ -10,12 +10,13 @@ import { defaultAvatar } from "../../assets";
 
 export default function PostForm({ profile, post }) {
   const navigate = useNavigate(); 
-  const { register, handleSubmit, setValue, getValues, watch } = useForm({
-    defaultValues: {
-      // postId: post?.postId || "",
-      content: post?.content || "",
-      visibility: post?.visibility || "public",
-    },
+
+  const defaultValues = {
+    content: post?.content || "",
+    visibility: post?.visibility || "public",
+  }
+  const { register, handleSubmit, setValue, getValues, watch, reset } = useForm({
+    defaultValues,
   });
   const { userData, profileData } = useSelector((state) => state.auth);
   const isAuthor = post && userData ? post.userId === userData.$id : false;
@@ -191,7 +192,7 @@ export default function PostForm({ profile, post }) {
           )
         }
         {
-          localImage || dbImage && <ImgBox src={localImage ? localImage : dbImage} className="rounded-xl"/>
+          localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} className="rounded-xl"/> : null
         }
         {post && isAuthor && (
           postEditable ? (
@@ -199,14 +200,15 @@ export default function PostForm({ profile, post }) {
               <Button
                 onClick={() => {
                   setpostEditable(false);
-                  reset();
+                  reset(defaultValues);
+                  setlocalImage(null)
                 }}
                 className="w-full py-2"
               >
                 Cancel
               </Button>
               <Button
-                type="submit"
+                onClick={() => handleSubmit(submit)}
                 className="w-full py-2"
               >
                 Save

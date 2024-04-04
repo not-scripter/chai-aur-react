@@ -35,8 +35,9 @@ const InputFile = (
         {...props}
         className="absolute opacity-0 w-full h-full"
       />
-        <AddSvg 
-        className={`${className} ${bg} ${fg} h-12 py-2 rounded-xl outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary`}
+      <AddSvg
+        width="12"
+        className={`${className} ${bg} ${fg} py-2 rounded-xl outline-none border-secondary/50 border-4 focus:border-4 focus:border-secondary fill-secondary stroke-secondary`}
       />
       {/* <img */}
       {/*   src={add} */}
