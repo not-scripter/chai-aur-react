@@ -5,15 +5,12 @@ import { useSelector } from 'react-redux'
 import { Loader, NotFound } from '../../'
 import { ReplyCardComp } from '..'
 
-export default function Replies() {
-  const {profileData} = useSelector(state => state.auth)
-  const {userId, postId} = useParams()
+export default function Replies({userId, postId, replyId}) {
   const [replies, setreplies] = useState([])
-  const isAuthor = profileData.$id === userId ? true : false ;
   const [loading, setloading] = useState(true);
 
   const getReplies = async () => {
-    const repRes = await PostServices.getReplies(postId)
+    const repRes = await PostServices.getReplies(postId || replyId)
     if (repRes) {
       setreplies(repRes.documents)
       setloading(false)
@@ -30,7 +27,7 @@ export default function Replies() {
       {replies.map((item) => <ReplyCardComp userId={item.userId} replyId={item.$id}/>)}
       </div>
     ) : (
-      <NotFound title="No Reply- Found" />
+      <NotFound title="No Reply Found" />
     )
   ) : (
     <Loader />

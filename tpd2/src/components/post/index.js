@@ -9,6 +9,8 @@ import Replies from "./replies/Replies";
 import ReplyCard from "./replies/ReplyCard";
 import ReplyForm from "./replies/ReplyForm";
 import Reply from "./replies/Reply";
+import Actions from "./Actions";
+import UserHeader from "./UserHeader";
 
 export {
   AllPost,
@@ -22,4 +24,6 @@ export {
   Replies as RepliesComp,
   ReplyCard as ReplyCardComp,
   ReplyForm as ReplyFormComp,
+  Actions,
+  UserHeader,
 };

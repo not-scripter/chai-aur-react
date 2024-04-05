@@ -204,6 +204,14 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      {
+        path: `/:userId/:replyId/new-reply`,
+        element: (
+          <AuthLayout auth>
+            <NewReply />
+          </AuthLayout>
+        ),
+      },
     ],
   },
 ]);

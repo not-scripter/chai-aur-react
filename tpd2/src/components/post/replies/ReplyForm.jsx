@@ -7,15 +7,13 @@ import { PostServices } from '../../../appwrite'
 import toast from 'react-hot-toast'
 import { defaultAvatar } from '../../../assets'
 
-export default function ReplyForm({profile, reply}) {
-  const { userId, postId } = useParams()
-  const [loading, setloading] = useState(false)
+export default function ReplyForm({ user, reply }) {
+  const { userId, postId, replyId } = useParams()
   const [btnLoading, setbtnLoading] = useState(false)
   const [editable, seteditable] = useState(!reply ? true : false)
   const { profileData } = useSelector(state => state.auth)
   const isAuthor = profileData.$id === reply?.userId ? true : false;
   const navigate = useNavigate()
-  // const [reply, setreply] = useState(null)
   const [open, setopen] = useState(false)
 
   const defaultValues = {
@@ -27,11 +25,6 @@ export default function ReplyForm({profile, reply}) {
 
   const [localImage, setlocalImage] = useState(null)
   const dbImage = reply && PostServices.getFilePreview(reply.images);
-
-  const getReply = async () => {
-    // const repRes = await PostServices.getReply(replyId)
-    // if (repRes) setreply(repRes)
-  }
 
   const submit = async (data) => {
     if (reply) {
@@ -88,41 +81,21 @@ export default function ReplyForm({profile, reply}) {
     }
   }
 
-  // const slugTransform = useCallback((value) => {
-  //   if (value && typeof value === "string") {
-  //     return value
-  //       .trim()
-  //       .toLowerCase()
-  //       .replace(/[^a-zA-Z\d\s]+/g, "-")
-  //       .replace(/\s/g, "-");
-  //   }
-  //   return "";
-  // }, []);
-  //
-  // useEffect(() => {
-  //   const subscription = watch((value, { name }) => {
-  //     if (name === "title") {
-  //       setValue("slug", slugTransform(value.title), { shouldValidate: true });
-  //     }
-  //   });
-  //   return () => subscription.unsubscribe();
-  // }, [watch, slugTransform, setValue]);
-
   useEffect(() => {
-  getPost()
-  }, [reply && reply])
+  getData()
+  }, [user && user, reply && reply])
 
   return (
     <>
       <div className="flex justify-between">
-        <Link to={profile ? `/${profile?.$id}` : `/${profileData.$id}`}>
+        <Link to={user ? `/${user?.$id}` : `/${profileData.$id}`}>
           <div className="flex gap-2 items-center">
             <img
               className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
               src={
-                profile
-                  ? profile.avatar
-                    ? PostServices.getAvatarPreview(profile.avatar)
+                user
+                  ? user.avatar
+                    ? PostServices.getAvatarPreview(user.avatar)
                     : defaultAvatar
                   : profileData.avatar 
                     ? PostServices.getAvatarPreview(profileData.avatar)
@@ -130,9 +103,9 @@ export default function ReplyForm({profile, reply}) {
               }
             />
             <h1 className="flex flex-col font-semibold">
-              {profile ? profile.fullname : profileData.fullname}
+              {user ? user.fullname : profileData.fullname}
               <span className="font-semibold text-sm text-secondary/50">
-                @{profile ? profile.username : profileData.username}
+                @{user ? user.username : profileData.username}
               </span>
             </h1>
           </div>

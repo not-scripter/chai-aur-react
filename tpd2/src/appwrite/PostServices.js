@@ -156,12 +156,12 @@ export class postServices {
       console.log("appwrite :: create post ::", error.message);
     }
   }
-  async updatePost({ postId, content, images, visibility, replies, likes, dislikes, saves, shares }) {
+  async updatePost({ docId, content, images, visibility, replies, likes, dislikes, saves, shares }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
         conf.postsId,
-        postId,
+        docId,
         {
           content,
           images,
@@ -260,12 +260,12 @@ export class postServices {
       console.log("appwrite :: create reply ::", error.message);
     }
   }
-  async updateReply({ replyId, content, images, replies, replyTo, replyToId, likes, dislikes, saves, shares }) {
+  async updateReply({ docId, content, images, replies, replyTo, replyToId, likes, dislikes, saves, shares }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
         conf.repliesId,
-        replyId,
+        docId,
         {
           content,
           images,
@@ -394,6 +394,25 @@ export class postServices {
       return this.storage.getFilePreview(conf.imagesId, fileId);
     } catch (error) {
       console.log("appwrite :: get file preview ::", error.message);
+    }
+  }
+  //Tests
+  async updateDoc({ type, docId, likes, dislikes, saves, shares, replies }) {
+    try {
+      return await this.databases.updateDocument(
+        conf.databaseId,
+        type === "post" ? conf.postsId : conf.repliesId,
+        docId,
+        {
+          likes,
+          dislikes,
+          replies,
+          saves,
+          shares,
+        },
+      );
+    } catch (error) {
+      console.log("appwrite :: update doc ::", error.message);
     }
   }
 }

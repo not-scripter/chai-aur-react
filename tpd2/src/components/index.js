@@ -18,6 +18,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Toolbar from "./Toolbar";
 import CheckBox from "./CheckBox"
+import Paragraph from "./Paragraph";
 
 export {
   AuthLayout,
@@ -40,4 +41,5 @@ export {
   NotFound,
   Toolbar,
   CheckBox,
+  Paragraph,
 };

@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import toast from "react-hot-toast";
 import Select from "../Select";
-import { Button, ImgBox, Confirm ,InputFile, TextArea } from "..";
+import { Button, ImgBox, Confirm ,InputFile, TextArea, Loader } from "..";
 import { defaultAvatar } from "../../assets";
 
-export default function PostForm({ profile, post }) {
+export default function PostForm({ user, post }) {
   const navigate = useNavigate(); 
 
   const defaultValues = {
@@ -104,41 +104,21 @@ export default function PostForm({ profile, post }) {
     }
   };
 
-  // const postIdTransform = useCallback((value) => {
-  //   if (value && typeof value === "string") {
-  //     return value
-  //       .trim()
-  //       .toLowerCase()
-  //       .replace(/[^a-zA-Z\d\s]+/g, "-")
-  //       .replace(/\s/g, "-");
-  //   }
-  //   return "";
-  // }, []);
-  //
-  // useEffect(() => {
-  //   const subscription = watch((value, { name }) => {
-  //     if (name === "title") {
-  //       setValue("postId", postIdTransform(value.title), { shouldValidate: true });
-  //     }
-  //   });
-  //   return () => subscription.unsubscribe();
-  // }, [watch, postIdTransform, setValue]);
-
   useEffect(() => {
     post && handleIso(post.$createdAt);
-  }, [post && post])
+  }, [post && post]);
 
   return (
     <>
       <div className="flex justify-between">
-        <Link to={profile ? `/${profile?.$id}` : `/${profileData.$id}`}>
+        <Link to={user ? `/${user?.$id}` : `/${profileData.$id}`}>
           <div className="flex gap-2 items-center">
             <img
               className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
               src={
-                profile
-                  ? profile.avatar
-                    ? PostServices.getAvatarPreview(profile.avatar)
+                user
+                  ? user.avatar
+                    ? PostServices.getAvatarPreview(user.avatar)
                     : defaultAvatar
                   : profileData.avatar 
                     ? PostServices.getAvatarPreview(profileData.avatar)
@@ -146,9 +126,9 @@ export default function PostForm({ profile, post }) {
               }
             />
             <h1 className="flex flex-col font-semibold">
-              {profile ? profile.fullname : profileData.fullname}
+              {user ? user.fullname : profileData.fullname}
               <span className="font-semibold text-sm text-secondary/50">
-                @{profile ? profile.username : profileData.username}
+                @{user ? user.username : profileData.username}
               </span>
             </h1>
           </div>
@@ -244,5 +224,5 @@ export default function PostForm({ profile, post }) {
       </form>
       <Confirm open={open} setopen={setopen} warningDesc={postEditable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={postEditable ? "Exit" : "Delete"} proceedTo={deletePost} loading={btnLoading}/>
     </>
-  );
+  )
 }

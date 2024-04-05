@@ -2,21 +2,21 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../../appwrite";
 import { CardBox } from "../../";
-import ReplyForm from "./ReplyForm";
+import { RepliesComp, ReplyFormComp } from "..";
 
 export default function Reply() {
+  const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const { userId, replyId } = useParams();
-  const [profile, setprofile] = useState(null);
+  const [user, setuser] = useState(null);
   const [reply, setreply] = useState(null);
-  const [loading, setloading] = useState(true);
 
-  const getPost = async () => {
+  const getData = async () => {
     if (userId && replyId) {
       const proRes = await PostServices.getProfile(userId);
       const repRes = await PostServices.getReply(replyId);
       if (proRes && repRes) {
-        setprofile(proRes);
+        setuser(proRes);
         setreply(repRes);
         setloading(false);
       }
@@ -26,14 +26,14 @@ export default function Reply() {
   };
 
   useEffect(() => {
-    getPost();
+    getData();
   }, [userId, replyId, navigate]);
 
   return !loading ? (
     post ? (
       <CardBox>
-        <ReplyForm profile={profile} reply={reply} />
-        {/*<Replies />*/}
+        <ReplyFormComp user={user} reply={reply} />
+        <RepliesComp userId={userId} replyId={replyId} />
       </CardBox>
     ) : (
       <NotFound title="Post Not Found" />
