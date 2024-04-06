@@ -99,14 +99,20 @@ export default function Actions({userId, postId, replyId}) {
       })
     }
   };
-    const newId = useId()
+  const newId = useId()
   const handleShare = async () => {
-    const exists = doc.shares.filter(item => item === profileData.$id)
-    await PostServices.updateDoc({
-      type: postId ? "post" : "reply",
-      docId,
-      shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id + newId]
-    }).then((res) => setdoc(res))
+    await navigator.share({
+      title: "Test Share",
+      text: "Test text",
+      url: `https://test.com`
+    }).then(() => {
+      const exists = doc.shares.filter(item => item === profileData.$id)
+      PostServices.updateDoc({
+        type: postId ? "post" : "reply",
+        docId,
+        shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id + newId]
+      }).then((res) => setdoc(res))
+    })
   };
 
   const actionItems = [
