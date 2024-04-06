@@ -1,11 +1,11 @@
 import React from "react";
 import { Container } from "../components";
-import { PostForm } from "../components/post"
+import { DocForm } from "../components/post";
 
 export default function AddPost() {
   return (
     <Container>
-      <PostForm />
+      <DocForm typePost />
     </Container>
   );
 }

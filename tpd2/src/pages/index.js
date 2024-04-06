@@ -17,7 +17,9 @@ import Replies from "./Replies";
 import Saves from "./Saves";
 import MyPosts from "./MyPosts";
 import NewReply from "./NewReply";
-import Reply from "./Reply"
+import Reply from "./Reply";
+import EditReply from "./EditReply";
+
 export {
   Test,
   Home,
@@ -39,4 +41,5 @@ export {
   Replies,
   Saves,
   NewReply,
+  EditReply,
 };

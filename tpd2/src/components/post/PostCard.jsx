@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import { Loader, ImgBox, CardBox, Paragraph } from "../";
-import UserHeader from "./UserHeader";
-import Actions from "./Actions";
+import { DocActions, UserHeader } from "./";
 
 export default function PostCard({ userId, postId }) {
   const [user, setuser] = useState(null);
@@ -27,13 +26,13 @@ export default function PostCard({ userId, postId }) {
   return !loading ? (
     <CardBox key={postId}>
       <UserHeader user={user} doc={post} />
-      <Link to={`/${userId}/${postId}`}>
+      <Link to={`/post/${postId}`}>
         <Paragraph>{post.content}</Paragraph>
         {post.images && (
           <ImgBox src={PostServices.getFilePreview(post.images)} />
         )}
       </Link>
-      <Actions userId={userId} postId={postId} />
+      <DocActions userId={userId} postId={postId} />
     </CardBox>
   ) : (
     <Loader />

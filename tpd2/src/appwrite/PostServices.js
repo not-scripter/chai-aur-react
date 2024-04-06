@@ -1,5 +1,6 @@
-import { Client, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
+import { Client, Databases, Storage, Query, Permission, Role } from "appwrite";
 import conf from "../conf/conf";
+import {v1 as uuidv1} from "uuid"
 
 export class postServices {
   client = new Client();
@@ -140,7 +141,7 @@ export class postServices {
       return await this.databases.createDocument(
         conf.databaseId,
         conf.postsId,
-        ID.unique(),
+        uuidv1(),
         {
           userId,
           content,
@@ -243,7 +244,7 @@ export class postServices {
       return await this.databases.createDocument(
         conf.databaseId,
         conf.repliesId,
-        ID.unique(),
+        uuidv1(),
         {
           userId,
           content,
@@ -332,7 +333,7 @@ export class postServices {
   // Profile Avatar
   async uploadAvatar(file) {
     try {
-      return await this.storage.createFile(conf.avatarsId, ID.unique(), file);
+      return await this.storage.createFile(conf.avatarsId, uuidv1(), file);
     } catch (error) {
       console.log("appwrite :: uploaf avatar ::", error.message);
     }
@@ -354,7 +355,7 @@ export class postServices {
   // Profile Banner
   async uploadBanner(file) {
     try {
-      return await this.storage.createFile(conf.bannersId, ID.unique(), file);
+      return await this.storage.createFile(conf.bannersId, uuidv1(), file);
     } catch (error) {
       console.log("appwrite :: upload banner ::", error.message);
     }
@@ -377,7 +378,7 @@ export class postServices {
   // Storage Services
   async uploadFile(file) {
     try {
-      return await this.storage.createFile(conf.imagesId, ID.unique(), file);
+      return await this.storage.createFile(conf.imagesId, uuidv1(), file);
     } catch (error) {
       console.log("appwrite :: upload file ::", error.message);
     }
@@ -401,7 +402,7 @@ export class postServices {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
-        type === "post" ? conf.postsId : conf.repliesId,
+        type === "post" && conf.postsId || "reply" && conf.repliesId,
         docId,
         {
           likes,
@@ -413,6 +414,29 @@ export class postServices {
       );
     } catch (error) {
       console.log("appwrite :: update doc ::", error.message);
+    }
+  }
+  async createDoc({ type, userId, replyTo, replyToId, content, images, visibility }) {
+    try {
+      return await this.databases.createDocument(
+        conf.databaseId,
+        type === "post" && conf.postsId || "reply" && conf.repliesId,
+        uuidv1(),
+        {
+          userId,
+          replyTo,
+          replyToId,
+          content,
+          images,
+          visibility,
+        },
+        [
+          Permission.read(Role.users()),
+          Permission.update(Role.users()),
+        ]
+      );
+    } catch (error) {
+      console.log("appwrite :: create doc ::", error.message);
     }
   }
 }

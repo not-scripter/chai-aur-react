@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { PostServices } from "../../appwrite";
 import { defaultAvatar } from "../../assets";
+import { useSelector } from "react-redux";
 
 export default function UserHeader({user, doc}) {
+  const { profileData } = useSelector((state) => state.auth);
+
   const [date, setdate] = useState(null);
   const [time, settime] = useState(null);
   function handleIso(isoDate) {
@@ -21,39 +24,41 @@ export default function UserHeader({user, doc}) {
   }
 
   useEffect(() => {
-    handleIso(doc?.$createdAt);
-  }, [user, doc]);
+    doc && handleIso(doc?.$createdAt);
+  }, [user?.$id, doc?.$createdAt]);
 
   return (
-      <div className="flex justify-between">
-        <Link to={user ? `/${user?.$id}` : `/${profileData.$id}`}>
-          <div className="flex gap-2 items-center">
-            <img
-              className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
-              src={
-                user
-                  ? user.avatar
-                    ? PostServices.getAvatarPreview(user.avatar)
-                    : defaultAvatar
-                  : profileData.avatar 
-                    ? PostServices.getAvatarPreview(profileData.avatar)
-                    : defaultAvatar
-              }
-            />
-            <h1 className="flex flex-col font-semibold">
-              {user ? user.fullname : profileData.fullname}
-              <span className="font-semibold text-sm text-secondary/50">
-                @{user ? user.username : profileData.username}
-              </span>
-            </h1>
-          </div>
-        </Link>
-        <h1 className="flex flex-col text-sm left-auto right-0 font-semibold text-secondary/80">
+    <div className="flex justify-between">
+      <Link to={user ? `/${user?.$id}` : `/${profileData.$id}`}>
+        <div className="flex gap-2 items-center">
+          <img
+            className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
+            src={
+              user
+                ? user.avatar
+                  ? PostServices.getAvatarPreview(user.avatar)
+                  : defaultAvatar
+                : profileData.avatar 
+                  ? PostServices.getAvatarPreview(profileData.avatar)
+                  : defaultAvatar
+            }
+          />
+          <h1 className="flex flex-col font-semibold">
+            {user ? user.fullname : profileData.fullname}
+            <span className="font-semibold text-sm text-secondary/50">
+              @{user ? user.username : profileData.username}
+            </span>
+          </h1>
+        </div>
+      </Link>
+      {date && time && (
+        <h1 className="flex flex-col text-xs left-auto right-0 font-semibold text-secondary/80">
           {date}
-          <span className="text-sm align-bottom font-semibold text-secondary/50">
+          <span className="text-xs align-bottom font-semibold text-secondary/50">
             {time}
           </span>
         </h1>
-      </div>
+      )}
+    </div>
   )
 }

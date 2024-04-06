@@ -1,15 +1,16 @@
-import { useCallback, useEffect, useId, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useId, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PostServices } from "../../appwrite";
-import { CheckBox } from "../";
+import { CheckBox } from "..";
 import { DislikeSvg, LikeSvg, ReplySvg, SavesSvg, ShareSvg } from "../../assets";
 import { useSelector } from "react-redux";
 
-export default function Actions({userId, postId, replyId}) {
+export default function DocActions({userId, postId, replyId}) {
   const navigate = useNavigate();
   const { profileData } = useSelector(state => state.auth)
   const [doc, setdoc] = useState(null);
-  const docId = postId || replyId;
+  const docId = postId ? postId : replyId;
+  const docType = postId && "post" || replyId && "reply";
 
   const getData = async () => {
     if (userId && docId) {
@@ -17,12 +18,12 @@ export default function Actions({userId, postId, replyId}) {
       if (docRes) {
         setdoc(docRes);
 
-  const likeRes = doc?.likes.find((user) => user === profileData.$id)
-  const dislikeRes = doc?.dislikes.find((user) => user === profileData.$id)
-  const saveRes = doc?.saves.find((user) => user === profileData.$id)
-  if (likeRes) setliked(true)
-  if (dislikeRes) setdisliked(true)
-  if (saveRes) setsaved(true)
+        const likeRes = doc?.likes.find((user) => user === profileData.$id)
+        const dislikeRes = doc?.dislikes.find((user) => user === profileData.$id)
+        const saveRes = doc?.saves.find((user) => user === profileData.$id)
+        if (likeRes) setliked(true)
+        if (dislikeRes) setdisliked(true)
+        if (saveRes) setsaved(true)
       }
     } else {
       navigate("/");
@@ -37,7 +38,7 @@ export default function Actions({userId, postId, replyId}) {
     if (liked) {
       setliked(false)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         likes: doc?.likes.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -45,7 +46,7 @@ export default function Actions({userId, postId, replyId}) {
       setliked(true)
       setdisliked(false)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         likes: [...doc?.likes, profileData.$id],
         dislikes: doc?.dislikes.filter(user => user !== profileData.$id),
@@ -56,7 +57,7 @@ export default function Actions({userId, postId, replyId}) {
     if (disliked) {
       setdisliked(false)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         dislikes: doc?.dislikes.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -64,7 +65,7 @@ export default function Actions({userId, postId, replyId}) {
       setdisliked(true)
       setliked(false)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         likes: doc?.likes.filter(user => user !== profileData.$id),
         dislikes: [...doc?.dislikes, profileData.$id],
@@ -72,13 +73,13 @@ export default function Actions({userId, postId, replyId}) {
     }
   };
   const handleReply = async () => {
-    navigate(`/${userId}/${docId}/new-reply`)
+    navigate(`/${docType}/${docId}/new-reply`)
   };
   const handleSave = async () => {
     if (saved) {
       setsaved(false)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         saves: doc?.saves.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -89,7 +90,7 @@ export default function Actions({userId, postId, replyId}) {
     } else {
       setsaved(true)
       await PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         saves: [...doc?.likes, profileData.$id],
       }).then((res) => setdoc(res))
@@ -102,13 +103,13 @@ export default function Actions({userId, postId, replyId}) {
   const newId = useId()
   const handleShare = async () => {
     await navigator.share({
-      title: "Test Share",
-      text: "Test text",
-      url: `https://test.com`
+      title: userId,
+      text: doc.content,
+      url: `${window.location.origin}/${userId}/${docId}`
     }).then(() => {
       const exists = doc.shares.filter(item => item === profileData.$id)
       PostServices.updateDoc({
-        type: postId ? "post" : "reply",
+        type: docType,
         docId,
         shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id + newId]
       }).then((res) => setdoc(res))

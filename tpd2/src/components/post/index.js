@@ -3,20 +3,21 @@ import EditPost from "./EditPost";
 import Posts from "./Posts";
 import Post from "./Post";
 import PostCard from "./PostCard";
-import PostForm from "./PostForm";
+import DocForm from "./DocForm";
 import MyPosts from "./MyPosts";
 import Replies from "./replies/Replies";
 import ReplyCard from "./replies/ReplyCard";
 import ReplyForm from "./replies/ReplyForm";
 import Reply from "./replies/Reply";
-import Actions from "./Actions";
+import DocActions from "./DocActions";
 import UserHeader from "./UserHeader";
+import EditReply from "./replies/EditReply";
 
 export {
   AllPost,
   MyPosts as MyPostsComp,
   Posts as PostsComp,
-  PostForm,
+  DocForm,
   PostCard,
   EditPost as EditPostComp,
   Post as PostComp,
@@ -24,6 +25,7 @@ export {
   Replies as RepliesComp,
   ReplyCard as ReplyCardComp,
   ReplyForm as ReplyFormComp,
-  Actions,
+  EditReply as EditReplyComp,
+  DocActions,
   UserHeader,
 };

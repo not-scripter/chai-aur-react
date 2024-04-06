@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PostServices } from '../../appwrite'
 import { NotFound } from '../'
-import { PostForm } from '../post'
+import { DocForm } from '../post'
 
 export default function EditPost() {
-  const {userId} = useParams()
+  const {postId} = useParams()
   const navigate = useNavigate()
+  const [user, setuser] = useState(null)
   const [post, setpost] = useState(null)
 
   const getPost = async () => {
-    if (userId) {
-      const post = await PostServices.getPost(userId) 
-      if (post) {
-      setpost(data)
+    if (postId) {
+      const postRes = await PostServices.getPost(postId) 
+      if (postRes) {
+        const userRes = await PostServices.getProfile(postRes.userId)
+        if (postRes && userRes) {
+          setuser(userRes)
+          setpost(postRes)
+        }
       }
     } else {
       navigate("/")
@@ -22,10 +27,10 @@ export default function EditPost() {
 
   useEffect(() => {
     getPost()
-  }, [userId, navigate])
+  }, [navigate])
 
   return post ? (
-    <PostForm post={post}/>
+    <DocForm user={user} post={post}/>
   ) : (
   <NotFound title='Post Not Found'/>
   )

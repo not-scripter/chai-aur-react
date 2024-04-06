@@ -1,39 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../../appwrite";
-import { CardBox } from "../../";
-import { RepliesComp, ReplyFormComp } from "..";
+import { Button, CardBox, Confirm, ImgBox, Loader, NotFound, Paragraph } from "../../";
+import { DocActions, RepliesComp, UserHeader } from "..";
+import { useSelector } from "react-redux";
 
 export default function Reply() {
-  const [loading, setloading] = useState(true);
   const navigate = useNavigate();
-  const { userId, replyId } = useParams();
+  const [loading, setloading] = useState(true);
+  const { replyId } = useParams();
   const [user, setuser] = useState(null);
   const [reply, setreply] = useState(null);
+  const { profileData } = useSelector(state => state.auth)
+  const isAuthor = profileData.$id === user?.$id ? true : false;
+
+  const [open, setopen] = useState(false)
+  const [btnLoading, setbtnLoading] = useState(false);
 
   const getData = async () => {
-    if (userId && replyId) {
-      const proRes = await PostServices.getProfile(userId);
+    if (replyId) {
       const repRes = await PostServices.getReply(replyId);
-      if (proRes && repRes) {
-        setuser(proRes);
-        setreply(repRes);
-        setloading(false);
+      if (repRes) {
+        const proRes = await PostServices.getProfile(repRes.userId);
+        if (proRes && repRes) {
+          setuser(proRes);
+          setreply(repRes);
+          setloading(false);
+        }
       }
     } else {
       navigate("/");
     }
   };
 
+  const deleteReply = async () => {}
+
   useEffect(() => {
     getData();
-  }, [userId, replyId, navigate]);
+  }, [replyId, navigate]);
 
   return !loading ? (
-    post ? (
+    reply ? (
       <CardBox>
-        <ReplyFormComp user={user} reply={reply} />
-        <RepliesComp userId={userId} replyId={replyId} />
+        { isAuthor && (
+          <div className="flex gap-2">
+            <Button
+              bg="bg-red-500"
+              className="w-full py-2"
+              onClick={() => setopen(true)}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => navigate(`/edit-reply/${replyId}`)}
+              className="w-full py-2"
+            >
+              Edit
+            </Button>
+          </div>
+        )}
+        <UserHeader user={user} doc={reply}/>
+        <Paragraph>
+          {reply.content}
+        </Paragraph>
+        { reply.images && <ImgBox src={PostServices.getFilePreview(reply.images)}/> }
+        <DocActions userId={user?.$id} replyId={replyId}/>
+        <RepliesComp userId={user?.$id} replyId={replyId}/>
+        {/* Extras */}
+      <Confirm open={open} setopen={setopen} warningDesc="Are You Sure ? You want to Delete this Reply" proceedText="Delete" proceedTo={deleteReply} loading={btnLoading}/>
       </CardBox>
     ) : (
       <NotFound title="Post Not Found" />
@@ -42,3 +76,4 @@ export default function Reply() {
     <Loader />
   );
 }
+        // <ReplyFormComp user={user} reply={reply} />

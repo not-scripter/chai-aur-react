@@ -27,6 +27,7 @@ import {
   Saves,
   NewReply,
   Reply,
+  EditReply,
 } from "./pages";
 
 const router = createBrowserRouter([
@@ -59,38 +60,6 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout auth={false}>
             <Login />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: `/:userId/:postId`,
-        element: (
-          <AuthLayout auth>
-            <Post />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: `/:userId/:replyId`,
-        element: (
-          <AuthLayout auth>
-            <Reply />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/add-post",
-        element: (
-          <AuthLayout auth>
-            <AddPost />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/edit-post",
-        element: (
-          <AuthLayout auth>
-            <EditPost />
           </AuthLayout>
         ),
       },
@@ -197,7 +166,7 @@ const router = createBrowserRouter([
       //   ),
       // },
       {
-        path: `/:userId/:postId/new-reply`,
+        path: `/post/:postId/new-reply`,
         element: (
           <AuthLayout auth>
             <NewReply />
@@ -205,10 +174,50 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: `/:userId/:replyId/new-reply`,
+        path: `/reply/:replyId/new-reply`,
         element: (
           <AuthLayout auth>
             <NewReply />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/post/:postId`,
+        element: (
+          <AuthLayout auth>
+            <Post />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/reply/:replyId`,
+        element: (
+          <AuthLayout auth>
+            <Reply />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/add-post",
+        element: (
+          <AuthLayout auth>
+            <AddPost />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/edit-post/:postId`,
+        element: (
+          <AuthLayout auth>
+            <EditPost />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: `/edit-reply/:replyId`,
+        element: (
+          <AuthLayout auth>
+            <EditReply />
           </AuthLayout>
         ),
       },
@@ -217,8 +226,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={Store}>
-    <RouterProvider router={router} />
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={Store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>,
 );
 // <React.StrictMode>
