@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PostServices } from "../../appwrite";
 import { CheckBox } from "../";
@@ -16,13 +16,13 @@ export default function Actions({userId, postId, replyId}) {
       const docRes = postId ? await PostServices.getPost(postId) : await PostServices.getReply(replyId)
       if (docRes) {
         setdoc(docRes);
-        const likeRes = doc?.likes.find((user) => user === profileData.$id)
-        const dislikeRes = doc?.dislikes.find((user) => user === profileData.$id)
-        const saveRes = doc?.saves.find((user) => user === profileData.$id)
-        if (likeRes) setliked(true)
-        if (dislikeRes) setdisliked(true)
-        if (saveRes) setsaved(true)
-        console.log("likeRes", likeRes)
+
+  const likeRes = doc?.likes.find((user) => user === profileData.$id)
+  const dislikeRes = doc?.dislikes.find((user) => user === profileData.$id)
+  const saveRes = doc?.saves.find((user) => user === profileData.$id)
+  if (likeRes) setliked(true)
+  if (dislikeRes) setdisliked(true)
+  if (saveRes) setsaved(true)
       }
     } else {
       navigate("/");
@@ -99,12 +99,13 @@ export default function Actions({userId, postId, replyId}) {
       })
     }
   };
+    const newId = useId()
   const handleShare = async () => {
-    const exists = profileData.shares.filter(item => item === profileData.$id)
+    const exists = doc.shares.filter(item => item === profileData.$id)
     await PostServices.updateDoc({
       type: postId ? "post" : "reply",
       docId,
-      shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id ++]
+      shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id + newId]
     }).then((res) => setdoc(res))
   };
 
@@ -155,7 +156,7 @@ export default function Actions({userId, postId, replyId}) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [doc?.$id]);
 
   return (
       <div className="flex justify-evenly">
