@@ -223,7 +223,7 @@ export class postServices {
       console.log("appwrite :: get my posts ::", error.message);
     }
   }
-  async getPublicPosts(userId) {
+  async getUsersPosts(userId) {
     try {
       return await this.databases.listDocuments(
         conf.databaseId,
@@ -328,6 +328,20 @@ export class postServices {
       console.log("appwrite :: get my replies ::", error.message);
     }
   }
+  async getUsersReplies(userId) {
+    try {
+      return await this.databases.listDocuments(
+        conf.databaseId,
+        conf.repliesId,
+        [
+          Query.equal("userId", userId),
+          Query.equal("visibility", "public"),
+        ]
+      );
+    } catch (error) {
+      console.log("appwrite :: get public posts ::", error.message);
+    }
+  }
 
   // Storage Services
   // Profile Avatar
@@ -398,29 +412,11 @@ export class postServices {
     }
   }
   //Tests
-  async updateDoc({ type, docId, likes, dislikes, saves, shares, replies }) {
-    try {
-      return await this.databases.updateDocument(
-        conf.databaseId,
-        type === "post" && conf.postsId || "reply" && conf.repliesId,
-        docId,
-        {
-          likes,
-          dislikes,
-          replies,
-          saves,
-          shares,
-        },
-      );
-    } catch (error) {
-      console.log("appwrite :: update doc ::", error.message);
-    }
-  }
   async createDoc({ type, userId, replyTo, replyToId, content, images, visibility }) {
     try {
       return await this.databases.createDocument(
         conf.databaseId,
-        type === "post" && conf.postsId || "reply" && conf.repliesId,
+        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
         uuidv1(),
         {
           userId,
@@ -437,6 +433,65 @@ export class postServices {
       );
     } catch (error) {
       console.log("appwrite :: create doc ::", error.message);
+    }
+  }
+  async updateDoc({ type, docId, likes, dislikes, saves, shares, replies }) {
+    try {
+      return await this.databases.updateDocument(
+        conf.databaseId,
+        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docId,
+        {
+          likes,
+          dislikes,
+          replies,
+          saves,
+          shares,
+        },
+      );
+    } catch (error) {
+      console.log("appwrite :: update doc ::", error.message);
+    }
+  }
+  async getDoc({type, docId}) {
+    try {
+      return await this.databases.getDocument(
+        conf.databaseId,
+        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docId,
+      );
+    } catch (error) {
+      console.log("appwrite :: get post ::", error.message);
+    }
+  }
+  async deleteDoc({docType, docId}) {
+    try {
+      return await this.databases.deleteDocument(
+        conf.databaseId,
+        docType === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docId,
+      );
+    } catch (error) {
+      console.log("appwrite :: delete post ::", error.message);
+    }
+  }
+  async updateProfileDocs({
+    docType,
+    userId,
+    docs,
+  }) {
+    try {
+      const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
+      return await this.databases.updateDocument(
+        conf.databaseId,
+        conf.profilesId,
+        userId,
+        {
+          [docsType]: docs,
+        },
+      );
+    } catch (error) {
+      console.log("appwrite :: update profile docs ::", error.message);
     }
   }
 }

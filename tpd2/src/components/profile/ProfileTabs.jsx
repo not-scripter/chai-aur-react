@@ -2,15 +2,15 @@ import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 
 export default function ProfileTabs({ children }) {
-  const { slug } = useParams();
+  const {userId} = useParams()
   const tabItems = [
     {
       name: "Posts",
-      slug: `/posts`,
+      slug: `/${userId}/posts`,
     },
     {
       name: "Replies",
-      slug: `/replies`,
+      slug: `/${userId}/replies`,
     },
   ];
   return (

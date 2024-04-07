@@ -22,6 +22,7 @@ import UserTickSvg from "./UserTickSvg";
 import WebsiteSvg from "./WebsiteSvg";
 import ReplySvg from "./ReplySvg";
 import SavesSvg from "./SavesSvg";
+import HomeSvg from "./HomeSvg";
 
 import defaultAvatar from "./avatarDefault.svg";
 import defaultBanner from "./bannerDefault.svg";
@@ -55,4 +56,5 @@ export {
   ShareSvg,
   PostSvg,
   ReplySvg,
+  HomeSvg,
 };

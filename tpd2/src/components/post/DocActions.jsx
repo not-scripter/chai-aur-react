@@ -9,12 +9,17 @@ export default function DocActions({userId, postId, replyId}) {
   const navigate = useNavigate();
   const { profileData } = useSelector(state => state.auth)
   const [doc, setdoc] = useState(null);
-  const docId = postId ? postId : replyId;
-  const docType = postId && "post" || replyId && "reply";
+  const docId = postId ? postId : replyId ? replyId : null;
+  const docType = postId ? "post" : replyId ? "reply" : null;
+
+  const [liked, setliked] = useState(false);
+  const [disliked, setdisliked] = useState(false);
+  const [saved, setsaved] = useState(false);
 
   const getData = async () => {
     if (userId && docId) {
-      const docRes = postId ? await PostServices.getPost(postId) : await PostServices.getReply(replyId)
+      // const docRes = postId ? await PostServices.getPost(postId) : await PostServices.getReply(replyId)
+      const docRes = await PostServices.getDoc({type: docType, docId})
       if (docRes) {
         setdoc(docRes);
 
@@ -29,10 +34,6 @@ export default function DocActions({userId, postId, replyId}) {
       navigate("/");
     }
   };
-
-  const [liked, setliked] = useState(false);
-  const [disliked, setdisliked] = useState(false);
-  const [saved, setsaved] = useState(false);
 
   const handleLike = async () => {
     if (liked) {

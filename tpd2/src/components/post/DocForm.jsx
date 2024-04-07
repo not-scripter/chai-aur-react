@@ -1,21 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PostServices from "../../appwrite/PostServices";
 import toast from "react-hot-toast";
 import { Select } from "../";
-import { Button, ImgBox, Confirm ,InputFile, TextArea, Loader } from "..";
+import { Button, ImgBox, Confirm ,InputFile, TextArea } from "..";
 import { UserHeader } from "./";
 
 export default function DocForm({ user, post, reply, typePost, typeReply, replyTo, replyToId }) {
   const navigate = useNavigate(); 
   const doc = post ? post : reply ? reply : null;
-  const docType = post 
-    ? "post" : typePost 
-      ? "post" : reply 
-        ? "reply" : typeReply 
-          ? "reply" : null;
+  const docType = 
+    post ? "post" 
+      : typePost ? "post" 
+        : reply ? "reply" 
+          : typeReply ? "reply" 
+            : null;
 
   const defaultValues = {
     content: doc?.content || "",
@@ -79,11 +80,11 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
     // reset()
   };
 
-  const deletePost = async () => {
+  const deleteDoc = async () => {
     setbtnLoading(true)
-    const postRes = await PostServices.deletePost(doc.$id)
+    const docRes = await PostServices.deleteDoc({type: docType, docId})
     doc.images && await PostServices.deleteFile(doc.images);
-    if (postRes) {
+    if (docRes) {
       const proRes = await PostServices.updateProfile({
         userId: profileData.$id,
         posts: profileData.posts.filter((item) => item !== doc.$id),
@@ -104,7 +105,17 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
   return (
     <>
       <UserHeader user={user} doc={doc} />
-      {replyTo && <h1>reply to @{replyTo}</h1>}
+      {replyTo && (
+        <h1>
+          reply to 
+          <Link
+            to={`/${replyTo}`}
+            className="text-blue-500"
+          >
+            @{replyTo}
+          </Link>
+        </h1>
+      )}
       <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
         <TextArea
           readOnly={!editable}
@@ -168,7 +179,7 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
           )
         }
       </form>
-      <Confirm open={open} setopen={setopen} warningDesc={editable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={editable ? "Exit" : "Delete"} proceedTo={deletePost} loading={btnLoading}/>
+      <Confirm open={open} setopen={setopen} warningDesc={editable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={editable ? "Exit" : "Delete"} proceedTo={deleteDoc} loading={btnLoading}/>
     </>
   )
 }

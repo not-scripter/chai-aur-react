@@ -25,7 +25,7 @@ export default function PostCard({ userId, postId }) {
 
   return !loading ? (
     <CardBox key={postId}>
-      <UserHeader user={user} doc={post} />
+      <UserHeader user={user} post={post} />
       <Link to={`/post/${postId}`}>
         <Paragraph>{post.content}</Paragraph>
         {post.images && (

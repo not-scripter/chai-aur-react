@@ -4,7 +4,6 @@ import Posts from "./Posts";
 import Post from "./Post";
 import PostCard from "./PostCard";
 import DocForm from "./DocForm";
-import MyPosts from "./MyPosts";
 import Replies from "./replies/Replies";
 import ReplyCard from "./replies/ReplyCard";
 import ReplyForm from "./replies/ReplyForm";
@@ -15,7 +14,6 @@ import EditReply from "./replies/EditReply";
 
 export {
   AllPost,
-  MyPosts as MyPostsComp,
   Posts as PostsComp,
   DocForm,
   PostCard,

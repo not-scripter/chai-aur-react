@@ -42,24 +42,7 @@ export default function Reply() {
   return !loading ? (
     reply ? (
       <CardBox>
-        { isAuthor && (
-          <div className="flex gap-2">
-            <Button
-              bg="bg-red-500"
-              className="w-full py-2"
-              onClick={() => setopen(true)}
-            >
-              Delete
-            </Button>
-            <Button
-              onClick={() => navigate(`/edit-reply/${replyId}`)}
-              className="w-full py-2"
-            >
-              Edit
-            </Button>
-          </div>
-        )}
-        <UserHeader user={user} doc={reply}/>
+        <UserHeader user={user} reply={reply}/>
         <Paragraph>
           {reply.content}
         </Paragraph>

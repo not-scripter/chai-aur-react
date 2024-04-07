@@ -22,9 +22,9 @@ import {
   ProfilePosts,
   ProfileReplies,
   Test,
-  Replies,
+  MyReplies,
   MyPosts,
-  Saves,
+  MySaves,
   NewReply,
   Reply,
   EditReply,
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
         path: `/replies`,
         element: (
           <AuthLayout auth>
-            <Replies />
+            <MyReplies />
           </AuthLayout>
         ),
       },
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
         path: `/saves`,
         element: (
           <AuthLayout auth>
-            <Saves />
+            <MySaves />
           </AuthLayout>
         ),
       },
@@ -157,14 +157,6 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
-      // {
-      //   path: `/:username/:postId`,
-      //   element: (
-      //     <AuthLayout auth>
-      //       <Post />
-      //     </AuthLayout>
-      //   ),
-      // },
       {
         path: `/post/:postId/new-reply`,
         element: (
@@ -226,10 +218,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
     <Provider store={Store}>
       <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
 );
 // <React.StrictMode>

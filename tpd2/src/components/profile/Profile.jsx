@@ -70,7 +70,7 @@ export default function Profile({children}) {
   }, [setprofile]);
 
   return (
-    <CardBox>
+    <>
       <div className="flex flex-col items-center gap-2 relative mb-8">
         <ImgBox
           src={profile?.banner ? profile.banner : defaultBanner}
@@ -144,6 +144,6 @@ export default function Profile({children}) {
       <ProfileTabsComp>
         {children}
       </ProfileTabsComp>
-    </CardBox>
+    </>
   );
 }

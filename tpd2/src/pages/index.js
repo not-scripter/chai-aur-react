@@ -13,8 +13,8 @@ import Test from "./Test";
 import Profile from "./Profile";
 import ProfilePosts from "./ProfilePosts";
 import ProfileReplies from "./ProfileReplies";
-import Replies from "./Replies";
-import Saves from "./Saves";
+import MyReplies from "./MyReplies";
+import MySaves from "./MySaves";
 import MyPosts from "./MyPosts";
 import NewReply from "./NewReply";
 import Reply from "./Reply";
@@ -38,8 +38,8 @@ export {
   ProfilePosts,
   ProfileReplies,
   Reply,
-  Replies,
-  Saves,
+  MyReplies,
+  MySaves,
   NewReply,
   EditReply,
 };

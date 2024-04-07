@@ -1,35 +1,42 @@
 import React from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { PeoplesSvg } from "../assets";
+import {
+  AddSvg,
+  HomeSvg,
+  PeoplesSvg,
+  PostSvg,
+  ReplySvg,
+  SavesSvg,
+} from "../assets";
 import { useSelector } from "react-redux";
 
 export default function Toolbar() {
-  const { profileData } = useSelector(state => state.auth)
+  const { profileData } = useSelector((state) => state.auth);
   const ToolItems = [
     {
       slug: "/",
       name: "Home",
-      icon: <PeoplesSvg/>,
+      icon: <HomeSvg />,
     },
     {
       slug: `/posts`,
       name: "Posts",
-      icon: <PeoplesSvg/>,
+      icon: <PostSvg />,
     },
     {
       slug: `/add-post`,
       name: "Add Post",
-      icon: <PeoplesSvg/>,
+      icon: <AddSvg />,
     },
     {
       slug: `/replies`,
       name: "Replies",
-      icon: <PeoplesSvg/>,
+      icon: <ReplySvg />,
     },
     {
-      slug: `/saved`,
+      slug: `/saves`,
       name: "Saved",
-      icon: <PeoplesSvg/>,
+      icon: <SavesSvg />,
     },
   ];
   return (
@@ -42,12 +49,14 @@ export default function Toolbar() {
             className={({ isActive }) =>
               [
                 isActive && "shadow-secondary/50 shadow-md",
-                "flex flex-col items-center justify-center p-2 rounded-full",
+                "flex flex-col items-center justify-center p-2 rounded-full fill-fuchsia-500 stroke-fuchsia-500",
               ].join(" ")
             }
           >
             {item.icon}
-            <h1 className="text-sm font-semibold text-secondary/50">{item.name}</h1>
+            <h1 className="text-sm font-semibold text-secondary/50">
+              {item.name}
+            </h1>
           </NavLink>
         ))}
       </div>
