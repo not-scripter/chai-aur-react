@@ -461,7 +461,7 @@ export class postServices {
         docId,
       );
     } catch (error) {
-      console.log("appwrite :: get post ::", error.message);
+      console.log("appwrite :: get get ::", error.message);
     }
   }
   async deleteDoc({docType, docId}) {
@@ -472,7 +472,7 @@ export class postServices {
         docId,
       );
     } catch (error) {
-      console.log("appwrite :: delete post ::", error.message);
+      console.log("appwrite :: delete doc ::", error.message);
     }
   }
   async updateProfileDocs({

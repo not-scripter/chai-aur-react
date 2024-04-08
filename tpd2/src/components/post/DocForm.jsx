@@ -8,7 +8,7 @@ import { Select } from "../";
 import { Button, ImgBox, Confirm ,InputFile, TextArea } from "..";
 import { UserHeader } from "./";
 
-export default function DocForm({ user, post, reply, typePost, typeReply, replyTo, replyToId }) {
+export default function DocForm({ user, post, reply, typePost=false, typeReply=false, replyTo, replyToId }) {
   const navigate = useNavigate(); 
   const doc = post ? post : reply ? reply : null;
   const docType = 
@@ -66,14 +66,21 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
         visibility: data.visibility,
       });
       if (newDoc) {
+      const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
+        const userRes = await PostServices.updateProfile({
+          userId: user?.$id,
+          [docsType]: [...user?.[docsType], newDoc.$id],
+        })
+        if (userRes) {
         const proRes = await PostServices.updateProfile({
           userId: profileData.$id,
-          posts: [...profileData.posts, newDoc.$id],
+          [docsType]: [...profileData?.[docsType], newDoc.$id],
         })
-        if (proRes) {
+          if (proRes) {
         toast.success(`${docType} Created`);
         setbtnLoading(false)
         navigate(`/${docType}/${newDoc.$id}`);
+          }
         }
       }
     }
@@ -82,12 +89,12 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
 
   const deleteDoc = async () => {
     setbtnLoading(true)
-    const docRes = await PostServices.deleteDoc({type: docType, docId})
+    const docRes = await PostServices.deleteDoc({type: docType, docId: doc?.$id})
     doc.images && await PostServices.deleteFile(doc.images);
     if (docRes) {
       const proRes = await PostServices.updateProfile({
         userId: profileData.$id,
-        posts: profileData.posts.filter((item) => item !== doc.$id),
+        posts: profileData.posts.filter((item) => item !== doc?.$id),
       })
       if (proRes) {
       toast.success("doc Deleted");
@@ -98,24 +105,9 @@ export default function DocForm({ user, post, reply, typePost, typeReply, replyT
     }
   };
 
-  // useEffect(() => {
-  //   doc && handleIso(doc.$createdAt);
-  // }, [doc && doc]);
-
   return (
     <>
-      <UserHeader user={user} doc={doc} />
-      {replyTo && (
-        <h1>
-          reply to 
-          <Link
-            to={`/${replyTo}`}
-            className="text-blue-500"
-          >
-            @{replyTo}
-          </Link>
-        </h1>
-      )}
+      <UserHeader user={user} post={post} reply={reply} replyTo={replyTo}/>
       <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
         <TextArea
           readOnly={!editable}

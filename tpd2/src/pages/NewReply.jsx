@@ -5,10 +5,18 @@ import { useParams } from "react-router-dom";
 import { PostServices } from "../appwrite";
 
 export default function NewReply() {
-  const { postId } = useParams();
+  const { postId, replyId } = useParams();
   const [doc, setdoc] = useState(null);
+  const docId = postId ? postId : replyId ? replyId : null;
+  const docType = postId ? "post" : replyId ? "reply" : null;
+  const typePost = postId ? true : false;
+  const typeReply = replyId ? true : false;
+
   const getDoc = async () => {
-    const docRes = await PostServices.getPost(postId);
+    const docRes = await PostServices.getDoc({
+      type: docType,
+      docId: docId
+    });
     if (docRes) {
       setdoc(docRes);
     }
@@ -19,7 +27,7 @@ export default function NewReply() {
   return (
     <>
       <CardBox>
-        <DocForm typeReply replyTo={doc?.userId} replyToId={doc?.$id} />
+        <DocForm typePost={typePost} typeReply={typeReply} replyTo={doc?.userId} replyToId={doc?.$id} />
       </CardBox>
     </>
   );

@@ -27,7 +27,7 @@ export default function EditPost() {
 
   useEffect(() => {
     getPost()
-  }, [navigate])
+  }, [postId, navigate])
 
   return post ? (
     <DocForm user={user} post={post}/>

@@ -3,6 +3,7 @@ import React from "react";
 export default function EditSvg({ className = "fill-secondary stroke-secondary", width = "4" }) {
   return (
     <svg
+      className={`${className} w-${width} h-${width}`}
       viewBox="-2.4 -2.4 28.80 28.80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

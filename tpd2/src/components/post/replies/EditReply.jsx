@@ -27,7 +27,7 @@ export default function EditReply() {
 
   useEffect(() => {
     getPost();
-  }, [navigate]);
+  }, [replyId, navigate]);
 
   return reply ? (
     <DocForm user={user} reply={reply} />

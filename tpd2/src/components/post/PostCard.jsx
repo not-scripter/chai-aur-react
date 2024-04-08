@@ -35,6 +35,6 @@ export default function PostCard({ userId, postId }) {
       <DocActions userId={userId} postId={postId} />
     </CardBox>
   ) : (
-    <Loader />
-  );
+      <Loader />
+    );
 }

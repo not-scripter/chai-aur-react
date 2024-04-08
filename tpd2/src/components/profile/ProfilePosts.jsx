@@ -16,7 +16,7 @@ export default function ProfilePosts() {
   const getMyPosts = async () => {
     const postsRes = isAuthor
       ? await PostServices.getMyPosts(profileData.$id)
-      : await PostServices.getPublicPosts(userId);
+      : await PostServices.getUsersPosts(userId);
     if (postsRes) {
       setposts(postsRes.documents);
       setloading(false);

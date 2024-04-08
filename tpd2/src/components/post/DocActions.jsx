@@ -16,9 +16,24 @@ export default function DocActions({userId, postId, replyId}) {
   const [disliked, setdisliked] = useState(false);
   const [saved, setsaved] = useState(false);
 
+  const [date, setdate] = useState(null);
+  const [time, settime] = useState(null);
+  function handleIso(isoDate) {
+    const date = new Date(isoDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const dated = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
+    const time = `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+    setdate(dated);
+    settime(time);
+  }
+
   const getData = async () => {
     if (userId && docId) {
-      // const docRes = postId ? await PostServices.getPost(postId) : await PostServices.getReply(replyId)
       const docRes = await PostServices.getDoc({type: docType, docId})
       if (docRes) {
         setdoc(docRes);
@@ -164,9 +179,19 @@ export default function DocActions({userId, postId, replyId}) {
 
   useEffect(() => {
     getData();
-  }, [doc?.$id]);
+    handleIso(doc?.$createdAt);
+  }, [userId, postId, replyId, doc?.$id, doc?.$createdAt]);
 
   return (
+    <>
+      <div className="flex gap-2 justify-end">
+        <h1 className="text-xs align-bottom font-semibold text-secondary/50">
+          {time}
+        </h1>
+        <h1 className="flex text-xs left-auto right-0 font-semibold text-secondary/80">
+          {date}
+        </h1>
+      </div>
       <div className="flex justify-evenly">
         {actionItems.map((item) => (
           <div className="flex w-fit gap-1" key={item.name}>
@@ -179,5 +204,6 @@ export default function DocActions({userId, postId, replyId}) {
           </div>
         ))}
       </div>
+    </>
   )
 }

@@ -86,79 +86,79 @@ export default function ReplyForm({ user, reply }) {
   return (
     <>
       <UserHeader user={user} doc={reply}/>
-    <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
-      <CardBox>
-        <TextArea
-          readOnly={!editable}
-          label="Content"
-          {...register("content", { required: true })}
-        />
-        {
-          editable && (
-        <InputFile
-          label="Image"
-              type="file"
-              accept="image/*"
-              readOnly={!editable}
-              {...register("images")}
-              onChange={(e) =>
-                setlocalImage(URL.createObjectURL(e.target.files[0]))
-              }
-        />
-          )
-        }
-        {
-          localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} className='rounded-xl'/> : null
-        }
-        {reply && isAuthor && (
-          editable ? (
-            <div className="flex gap-2">
-              <Button
-                onClick={() => {
-                  seteditable(false);
-                  reset();
-                }}
-                className="w-full py-2"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="w-full py-2"
-              >
-                Save
-              </Button>
-            </div>
-          ) : (
+      <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
+        <CardBox>
+          <TextArea
+            readOnly={!editable}
+            label="Content"
+            {...register("content", { required: true })}
+          />
+          {
+            editable && (
+              <InputFile
+                label="Image"
+                type="file"
+                accept="image/*"
+                readOnly={!editable}
+                {...register("images")}
+                onChange={(e) =>
+                  setlocalImage(URL.createObjectURL(e.target.files[0]))
+                }
+              />
+            )
+          }
+          {
+            localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} className='rounded-xl'/> : null
+          }
+          {reply && isAuthor && (
+            editable ? (
               <div className="flex gap-2">
                 <Button
-                  bg="bg-red-500"
+                  onClick={() => {
+                    seteditable(false);
+                    reset();
+                  }}
                   className="w-full py-2"
-                  onClick={() => setopen(true)}
                 >
-                  Delete
+                  Cancel
                 </Button>
-                <Button onClick={() => seteditable(true)} className="w-full py-2">
-                  Edit
+                <Button
+                  type="submit"
+                  className="w-full py-2"
+                >
+                  Save
                 </Button>
               </div>
+            ) : (
+                <div className="flex gap-2">
+                  <Button
+                    bg="bg-red-500"
+                    className="w-full py-2"
+                    onClick={() => setopen(true)}
+                  >
+                    Delete
+                  </Button>
+                  <Button onClick={() => seteditable(true)} className="w-full py-2">
+                    Edit
+                  </Button>
+                </div>
+              )
+          )}
+          {
+            !reply && (
+              <Button
+                loading={btnLoading}
+                type="submit"
+                className="w-full py-2"
+                onClick={() => setbtnLoading(true)}
+              >
+                Create Reply
+              </Button>
             )
-        )}
-        {
-          !reply && (
-            <Button
-              loading={btnLoading}
-              type="submit"
-              className="w-full py-2"
-              onClick={() => setbtnLoading(true)}
-            >
-              Create Reply
-            </Button>
-          )
-        }
-      </CardBox>
-    </form>
+          }
+        </CardBox>
+      </form>
     </>
   );
 }
-      // <Confirm open={open} setopen={setopen} warningDesc={editable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Reply ?"} proceedText={editable ? "Exit" : "Delete"} proceedTo={deleteReply} loading={btnLoading}/>
+// <Confirm open={open} setopen={setopen} warningDesc={editable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Reply ?"} proceedText={editable ? "Exit" : "Delete"} proceedTo={deleteReply} loading={btnLoading}/>

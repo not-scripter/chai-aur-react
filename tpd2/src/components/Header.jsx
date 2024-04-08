@@ -42,7 +42,7 @@ export default function Header() {
   const [mobNav, setmobNav] = useState(false);
 
   return (
-    <header className="flex flex-col">
+    <header className="flex flex-col z-30">
       <section className="relative w-full flex items-center justify-between bg-primary text-secondary px-4 py-2">
         <NavLink to={`/${profileData?.username}`} className={({isActive}) => [
           isActive && "shadow-secondary shadow-md",

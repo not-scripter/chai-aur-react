@@ -41,7 +41,7 @@ export default function Toolbar() {
   ];
   return (
     <>
-      <div className="flex justify-evenly w-full h-fit fixed bottom-0 bg-primary/80 backdrop-blur">
+      <div className="z-30 flex justify-evenly w-full h-fit fixed bottom-0 bg-primary/80 backdrop-blur-md">
         {ToolItems.map((item) => (
           <NavLink
             to={item.slug}

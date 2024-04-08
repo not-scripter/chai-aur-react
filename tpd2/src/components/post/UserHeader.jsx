@@ -1,39 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PostServices } from "../../appwrite";
-import { defaultAvatar } from "../../assets";
+import { EditSvg, defaultAvatar } from "../../assets";
 import { useSelector } from "react-redux";
 import { Button, Confirm } from "../";
 
-export default function UserHeader({user, post, reply}) {
+export default function UserHeader({user, post, reply, giveActions=false, replyTo}) {
   const navigate = useNavigate(); 
   const doc = post ? post : reply ? reply : null;
   const docType = 
     post ? "post" 
       : reply ? "reply" 
         : null;
+  console.log("doctype", docType,"doc", doc)
 
   const { profileData } = useSelector((state) => state.auth);
   const isAuthor = profileData.$id === user?.$id ? true : false;
+  const [isFollowing, setisFollowing] = useState(profileData.following.find(item => item === user?.$id))
 
   const [open, setopen] = useState(false)
   const [btnLoading, setbtnLoading] = useState(false);
-
-  const [date, setdate] = useState(null);
-  const [time, settime] = useState(null);
-  function handleIso(isoDate) {
-    const date = new Date(isoDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    const dated = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
-    const time = `${hours < 10 ? "0" + hours : hours}:${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-    setdate(dated);
-    settime(time);
-  }
 
   const deleteDoc = async () => {
     setbtnLoading(true)
@@ -55,13 +41,29 @@ export default function UserHeader({user, post, reply}) {
     }
   };
 
-  useEffect(() => {
-    doc && handleIso(doc?.$createdAt);
-  }, [user?.$id, doc?.$createdAt]);
+  const handleFollow = async () => {
+    setbtnLoading(true);
+    if (!isFollowing) {
+      const followRes = await PostServices.updateProfile({
+        userId: user.$id,
+        followers: [...user.followers, profileData.$id],
+      });
+      if (followRes) {
+        const followingRes = await PostServices.updateProfile({
+          userId: profileData.$id,
+          following: [...profileData.following, user.$id],
+        });
+        if (followingRes) {;
+          setisFollowing(true);
+          setbtnLoading(false);
+        }
+      }
+    }
+  };
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <Link to={user ? `/${user?.$id}` : `/${profileData.$id}`}>
           <div className="flex gap-2 items-center">
             <img
@@ -76,44 +78,57 @@ export default function UserHeader({user, post, reply}) {
                     : defaultAvatar
               }
             />
-            <h1 className="flex flex-col font-semibold">
+            <h1 className="flex flex-col font-semibold text-sm">
               {user ? user.fullname : profileData.fullname}
-              <span className="font-semibold text-sm text-secondary/50">
+              <span className="font-semibold text-xs text-secondary/50">
                 @{user ? user.username : profileData.username}
               </span>
             </h1>
           </div>
         </Link>
-        <div className="flex flex-col">
-          {date && time && (
-            <div className="flex gap-2">
-              <h1 className="text-xs align-bottom font-semibold text-secondary/50">
-                {time}
-              </h1>
-              <h1 className="flex text-xs left-auto right-0 font-semibold text-secondary/80">
-                {date}
-              </h1>
-            </div>
-          )}
-          { isAuthor && (
+        <div className="flex flex-col items-end">
+          { isAuthor && giveActions && (
             <div className="flex gap-2">
               <Button
                 bg="bg-red-500"
-                className="px-2 py-0"
+                className="p-2"
+                rounded="rounded-full"
                 onClick={() => setopen(true)}
               >
-                Delete
+                <EditSvg />
               </Button>
               <Button
-                onClick={() => navigate(`/edit-${docType}/${doc?.$íd}`)}
-                className="px-2 py-0"
+                onClick={() => navigate(`/edit-${docType}/${doc.$id}`)}
+                className="p-2"
+                rounded="rounded-full"
               >
-                Edit
+                <EditSvg className="fill-primary"/>
               </Button>
             </div>
           )}
+          {
+            !isFollowing && !isAuthor && (
+              <Button
+                loading={btnLoading}
+                onClick={handleFollow}
+                className="w-fit py-1 px-4"
+                rounded="rounded-full"
+              >Follow</Button>
+            )
+          }
         </div>
       </div>
+      {replyTo && (
+        <h1 className="flex gap-1 text-xs font-semibold">
+          Reply to 
+          <Link
+            to={`/${replyTo}`}
+            className="text-blue-500"
+          >
+            @{replyTo}
+          </Link>
+        </h1>
+      )}
       <Confirm open={open} setopen={setopen} warningDesc="Are You Sure ? You want to Delete this Reply" proceedText="Delete" proceedTo={deleteDoc} loading={btnLoading}/>
     </>
   )
