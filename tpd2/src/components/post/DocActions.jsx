@@ -34,7 +34,7 @@ export default function DocActions({userId, postId, replyId}) {
 
   const getData = async () => {
     if (userId && docId) {
-      const docRes = await PostServices.getDoc({type: docType, docId})
+      const docRes = await PostServices.getDoc({docType: docType, docId})
       if (docRes) {
         setdoc(docRes);
 
@@ -54,7 +54,7 @@ export default function DocActions({userId, postId, replyId}) {
     if (liked) {
       setliked(false)
       await PostServices.updateDoc({
-        type: docType,
+        docType,
         docId,
         likes: doc?.likes.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -62,7 +62,7 @@ export default function DocActions({userId, postId, replyId}) {
       setliked(true)
       setdisliked(false)
       await PostServices.updateDoc({
-        type: docType,
+        docType,
         docId,
         likes: [...doc?.likes, profileData.$id],
         dislikes: doc?.dislikes.filter(user => user !== profileData.$id),
@@ -73,7 +73,7 @@ export default function DocActions({userId, postId, replyId}) {
     if (disliked) {
       setdisliked(false)
       await PostServices.updateDoc({
-        type: docType,
+        docType: docType,
         docId,
         dislikes: doc?.dislikes.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -81,7 +81,7 @@ export default function DocActions({userId, postId, replyId}) {
       setdisliked(true)
       setliked(false)
       await PostServices.updateDoc({
-        type: docType,
+        docType: docType,
         docId,
         likes: doc?.likes.filter(user => user !== profileData.$id),
         dislikes: [...doc?.dislikes, profileData.$id],
@@ -95,7 +95,7 @@ export default function DocActions({userId, postId, replyId}) {
     if (saved) {
       setsaved(false)
       await PostServices.updateDoc({
-        type: docType,
+        docType: docType,
         docId,
         saves: doc?.saves.filter(user => user !== profileData.$id),
       }).then((res) => setdoc(res))
@@ -106,7 +106,7 @@ export default function DocActions({userId, postId, replyId}) {
     } else {
       setsaved(true)
       await PostServices.updateDoc({
-        type: docType,
+        docType: docType,
         docId,
         saves: [...doc?.likes, profileData.$id],
       }).then((res) => setdoc(res))
@@ -125,7 +125,7 @@ export default function DocActions({userId, postId, replyId}) {
     }).then(() => {
       const exists = doc.shares.filter(item => item === profileData.$id)
       PostServices.updateDoc({
-        type: docType,
+        docType: docType,
         docId,
         shares: [...doc?.shares, !exists ? profileData.$id : profileData.$id + newId]
       }).then((res) => setdoc(res))

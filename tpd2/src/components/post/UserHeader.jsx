@@ -4,15 +4,16 @@ import { PostServices } from "../../appwrite";
 import { EditSvg, defaultAvatar } from "../../assets";
 import { useSelector } from "react-redux";
 import { Button, Confirm } from "../";
+import toast from "react-hot-toast";
 
-export default function UserHeader({user, post, reply, giveActions=false, replyTo}) {
+export default function UserHeader({user, post, reply, giveActions=false, replyToDoc}) {
   const navigate = useNavigate(); 
   const doc = post ? post : reply ? reply : null;
   const docType = 
     post ? "post" 
       : reply ? "reply" 
         : null;
-  console.log("doctype", docType,"doc", doc)
+  const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
 
   const { profileData } = useSelector((state) => state.auth);
   const isAuthor = profileData.$id === user?.$id ? true : false;
@@ -20,26 +21,6 @@ export default function UserHeader({user, post, reply, giveActions=false, replyT
 
   const [open, setopen] = useState(false)
   const [btnLoading, setbtnLoading] = useState(false);
-
-  const deleteDoc = async () => {
-    setbtnLoading(true)
-    const docRes = await PostServices.deleteDoc({docType, docId: doc?.$Id})
-    doc?.images && await PostServices.deleteFile(doc?.images);
-    if (docRes) {
-      const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
-      const proRes = await PostServices.updateProfileDocs({
-        docType,
-        userId: profileData.$id,
-        docs: profileData?.[docsType].filter((item) => item !== doc?.$id),
-      })
-      if (proRes) {
-      toast.success("doc Deleted");
-      setbtnLoading(false)
-      setopen(false);
-      navigate("/");
-      }
-    }
-  };
 
   const handleFollow = async () => {
     setbtnLoading(true);
@@ -57,6 +38,38 @@ export default function UserHeader({user, post, reply, giveActions=false, replyT
           setisFollowing(true);
           setbtnLoading(false);
         }
+      }
+    }
+  };
+
+  const deleteDoc = async () => {
+    setbtnLoading(true)
+    const docRes = await PostServices.deleteDoc({
+      docType,
+      docId: doc?.$id,
+    })
+    if (docRes) {
+    doc.images && await PostServices.deleteFile(doc.images);
+      if (reply.replyToType === "post") {
+        await PostServices.updatePost({
+        postId: replyToDoc?.$id,
+        replies: [...replyToDoc.replies.filter(item => item !== post?.$id)]
+      })
+      } else if (reply.replyToType === "reply") {
+        await PostServices.updateReply({
+          replyId: replyToDoc?.$id,
+          replies: [...replyToDoc.replies.filter(item => item !== reply?.$id)]
+        })
+      }
+      const proRes = await PostServices.updateProfile({
+        userId: profileData.$id,
+        [docsType]: profileData?.[docsType].filter((item) => item !== doc?.$id),
+      })
+      if (proRes) {
+        toast.success(`${docType} Deleted`)
+        setbtnLoading(false)
+        setopen(false);
+        navigate("/");
       }
     }
   };
@@ -107,7 +120,7 @@ export default function UserHeader({user, post, reply, giveActions=false, replyT
             </div>
           )}
           {
-            !isFollowing && !isAuthor && (
+            !isFollowing && !isAuthor && doc && (
               <Button
                 loading={btnLoading}
                 onClick={handleFollow}
@@ -118,14 +131,14 @@ export default function UserHeader({user, post, reply, giveActions=false, replyT
           }
         </div>
       </div>
-      {replyTo && (
+      {replyToDoc && (
         <h1 className="flex gap-1 text-xs font-semibold">
           Reply to 
           <Link
-            to={`/${replyTo}`}
+            to={`/${replyToDoc?.userId}`}
             className="text-blue-500"
           >
-            @{replyTo}
+            @{replyToDoc?.userId}
           </Link>
         </h1>
       )}

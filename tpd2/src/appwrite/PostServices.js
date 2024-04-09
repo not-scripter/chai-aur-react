@@ -157,12 +157,12 @@ export class postServices {
       console.log("appwrite :: create post ::", error.message);
     }
   }
-  async updatePost({ docId, content, images, visibility, replies, likes, dislikes, saves, shares }) {
+  async updatePost({ postId, content, images, visibility, replies, likes, dislikes, saves, shares }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
         conf.postsId,
-        docId,
+        postId,
         {
           content,
           images,
@@ -239,7 +239,7 @@ export class postServices {
   }
 
   //Replies Services
-  async createReply({ userId, content, images, replyTo, replyToId }) {
+  async createReply({ userId, content, images, replyTo, replyToId, replyToType, visibility, tags }) {
     try {
       return await this.databases.createDocument(
         conf.databaseId,
@@ -251,6 +251,9 @@ export class postServices {
           images,
           replyTo,
           replyToId,
+          replyToType,
+          visibility,
+          tags,
         },
         [
           Permission.read(Role.users()),
@@ -261,22 +264,21 @@ export class postServices {
       console.log("appwrite :: create reply ::", error.message);
     }
   }
-  async updateReply({ docId, content, images, replies, replyTo, replyToId, likes, dislikes, saves, shares }) {
+  async updateReply({ replyId, content, images, replies, likes, dislikes, saves, shares, tags }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
         conf.repliesId,
-        docId,
+        replyId,
         {
           content,
           images,
-          replyTo,
-          replyToId,
           likes,
           dislikes,
           replies,
           saves,
           shares,
+          tags,
         },
       );
     } catch (error) {
@@ -412,11 +414,11 @@ export class postServices {
     }
   }
   //Tests
-  async createDoc({ type, userId, replyTo, replyToId, content, images, visibility }) {
+  async createDoc({ docType, userId, replyTo, replyToId, content, images, visibility }) {
     try {
       return await this.databases.createDocument(
         conf.databaseId,
-        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docType === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
         uuidv1(),
         {
           userId,
@@ -435,11 +437,11 @@ export class postServices {
       console.log("appwrite :: create doc ::", error.message);
     }
   }
-  async updateDoc({ type, docId, likes, dislikes, saves, shares, replies }) {
+  async updateDoc({ docType, docId, likes, dislikes, saves, shares, replies }) {
     try {
       return await this.databases.updateDocument(
         conf.databaseId,
-        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docType === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
         docId,
         {
           likes,
@@ -453,18 +455,19 @@ export class postServices {
       console.log("appwrite :: update doc ::", error.message);
     }
   }
-  async getDoc({type, docId}) {
+  async getDoc({docType, docId}) {
     try {
       return await this.databases.getDocument(
         conf.databaseId,
-        type === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
+        docType === "post" ? conf.postsId : "reply" ? conf.repliesId : null,
         docId,
       );
     } catch (error) {
-      console.log("appwrite :: get get ::", error.message);
+      console.log("appwrite :: get doc ::", error.message);
     }
   }
   async deleteDoc({docType, docId}) {
+    console.log(docType, docId)
     try {
       return await this.databases.deleteDocument(
         conf.databaseId,

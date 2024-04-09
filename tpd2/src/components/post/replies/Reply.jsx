@@ -10,15 +10,23 @@ export default function Reply() {
   const { replyId } = useParams();
   const [user, setuser] = useState(null);
   const [reply, setreply] = useState(null);
+  const [replyToDoc, setreplyToDoc] = useState(null);
 
   const getData = async () => {
     if (replyId) {
       const repRes = await PostServices.getReply(replyId);
       if (repRes) {
         const proRes = await PostServices.getProfile(repRes.userId);
-        if (proRes && repRes) {
+        const toRes =
+          repRes.replyToType === "post"
+            ? await PostServices.getPost(repRes.replyToId)
+            : repRes.replyToType === "reply"
+              ? await PostServices.getReply(repRes.replyToId)
+              : null;
+        if (proRes && repRes && toRes) {
           setuser(proRes);
           setreply(repRes);
+          setreplyToDoc(toRes);
           setloading(false);
         }
       }
@@ -34,13 +42,13 @@ export default function Reply() {
   return !loading ? (
     reply ? (
       <CardBox>
-        <UserHeader user={user} reply={reply} giveActions/>
-        <Paragraph>
-          {reply.content}
-        </Paragraph>
-        { reply.images && <ImgBox src={PostServices.getFilePreview(reply.images)}/> }
-        <DocActions userId={user?.$id} replyId={replyId}/>
-        <RepliesComp userId={user?.$id} replyId={replyId}/>
+        <UserHeader user={user} reply={reply} giveActions replyToDoc={replyToDoc} />
+        <Paragraph>{reply.content}</Paragraph>
+        {reply.images && (
+          <ImgBox src={PostServices.getFilePreview(reply.images)} />
+        )}
+        <DocActions userId={user?.$id} replyId={replyId} />
+        <RepliesComp userId={user?.$id} replyId={replyId} />
       </CardBox>
     ) : (
       <NotFound title="Post Not Found" />
@@ -49,4 +57,4 @@ export default function Reply() {
     <Loader />
   );
 }
-        // <ReplyFormComp user={user} reply={reply} />
+// <ReplyFormComp user={user} reply={reply} />

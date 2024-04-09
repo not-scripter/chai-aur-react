@@ -8,7 +8,7 @@ import { Select } from "../";
 import { Button, ImgBox, Confirm ,InputFile, TextArea } from "..";
 import { UserHeader } from "./";
 
-export default function DocForm({ user, post, reply, typePost=false, typeReply=false, replyTo, replyToId }) {
+export default function DocForm({ user, post, reply, typePost=false, typeReply=false, replyToDoc, replyToId, replyToType }) {
   const navigate = useNavigate(); 
   const doc = post ? post : reply ? reply : null;
   const docType = 
@@ -17,6 +17,7 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
         : reply ? "reply" 
           : typeReply ? "reply" 
             : null;
+  const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
 
   const defaultValues = {
     content: doc?.content || "",
@@ -32,17 +33,57 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
   const [localImage, setlocalImage] = useState(null);
   const dbImage = doc?.images && PostServices.getFilePreview(doc.images)
 
-  const [open, setopen] = useState(false)
   const [btnLoading, setbtnLoading] = useState(false);
 
   const submit = async (data) => {
     setbtnLoading(true)
-    if (doc) {
+    if (!doc) {
+      const file = data.images[0] && await PostServices.uploadFile(data.images[0])
+      if (replyToDoc) {
+        const newReply = await PostServices.createReply({
+          ...data,
+          userId: profileData.$id,
+          replyTo: replyToDoc.userId,
+          replyToId: replyToDoc.$id,
+          replyToType: replyToType,
+          images: file ? file.$id : null,
+          })
+        if (newReply) {
+          const updated = await PostServices.updatePost({
+          postId: replyToDoc.$id,
+          replies: [...replyToDoc.replies, newReply.$id]
+        })
+          const created = await PostServices.updateProfile({
+          userId: profileData.$id,
+          replies: [...profileData.replies, newReply.$id],
+        })
+          if (updated && created) {
+          toast.success(`Reply Created`);
+          setbtnLoading(false)
+          navigate(`/reply/${newReply.$id}`);
+          }
+        }
+      } else { 
+        const newPost = await PostServices.createDoc({
+          ...data,
+          userId: profileData.$id,
+          images: file ? file.$id : null,
+        }).then(async (res) => await PostServices.updateProfile({
+          userId: profileData.$id,
+          posts: [...profileData.posts, res.$id],
+        }))
+        if (newPost) {
+          toast.success(`Post Created`);
+          setbtnLoading(false)
+          navigate(`/post/${newPost.$id}`);
+        }
+      }
+    } else {
       const file = data.images[0] && await PostServices.uploadFile(data.images[0])
       if (file && doc.images) await PostServices.deleteFile(doc.images);
       const updated = await PostServices.updateDoc({
         ...data,
-        type: docType,
+        docType,
         docId: doc.$id,
         images: file ? file.$id : doc.images,
       });
@@ -52,62 +93,13 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
         setbtnLoading(false)
         navigate(`/${doc.userId}/${updated.$id}`);
       }
-    } else {
-      const file = data.images[0]
-        ? await PostServices.uploadFile(data.images[0])
-        : null;
-      const newDoc = await PostServices.createDoc({
-        type: docType,
-        userId: profileData.$id,
-        replyTo,
-        replyToId,
-        content: data.content,
-        images: file ? file.$id : null,
-        visibility: data.visibility,
-      });
-      if (newDoc) {
-      const docsType = docType === "post" ? "posts" : "reply" ? "replies" : "save" ? "saves" : null;
-        const userRes = await PostServices.updateProfile({
-          userId: user?.$id,
-          [docsType]: [...user?.[docsType], newDoc.$id],
-        })
-        if (userRes) {
-        const proRes = await PostServices.updateProfile({
-          userId: profileData.$id,
-          [docsType]: [...profileData?.[docsType], newDoc.$id],
-        })
-          if (proRes) {
-        toast.success(`${docType} Created`);
-        setbtnLoading(false)
-        navigate(`/${docType}/${newDoc.$id}`);
-          }
-        }
-      }
     }
     // reset()
   };
 
-  const deleteDoc = async () => {
-    setbtnLoading(true)
-    const docRes = await PostServices.deleteDoc({type: docType, docId: doc?.$id})
-    doc.images && await PostServices.deleteFile(doc.images);
-    if (docRes) {
-      const proRes = await PostServices.updateProfile({
-        userId: profileData.$id,
-        posts: profileData.posts.filter((item) => item !== doc?.$id),
-      })
-      if (proRes) {
-      toast.success("doc Deleted");
-      setbtnLoading(false)
-      setopen(false);
-      navigate("/");
-      }
-    }
-  };
-
   return (
     <>
-      <UserHeader user={user} post={post} reply={reply} replyTo={replyTo}/>
+      <UserHeader user={user} post={post} reply={reply} replyTo={replyToDoc?.userId}/>
       <form onSubmit={handleSubmit(submit)} className="flex flex-col gap-2">
         <TextArea
           readOnly={!editable}
@@ -125,8 +117,6 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
             />
           ) : null
         }
-        {
-          editable && (
             <InputFile 
               label="Image"
               type="file"
@@ -137,8 +127,6 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
                 setlocalImage(URL.createObjectURL(e.target.files[0]))
               }
             />
-          )
-        }
         {
           localImage || dbImage ? <ImgBox src={localImage ? localImage : dbImage} className="rounded-xl"/> : null
         }
@@ -171,7 +159,6 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
           )
         }
       </form>
-      <Confirm open={open} setopen={setopen} warningDesc={editable ? "Are You Sure You want to Exit ?" : "Are You Sure ? You want to Delete this Post ?"} proceedText={editable ? "Exit" : "Delete"} proceedTo={deleteDoc} loading={btnLoading}/>
     </>
   )
 }

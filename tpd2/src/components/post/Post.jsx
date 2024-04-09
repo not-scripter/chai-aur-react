@@ -29,7 +29,7 @@ export default function Post() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [postId, navigate]);
 
   return !loading ? (
     post ? (

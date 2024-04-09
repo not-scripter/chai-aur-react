@@ -14,8 +14,8 @@ export default function NewReply() {
 
   const getDoc = async () => {
     const docRes = await PostServices.getDoc({
-      type: docType,
-      docId: docId
+      docType,
+      docId,
     });
     if (docRes) {
       setdoc(docRes);
@@ -27,7 +27,13 @@ export default function NewReply() {
   return (
     <>
       <CardBox>
-        <DocForm typePost={typePost} typeReply={typeReply} replyTo={doc?.userId} replyToId={doc?.$id} />
+        <DocForm
+          typeReply={typeReply}
+          typePost={typePost}
+          replyToDoc={doc}
+          replyToId={docId}
+          replyToType={docType}
+        />
       </CardBox>
     </>
   );
