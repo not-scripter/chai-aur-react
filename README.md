@@ -1,3 +1,3 @@
-## Chai Aur React
+# Chai Aur React
 
-git init before creating project!
+## git init before creating project!
