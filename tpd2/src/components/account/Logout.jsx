@@ -22,7 +22,7 @@ export default function Logout() {
   return (
     <>
       <CardBox className="flex flex-col gap-2 bg-primary/20 backdrop-blur rounded-xl p-4">
-        <h1 className="text-presecondary text-xl">Logout from this Device</h1>
+        <h1 className="text-presecondary font-semibold">Logout from this Device</h1>
         <Button
           onClick={() => setopen(true)}
           bg="bg-red-600"

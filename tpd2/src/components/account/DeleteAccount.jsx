@@ -22,7 +22,6 @@ export default function DeleteAccount() {
           const posRes = myPosts.documents.map((item) =>
             PostServices.deletePost(item.$id),
           );
-          console.log(posRes);
           if (posRes) {
             dispatch(logout());
             toast.success("Account Deleted");
@@ -36,16 +35,14 @@ export default function DeleteAccount() {
   return (
     <>
       <CardBox className="flex flex-col gap-2 bg-primary/20 backdrop-blur rounded-xl p-4">
-        <h1 className="text-presecondary font-semibold">
-          Logout from this Device
-        </h1>
+        <h1 className="text-presecondary font-semibold">Delete Your Account</h1>
         <Button
           onClick={() => setopen(true)}
           bg="bg-red-600"
           fg="text-black"
           className="w-full py-2"
         >
-          Logout
+          Delete
         </Button>
       </CardBox>
       <Confirm

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Logo, Button, ImgBox } from "../components";
-import { Link, NavLink } from "react-router-dom";
+import { Logo, Button } from "../components";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CrossSvg, MenuSvg, defaultAvatar } from "../assets";
+import { PostServices } from "../appwrite";
 
 export default function Header() {
   const { authStatus, profileData } = useSelector((state) => state.auth);
@@ -18,21 +19,6 @@ export default function Header() {
       active: !authStatus,
     },
     {
-      name: "Home",
-      slug: "/",
-      active: authStatus,
-    },
-    {
-      name: "My Posts",
-      slug: "/my-posts",
-      active: authStatus,
-    },
-    {
-      name: "Add Post",
-      slug: "/add-post",
-      active: authStatus,
-    },
-    {
       name: "Account",
       slug: "/account/info",
       active: authStatus,
@@ -44,16 +30,18 @@ export default function Header() {
   return (
     <header className="flex flex-col z-30">
       <section className="relative w-full flex items-center justify-between bg-primary text-secondary px-4 py-2">
-        <NavLink to={`/${profileData?.username}`} className={({isActive}) => [
-          isActive && "shadow-secondary shadow-md",
-          "w-8 h-8 rounded-full object-cover"
-        ].join(" ")
-        }>
-        <ImgBox
-          className=""
-          src={profileData?.avatar ? profileData.avatar : defaultAvatar}
-        />
-        </NavLink>
+        { authStatus && 
+          <NavLink to={`/${profileData?.username}`} className={({isActive}) => [
+            isActive && "shadow-secondary shadow-md",
+            "w-8 h-8 rounded-full object-cover"
+          ].join(" ")
+          }>
+            <img
+              className="w-8 h-8 bg-cover rounded-full shadow-md shadow-secondary/50"
+              src={profileData.avatar ? PostServices.getAvatarPreview(profileData.avatar) : defaultAvatar}
+            />
+          </NavLink>
+        }
         <Logo className="z-30" />
         <Button
           onClick={() => setmobNav((prev) => !prev)}

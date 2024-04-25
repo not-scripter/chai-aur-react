@@ -21,16 +21,14 @@ export default function ResetPassword() {
   const [open, setopen] = useState(false);
 
   const updatePassword = async (data) => {
-    AuthServices.updatePassword(data)
-      .then((authRes) => {
+    const userData = await AuthServices.updatePassword(data)
+      .catch(() => toast.error("Password Incorrect"));
+      if (userData) {
         dispatch(login({userData: authRes}))
         toast.success("Password Updated");
         seteditable(false);
         setopen(false);
-      })
-      .catch(() => {
-        toast.error("Password Incorrect");
-      });
+      }
   };
   return (
     <form onSubmit={handleSubmit(updatePassword)}>

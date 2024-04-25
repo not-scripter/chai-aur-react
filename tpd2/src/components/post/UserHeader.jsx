@@ -44,33 +44,39 @@ export default function UserHeader({user, post, reply, giveActions=false, replyT
 
   const deleteDoc = async () => {
     setbtnLoading(true)
-    const docRes = await PostServices.deleteDoc({
-      docType,
-      docId: doc?.$id,
-    })
-    if (docRes) {
-    doc.images && await PostServices.deleteFile(doc.images);
-      if (reply.replyToType === "post") {
-        await PostServices.updatePost({
-        postId: replyToDoc?.$id,
-        replies: [...replyToDoc.replies.filter(item => item !== post?.$id)]
-      })
-      } else if (reply.replyToType === "reply") {
-        await PostServices.updateReply({
-          replyId: replyToDoc?.$id,
-          replies: [...replyToDoc.replies.filter(item => item !== reply?.$id)]
-        })
-      }
-      const proRes = await PostServices.updateProfile({
+    if (post) {
+      post.images && await PostServices.deleteFile(post.images);
+      await PostServices.deletePost(post.$id)
+      .then(async (res) => await PostServices.updateProfile({
         userId: profileData.$id,
-        [docsType]: profileData?.[docsType].filter((item) => item !== doc?.$id),
-      })
-      if (proRes) {
-        toast.success(`${docType} Deleted`)
+        posts: profileData.posts.filter((item) => item !== res.$id),
+      }))
+      .then(async () => await PostServices.deleteReplies(post.$id))
+      .then(() => {
+        toast.success(`Post Deleted`)
         setbtnLoading(false)
         setopen(false);
         navigate("/");
-      }
+      })
+    } else if (reply) {
+      reply.images && await PostServices.deleteFile(reply.images);
+      const repRes = await PostServices.deleteReply(reply.$id)
+      if (reply.replyToType === "post" && repRes)
+      await PostServices.updatePost({
+        postId: reply.replyToId,
+        replies: [...replyToDoc.replies.filter(item => item !== reply.$id)]
+      })
+      .then(async () => await PostServices.updateProfile({
+        userId: profileData.$id,
+        replies: profileData.replies.filter((item) => item !== reply.$id),
+      }))
+      .then(async () => await PostServices.deleteReplies(reply.$id))
+      .then(() => {
+        toast.success(`Reply Deleted`)
+        setbtnLoading(false)
+        setopen(false);
+        navigate("/");
+      })
     }
   };
 

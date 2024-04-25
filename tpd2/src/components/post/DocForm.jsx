@@ -64,18 +64,21 @@ export default function DocForm({ user, post, reply, typePost=false, typeReply=f
           }
         }
       } else { 
-        const newPost = await PostServices.createDoc({
+        const newPost = await PostServices.createPost({
           ...data,
           userId: profileData.$id,
           images: file ? file.$id : null,
-        }).then(async (res) => await PostServices.updateProfile({
-          userId: profileData.$id,
-          posts: [...profileData.posts, res.$id],
-        }))
+        })
         if (newPost) {
+          const proRes = await PostServices.updateProfile({
+          userId: profileData.$id,
+          posts: [...profileData.posts, newPost.$id],
+        })
+        if (newPost && proRes) {
           toast.success(`Post Created`);
           setbtnLoading(false)
           navigate(`/post/${newPost.$id}`);
+        }
         }
       }
     } else {

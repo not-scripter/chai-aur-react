@@ -1,17 +1,14 @@
 import React from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   AddSvg,
   HomeSvg,
-  PeoplesSvg,
   PostSvg,
   ReplySvg,
   SavesSvg,
 } from "../assets";
-import { useSelector } from "react-redux";
 
 export default function Toolbar() {
-  const { profileData } = useSelector((state) => state.auth);
   const ToolItems = [
     {
       slug: "/",
@@ -54,7 +51,7 @@ export default function Toolbar() {
             }
           >
             {item.icon}
-            <h1 className="text-sm font-semibold text-secondary/50">
+            <h1 className="text-xs font-semibold text-secondary/50">
               {item.name}
             </h1>
           </NavLink>

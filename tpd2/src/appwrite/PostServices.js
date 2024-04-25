@@ -296,6 +296,17 @@ export class postServices {
       console.log("appwrite :: delete reply ::", error.message);
     }
   }
+  async deleteReplies(replyToId) {
+    try {
+      return await this.databases.deleteDocument(
+        conf.databaseId,
+        conf.repliesId,
+        [ Query.equal("replyToId", replyToId) ]
+      );
+    } catch (error) {
+      console.log("appwrite :: delete replies ::", error.message);
+    }
+  }
   async getReply(replyId) {
     try {
       return await this.databases.getDocument(
